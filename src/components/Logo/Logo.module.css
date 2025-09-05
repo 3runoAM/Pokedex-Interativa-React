@@ -1,0 +1,5 @@
+.logoImage {
+    max-width: 18em;
+    flex-shrink: 1;
+    background-size: cover;
+}
