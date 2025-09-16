@@ -1,0 +1,24 @@
+.logoContainer {
+    width: 100%;
+}
+
+.logoImage {
+    max-width: 20em;
+    min-width: 18em;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+@media (min-width: 768px) {
+    .logoImage {
+        max-width: 22em;
+        min-width: 20em;
+    }
+}
+
+@media (min-width: 1024px) {
+    .logoImage {
+        max-width: 25em;
+        min-width: 22em;
+    }
+}

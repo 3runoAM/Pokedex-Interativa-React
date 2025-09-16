@@ -1,11 +1,13 @@
 import './App.css';
-import app from './firebase';
+import {supabase} from './services/SupabaseClient.js';
+import Login from './pages/Login.jsx';
 
 export default function App() {
-    console.log('App is running!', app);
+    console.log('Supabase client:', supabase);
+
     return (
-        <div className="App">
-            <h1>Hello World!</h1>
-        </div>
+        <>
+            <Login></Login>
+        </>
     );
 }
