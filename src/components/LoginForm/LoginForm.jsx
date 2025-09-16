@@ -18,6 +18,7 @@ export function LoginForm() {
                     </div>
                 </div>
 
+
                 <button className={`${style.button} button login`} type="submit">Entrar</button>
             </form>
         </>
