@@ -7,6 +7,7 @@
     --screen-black: #0E0E0E;
     --login-blue: #365FAC;
     --register-yellow: #BDA442;
+    --greyish-black: #2A2A2A;
     --johmuria: 'Jomhuria';
 }
 
@@ -15,6 +16,7 @@
     margin: 0;
     padding: 0;
     font-family: var(--johmuria), sans-serif;
+    color: var(--greyish-black);
 }
 
 body {
@@ -64,7 +66,7 @@ body {
     letter-spacing: 0.05em;
     cursor: pointer;
     padding: 0.2em 0.5em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px #00000033;
 }
 
 .login {
@@ -78,4 +80,8 @@ body {
 .labelSize {
     font-size: 1.8rem;
     letter-spacing: 0.01em;
+}
+
+.gap {
+    gap: 1rem;
 }
