@@ -21,3 +21,13 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase configuration
+firebase.js
+.firebase
+
+# supabase client configuration
+src/services/SupabaseClient.js
+
+# ide's and editors
+.idea
