@@ -16,37 +16,8 @@
     margin: 0;
     padding: 0;
     font-family: var(--johmuria), sans-serif;
-    transition: all 0.3s ease-in-out;
     color: var(--greyish-black);
-}
-
-body {
-    width: 100%;
-    height: 100vh;
-    background-color: var(--fire-red);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-@import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
-
-:root {
-    --fire-red: #D12426;
-    --card-white: #F2F2F2;
-    --screen-grey: #B5B5B5;
-    --screen-black: #0E0E0E;
-    --login-blue: #365FAC;
-    --register-yellow: #BDA442;
-    --greyish-black: #2A2A2A;
-    --johmuria: 'Jomhuria';
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: var(--johmuria), sans-serif;
-    color: var(--greyish-black);
+    transition: all 0.8s ease-in-out;
 }
 
 body {
@@ -60,12 +31,17 @@ body {
 
 #root {
     width: 95%;
-    height: 95%;
+    height: 98%;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: space-around;
+
+    padding: 0.6rem;
+
+    overflow-y: auto;
+    scroll-behavior: smooth;
 
     border-radius: 10px;
     border: 0.5em solid var(--card-white);
@@ -91,7 +67,6 @@ body {
     border: none;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 1.5em;
     color: white;
     letter-spacing: 0.05em;
     cursor: pointer;
@@ -99,19 +74,42 @@ body {
     box-shadow: 0 4px 8px #00000033;
 }
 
-.login {
-    background-color: var(--login-blue);
-}
-
-.register {
-    background-color: var(--register-yellow);
-}
-
 .labelSize {
     font-size: 1.8rem;
     letter-spacing: 0.01em;
 }
 
-.gap {
+.smallGap {
+    gap: 0.5rem;
+}
+
+.mediumGap {
     gap: 1rem;
+}
+
+.largeGap {
+    gap: 2rem;
+}
+
+.smallPadding {
+    padding: 0.5rem;
+}
+
+.mediumPadding {
+    padding: 1rem;
+}
+
+.largePadding {
+    padding: 2rem;
+}
+
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fire-red: #b80204;
+        --card-white: #615f50;
+        --screen-grey: #5D6573FF;
+        --login-blue: #2f5295;
+        --register-yellow: #9c8736;
+    }
 }

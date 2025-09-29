@@ -1,5 +1,5 @@
 .button {
-    background-color: var(--register-yellow);
+    background-color: var(--login-blue);
     font-size: 1.8rem;
 }
 
@@ -10,11 +10,5 @@
 
     .labelSize {
         font-size: 2.2rem;
-    }
-}
-
-@media (min-width: 1024px) {
-   .labelSize {
-        font-size: 2.5rem;
     }
 }

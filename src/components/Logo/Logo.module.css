@@ -3,22 +3,21 @@
 }
 
 .logoImage {
-    max-width: 20em;
-    min-width: 18em;
+    max-width: 18em;
+    min-width: 8em;
     background-size: contain;
     background-repeat: no-repeat;
 }
 
+
 @media (min-width: 768px) {
     .logoImage {
-        max-width: 22em;
-        min-width: 20em;
+        max-width: 25em;
     }
 }
 
 @media (min-width: 1024px) {
     .logoImage {
-        max-width: 25em;
-        min-width: 22em;
+        max-width: 28em;
     }
 }
