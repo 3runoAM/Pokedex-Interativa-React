@@ -8,34 +8,20 @@
     max-width: 85%;
 }
 
-.labelSize {
-    font-size: 2rem;
-}
-
 .input {
-    width: 100%;
     height: 2.4rem;
     border: none;
-    border-radius: 0.5em;
+    border-radius: 5px;
     padding: 0.2em 0.2em 0.2em 0.8em;
     font-size: 1.5rem;
-    box-shadow: 0 4px 8px rgba(81, 170, 209, 0.5);
+    box-shadow: 0 4px 8px var(--login-blue);
 }
 
-.link {
-    box-sizing: border-box;
-    font-size: 1.8rem;
-    cursor: pointer;
-}
 
-.button {
-    font-size: 1.6rem;
-    background-color: var(--login-blue);
-}
-
+/* */
 @media (min-width: 768px) {
     .form {
-        gap: 1rem;
+        gap: 2rem;
     }
 
     .formDiv {
@@ -48,16 +34,12 @@
         gap: 0.5rem;
     }
 
-    .link {
-        font-size: 2rem;
-    }
-
     .labelSize {
         font-size: 2.2rem;
     }
 
-    .input {
-        font-size: 1.8rem;
+    .input{
+       font-size: 1.8rem;
     }
 
     .button {
@@ -67,7 +49,7 @@
 
 @media (min-width: 1024px) {
     .form {
-        gap: 1rem;
+        gap: 3rem;
     }
 
     .formDiv {
@@ -76,25 +58,10 @@
 
     .inputContainer {
         max-width: 40%;
+        gap: 1rem;
     }
 
     .labelSize {
         font-size: 2.5rem;
     }
 }
-
-/*layout base: 360px*/
-
-/*
-@media (prefers-color-scheme: dark) {}
-
-@media (min-width: 420px) {}
-
-@media (min-width: 640px) {}
-
-@media (min-width: 768px) {}
-
-@media (min-width: 1024px) {}
-
-@media (min-width: 1280px) {}
-*/
