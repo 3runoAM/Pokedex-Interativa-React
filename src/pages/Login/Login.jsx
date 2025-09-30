@@ -7,10 +7,8 @@ import RegisterLink from "../../components/RegisterLink/RegisterLink";
 import Footer from '../../components/Footer/Footer.jsx';
 
 
-
-
 export default function Login() {
-    const handleRegister = async (formData) => {
+    const handleLogin = async (formData) => {
         const errors = validateFormData(formData);
 
         if (Object.keys(errors).length > 0) {
@@ -59,7 +57,7 @@ export default function Login() {
     return (
         <div className={`${style.loginContainer} flex-column mediumGap mediumPadding`}>
             <Logo></Logo>
-            <LoginForm login={handleRegister}></LoginForm>
+            <LoginForm login={handleLogin}></LoginForm>
             <RegisterLink/>
             <Footer></Footer>
         </div>
