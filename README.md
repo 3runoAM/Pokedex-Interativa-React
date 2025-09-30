@@ -47,4 +47,4 @@ npm start
 
 ------
 Desenvolvido por Bruno Martins (@3runoAM) ☕
->>>>>>> origin/main
+
