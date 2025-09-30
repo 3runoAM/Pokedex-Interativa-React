@@ -6,7 +6,7 @@ export function LoginForm() {
     return (
         <>
             <form className={`${style.form} flex-column center mediumGap`} action="">
-                <div className={`${style.formDiv} flex-column mediumGap`}>
+                <div className={`${style.formDiv} flex-column mediumGap center`}>
                     <div className={`${style.inputContainer} flex-column smallGap`}>
                         <label className={`${style.labelSize} labelSize`} htmlFor="email">Email</label>
                         <input className={style.input} type="email" id="email" name="email" required />
