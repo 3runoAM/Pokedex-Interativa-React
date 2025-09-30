@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",
+    "crypto-js": "^4.2.0",
     "firebase": "^12.3.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -12,7 +13,8 @@
   },
   "scripts": {
     "build": "react-scripts build",
-    "serve": "serve -s build"
+    "serve": "serve -s build",
+    "deploy": "npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [

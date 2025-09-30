@@ -1,15 +1,65 @@
 import style from './Login.module.css'
+import Authentication from "../../services/Authentication";
+
 import Logo from '../../components/Logo/Logo.jsx';
 import {LoginForm} from '../../components/LoginForm/LoginForm.jsx';
 import RegisterLink from "../../components/RegisterLink/RegisterLink";
 import Footer from '../../components/Footer/Footer.jsx';
 
+
+
+
 export default function Login() {
+    const handleRegister = async (formData) => {
+        const errors = validateFormData(formData);
+
+        if (Object.keys(errors).length > 0) {
+            console.error("Erros de validação:", errors);
+            return;
+        }
+
+        try {
+            const {data, error} = await Authentication.login(formData.email, formData.password);
+            if (error) throw error;
+
+            localStorage.setItem('user', JSON.stringify(data));
+        } catch (err) {
+            console.error(err); // Colocar na Snackbar
+        }
+    }
+
+    // VALIDA O FORMULÁRIO INTEIRO USANDO validate
+    const validateFormData = (formData) => {
+        const errors = {};
+
+        Object.keys(formData).forEach(fieldName => {
+            const fieldValue = formData[fieldName];
+
+            switch (fieldName) {
+                case "email":
+                    if (!fieldValue) {
+                        errors.email = "Email é obrigatório";
+                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
+                        errors.email = "Email inválido";
+                    }
+                    break;
+                case "password":
+                    if (!fieldValue) errors.password = "Senha é obrigatória";
+                    else if (fieldValue.length < 6) errors.password = "Senha deve ter pelo menos 6 caracteres";
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        return errors;
+    };
+
 
     return (
         <div className={`${style.loginContainer} flex-column mediumGap mediumPadding`}>
             <Logo></Logo>
-            <LoginForm></LoginForm>
+            <LoginForm login={handleRegister}></LoginForm>
             <RegisterLink/>
             <Footer></Footer>
         </div>
