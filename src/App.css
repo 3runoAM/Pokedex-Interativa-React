@@ -103,6 +103,16 @@ body {
     padding: 2rem;
 }
 
+.errorMessage {
+    color: var(--fire-red);
+    text-shadow: 0 2px 3px rgba(106, 106, 106, 0.67);
+    font: bold 14px Roboto, cursive;
+}
+
+.errorMessage:before {
+    content: "* ";
+}
+
 
 @media (prefers-color-scheme: dark) {
     :root {
@@ -111,5 +121,10 @@ body {
         --screen-grey: #5D6573FF;
         --login-blue: #2f5295;
         --register-yellow: #9c8736;
+    }
+
+    .errorMessage {
+        text-shadow: 0 0 5px #C6C6C6AA;
+        font: bold 14px Roboto, cursive;
     }
 }
