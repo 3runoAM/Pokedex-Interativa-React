@@ -41,6 +41,7 @@ export function LoginForm({login}) {
     // NO SUBMIT, VALIDA O FORMULÁRIO INTEIRO
     const handleSubmit = (e) => {
         e.preventDefault();
+        setErrors({});
         const errors = validateForm();
         setErrors(errors);
 

@@ -51,6 +51,7 @@ body {
 /*Reutilizáveis*/
 .flex-row {
     display: flex;
+    flex-direction: row;
 }
 
 .flex-column {
