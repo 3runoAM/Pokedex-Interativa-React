@@ -18,10 +18,11 @@ export default function Login() {
         }
 
         try {
+            localStorage.removeItem("user");
             const {data, error} = await Authentication.login(formData.email, formData.password);
             if (error) throw error;
 
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem("user", JSON.stringify(data.user));
             navigate("/home");
         } catch (err) {
             console.error(err); // Colocar na Snackbar
