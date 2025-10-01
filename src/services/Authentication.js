@@ -12,6 +12,13 @@ const Authentication = {
             email,
             password
         });
+    },
+    isAuthenticated: async () => {
+        const { data } = await supabase.auth.getUser();
+        return data.user !== null;
+    },
+    logOut: () => {
+        return supabase.auth.signOut();
     }
 }
 
