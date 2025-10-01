@@ -18,12 +18,12 @@ export default function App() {
 
     useEffect(() => {
         checkAuth();
-    }, [isAuthenticated, userToken, navigate]);
+    }, [userToken, navigate]);
 
     useEffect(() => {
         if (userToken && isAuthenticated) navigate('/home');
         else navigate('/login');
-    }, [userToken, isAuthenticated, navigate]);
+    }, [isAuthenticated, userToken, navigate]);
 
     return (
         <Routes>
