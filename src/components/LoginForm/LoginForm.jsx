@@ -19,7 +19,7 @@ export function LoginForm({login}) {
                 }
                 break;
             case "password":
-                if (!value || value === "") errors.password = "Senha é obrigatória";
+                if (!value) errors.password = "Senha é obrigatória";
                 else if (value.length < 6) errors.password = "Senha deve ter pelo menos 6 caracteres";
                 break;
             default:

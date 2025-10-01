@@ -7,7 +7,7 @@ export default function Home() {
 
     const handleLogout = async () => {
         await Authentication.logOut();
-        localStorage.clear()
+        localStorage.clear();
         navigate('/login');
     };
 
