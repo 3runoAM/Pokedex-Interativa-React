@@ -4,8 +4,10 @@ import RegisterForm from '../../components/RegisterForm/RegisterForm';
 import Logo from "../../components/Logo/Logo";
 import Footer from "../../components/Footer/Footer";
 import LoginLink from "../../components/LoginLink/LoginLink";
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
+    const navigate = useNavigate();
     const handleRegister = async (formData) => {
         const errors = validateFormData(formData);
 
@@ -17,6 +19,8 @@ export default function Register() {
         try {
             const {data, error} = await Authentication.register(formData.email, formData.password);
             if (error) throw error;
+
+            navigate("/login");
         } catch (err) {
             console.error(err); // Colocar na Snackbar
         }
