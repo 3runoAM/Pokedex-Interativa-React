@@ -1,6 +1,7 @@
 .pokeCard {
     width: 16.25rem;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(40, 87, 108, 0.5);
     background-color: var(--card-white);
     justify-content: space-evenly;
 }
@@ -15,6 +16,10 @@
     font-size: 1.75rem;
 }
 
+.pokeInfoContainer > div > h3{
+    font-weight: normal;
+}
+
 .pokeInfoContainer > ul {
     height: 100%;
     list-style: none;
@@ -24,6 +29,7 @@
 .pokeInfoContainer > div p {
     opacity: 50%;
 }
+
 
 .typeCard {
     width: 4.5rem;

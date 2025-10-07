@@ -5,14 +5,12 @@ const dataBase = {
         const response = await supabase.from(table)
             .insert(data);
 
-        console.log("create:", {table, data});
-        console.log("resposta", {response});
         if (response.error) {
             // console.error("Erro ao criar recurso:", response.error);
             return null;
         }
 
-        if(response.status === 201) {
+        if (response.status === 201) {
             return true;
         }
     },
@@ -21,7 +19,6 @@ const dataBase = {
         const response = await supabase.from(table)
             .select("*")
             .order(orderProp);
-        console.log("list:", {table, orderProp, response});
 
         if (response.error) {
             console.error("Erro ao listar recursos:", response.error);
@@ -35,7 +32,6 @@ const dataBase = {
             .select("*")
             .eq("name", name)
             .single();
-        console.log("find:", {table, name, response});
         if (response.error) {
             console.error("Erro ao buscar Pokémon:", response.error);
             return null;
@@ -57,14 +53,12 @@ const dataBase = {
 
     getPokemon: async (currentPage) => {
         const startIndex = (currentPage - 1) * 20;
-        const endIndex = currentPage * 20  - 1;
+        const endIndex = currentPage * 20 - 1;
 
         const response = await supabase.from("Pokemon")
             .select("*")
             .order("pokedex_id")
             .range(startIndex, endIndex);
-
-        console.log("getPokemon:", {currentPage, response});
 
         if (response.error) {
             console.error("Erro ao buscar recursos:", response.error);
@@ -79,15 +73,13 @@ const dataBase = {
             .select("name")
             .eq("name", name);
 
-        console.log("existsByName:", {table, name, response});
-        console.log("Resposta ExistsByName: ", {response});
         if (response.error) {
             // console.error("Erro ao verificar existência do recurso:", response.error);
             return false;
         }
 
-       if(response.data.length === 0) return false;
-       return response.data.length === 1;
+        if (response.data.length === 0) return false;
+        return response.data.length === 1;
     },
 
     getByName: async (table, name) => {
@@ -95,8 +87,7 @@ const dataBase = {
             .select("*")
             .eq("name", name);
 
-        console.log("getByName:", {table, name});
-        console.log("Resposta getByName: ", {response});
+
         if (response.error) {
             // console.error("Erro ao buscar recurso:", response.error);
             return false;
@@ -110,7 +101,7 @@ const dataBase = {
             .select("Type(name)")
             .eq("pokemon_id", pokemon_id);
 
-        console.log("getPokemonTypes:", {pokemon_id, response});
+
         if (response.error) {
             console.error("Erro ao buscar tipos do Pokémon:", response.error);
             return [];

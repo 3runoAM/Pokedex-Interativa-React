@@ -8,8 +8,20 @@ const usePokeApi = () => {
     const URL_BASE_TYPE = "https://pokeapi.co/api/v2/type";
     const URL_BASE_MOVES = "https://pokeapi.co/api/v2/move";
 
+    const [totalCount, setTotalCount] = useState(0);
+
     const [loading, setLoading] = useState(false);
     const [errors, setError] = useState([]);
+
+    const setTotalPokemonCount = useCallback(async () => {
+        try {
+            const response = await fetch(`${URL_BASE_POKEMON}`);
+            const data = await response.json();
+            setTotalCount(data.count);
+        } catch (err) {
+            setError(prev => [...prev, err.message]);
+        }
+    }, []);
 
     const listPokemon = useCallback(async (currentPage) => {
         setLoading(true);
@@ -94,7 +106,6 @@ const usePokeApi = () => {
 
             const pokemonWasCreated = await dataBase.create("Pokemon", currentPokemon);
 
-            console.log("POKEMON FOI REGISTRADO? ", pokemonWasCreated);
 
             if (currentTypes.length > 0) {
                 for (const type of currentTypes) {
@@ -104,15 +115,12 @@ const usePokeApi = () => {
                     }
 
                     const registeredPokemon = await dataBase.getByName("Pokemon", pokemon.name);
-                    console.log("registeredPokemon: ", registeredPokemon);
                     const registeredType = await dataBase.getByName("Type", type.name);
-                    console.log("registeredType: ", registeredType);
+
                     const pm = await dataBase.create("PokemonType", {
                         pokemon_id: registeredPokemon[0].id,
                         type_id: registeredType[0].id
                     });
-
-                    console.log("Pokemon_Type foi registrado? ", pm);
                 }
             }
         }

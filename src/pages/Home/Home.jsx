@@ -20,6 +20,7 @@ export default function Home() {
     };
 
     const handleLoadMore = async () => {
+        if (currentPage == 49) return;
         setCurrentPage(prevPage => prevPage + 1);
     };
 
@@ -46,7 +47,7 @@ export default function Home() {
             <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
 
             <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
-                <button className={`${styles.loadMore} button`} disabled={loadingMore} onClick={handleLoadMore}>Carregar mais</button>
+                <button className={`${styles.loadMore} button`} disabled={loadingMore || (currentPage === 49)} onClick={handleLoadMore}>Carregar mais</button>
                 <button className={`${styles.logOut} button`} onClick={handleLogout}>SAIR</button>
             </div>
 
