@@ -1,14 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Jomhuria&display=swap');
 
 :root {
+    --johmuria: 'Jomhuria';
+
     --fire-red: #D12426;
-    --card-white: #F2F2F2;
+    --card-white: #F2F2F2FF;
     --screen-grey: #B5B5B5;
     --screen-black: #0E0E0E;
     --login-blue: #365FAC;
     --register-yellow: #BDA442;
     --greyish-black: #2A2A2A;
-    --johmuria: 'Jomhuria';
+
+    --grass-green: #9acc50;
+    --poison-purple: #b97fc9;
+    --fire-orange: #fc7e23;
+    --flying-gradient: linear-gradient(180deg, #3ec9f0 50%, #bdb8b7 50%);
+    --water-blue: #4591c4;
+    --bug-green: #729e3f;
+    --normal-grey: #a5adb0;
+    --eletric-yellow: #edd434;
+    --ground-gradient: linear-gradient(180deg, #f7df40 50%, #ab9843 50%);
+    --fairy-pink: #fcb8e8;
+    --fight-orange: #d66722;
+    --psychic-pink: #f266b8;
+    --steel-blue: #9eb7b8;
+    --ice-blue: #51c4e8;
+    --purple-ghost: #7b62a3;
+    --yellow-rock: #a38c21;
+    --dragon-gradient: linear-gradient(180deg, #53a3cf 50%, #f26e57 50%);
+    --dark-grey: #707070;
 }
 
 * {
@@ -120,6 +140,76 @@ body {
 
 .errorMessage:before {
     content: "* ";
+}
+
+.grass {
+    background-color: var(--grass-green);}
+
+.poison {
+    background-color: var(--poison-purple);
+}
+
+.fire {
+    background-color: var(--fire-orange);
+}
+
+.flying {
+    background: var(--flying-gradient);
+}
+.water {
+    background-color: var(--water-blue);
+}
+
+.bug {
+    background-color: var(--bug-green);
+}
+
+.normal {
+    background-color: var(--normal-grey);
+}
+
+.electric {
+    background-color: var(--eletric-yellow);
+}
+
+.ground {
+    background: var(--ground-gradient);
+}
+
+.fairy {
+    background-color: var(--fairy-pink);
+}
+
+.fighting {
+    background-color: var(--fight-orange);
+}
+
+.psychic {
+    background-color: var(--psychic-pink);
+}
+
+.steel {
+    background-color: var(--steel-blue);
+}
+
+.ice {
+    background-color: var(--ice-blue);
+}
+
+.ghost {
+    background-color: var(--purple-ghost);
+}
+
+.rock {
+    background-color: var(--yellow-rock);
+}
+
+.dragon {
+    background: var(--dragon-gradient);
+}
+
+.dark {
+    background-color: var(--dark-grey);
 }
 
 @media (prefers-color-scheme: dark) {

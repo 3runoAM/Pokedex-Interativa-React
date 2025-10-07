@@ -1,5 +1,8 @@
 .pokeCard {
-
+    width: 16.25rem;
+    border-radius: 10px;
+    background-color: var(--card-white);
+    justify-content: space-evenly;
 }
 
 .pokeImage {
@@ -7,5 +10,24 @@
 }
 
 .pokeInfoContainer {
+    height: 100%;
+    justify-content: space-between;
+    font-size: 1.75rem;
+}
 
+.pokeInfoContainer > ul {
+    height: 100%;
+    list-style: none;
+    gap: 0.5rem;
+}
+
+.pokeInfoContainer > div p {
+    opacity: 50%;
+}
+
+.typeCard {
+    width: 4.5rem;
+    height: 1.5rem;
+    border-radius: 5px;
+    align-items: center;
 }

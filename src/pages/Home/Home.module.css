@@ -1,3 +1,9 @@
+.loadMore {
+    font-size: 1.75rem;
+    background-color: var(--login-blue);
+}
+
 .logOut {
+    font-size: 1.75rem;
     background-color: #D12426;
 }

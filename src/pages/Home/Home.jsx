@@ -40,14 +40,13 @@ export default function Home() {
         fetchAndUpdate();
     }, [currentPage]);
 
-
     return (
         <section className={`flex-column largeGap`}>
 
             <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
 
             <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
-                <button className={`${styles.logOut} button`} disabled={loadingMore} onClick={handleLoadMore}>Carregar mais</button>
+                <button className={`${styles.loadMore} button`} disabled={loadingMore} onClick={handleLoadMore}>Carregar mais</button>
                 <button className={`${styles.logOut} button`} onClick={handleLogout}>SAIR</button>
             </div>
 
