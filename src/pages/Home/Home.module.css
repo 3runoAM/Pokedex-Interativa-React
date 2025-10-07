@@ -1,3 +1,14 @@
-.button {
+.loadMore {
+    font-size: 1.75rem;
+    background-color: var(--login-blue);
+}
+
+.loadMore:disabled {
+    cursor: not-allowed;
+    background-color: rgba(54, 95, 172, 0.4);
+}
+
+.logOut {
+    font-size: 1.75rem;
     background-color: #D12426;
 }
