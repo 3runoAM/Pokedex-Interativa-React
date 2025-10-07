@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import Home from "./pages/Home/Home";
 import Authentication from "./services/Authentication";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import {supabase} from "./services/SupabaseClient";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,7 +20,6 @@ export default function App() {
     useEffect(() => {
         checkAuth();
     }, [userToken]);
-
 
     return (
         <Routes>

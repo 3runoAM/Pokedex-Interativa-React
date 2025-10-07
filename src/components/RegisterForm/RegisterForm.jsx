@@ -61,9 +61,9 @@ export default function RegisterForm({register}) {
     const isFormValid = Object.keys(errors).length === 0 && formData.email && formData.password && formData.confirmPassword;
 
     return (
-        <div className={`flex-column center largeGap`}>
-            <form className={`flex-column center largeGap`} onSubmit={handleSubmit}>
-                <div className={`flex-column mediumGap center`}>
+        <div className={`flex-column flex-center largeGap`}>
+            <form className={`flex-column flex-center largeGap`} onSubmit={handleSubmit}>
+                <div className={`flex-column mediumGap flex-center`}>
                     <div className={`flex-column smallGap`}>
                         <label className={`labelSize`} htmlFor="email">Email</label>
                         {errors.email && (

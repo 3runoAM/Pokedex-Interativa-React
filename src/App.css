@@ -59,8 +59,16 @@ body {
     flex-direction: column;
 }
 
-.center {
+.flex-center {
     align-items: center;
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
     justify-content: center;
 }
 
@@ -113,7 +121,6 @@ body {
 .errorMessage:before {
     content: "* ";
 }
-
 
 @media (prefers-color-scheme: dark) {
     :root {

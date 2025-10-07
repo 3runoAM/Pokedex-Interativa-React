@@ -51,8 +51,8 @@ export function LoginForm({login}) {
     const isFormValid = Object.keys(errors).length === 0 && formData.email && formData.password;
 
     return (
-        <form className={`${style.form} flex-column center mediumGap`} onSubmit={handleSubmit}>
-            <div className={`${style.formDiv} flex-column mediumGap center`}>
+        <form className={`${style.form} flex-column flex-center mediumGap`} onSubmit={handleSubmit}>
+            <div className={`${style.formDiv} flex-column mediumGap flex-center`}>
                 <div className={`${style.inputContainer} flex-column smallGap`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="email">Email</label>
                     {errors.email && (
