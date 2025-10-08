@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -44,13 +45,15 @@ export default function Home() {
     return (
         <section className={`flex-column largeGap`}>
 
+            <SearchBar />
+
             <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
 
             <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
                 <button className={`${styles.loadMore} button`} disabled={loadingMore || (currentPage === 49)} onClick={handleLoadMore}>Carregar mais</button>
                 <button className={`${styles.logOut} button`} onClick={handleLogout}>SAIR</button>
             </div>
-
+            <div className={"largePadding"}></div>
         </section>
     );
 }

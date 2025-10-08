@@ -8,20 +8,8 @@ const usePokeApi = () => {
     const URL_BASE_TYPE = "https://pokeapi.co/api/v2/type";
     const URL_BASE_MOVES = "https://pokeapi.co/api/v2/move";
 
-    const [totalCount, setTotalCount] = useState(0);
-
     const [loading, setLoading] = useState(false);
     const [errors, setError] = useState([]);
-
-    const setTotalPokemonCount = useCallback(async () => {
-        try {
-            const response = await fetch(`${URL_BASE_POKEMON}`);
-            const data = await response.json();
-            setTotalCount(data.count);
-        } catch (err) {
-            setError(prev => [...prev, err.message]);
-        }
-    }, []);
 
     const listPokemon = useCallback(async (currentPage) => {
         setLoading(true);
