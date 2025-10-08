@@ -52,8 +52,8 @@ const dataBase = {
     },
 
     getPokemon: async (currentPage) => {
-        const startIndex = (currentPage - 1) * 20;
-        const endIndex = currentPage * 20 - 1;
+        const startIndex = (currentPage - 1) * 10;
+        const endIndex = currentPage * 10 - 1;
 
         const response = await supabase.from("Pokemon")
             .select("*")
