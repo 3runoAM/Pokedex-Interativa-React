@@ -4,7 +4,7 @@
     border-radius: 10px 10px 0 0;
     background-color: #363636;
     position: fixed;
-    bottom: 15px;
+    bottom: 16px;
 }
 
 .menu ul {
@@ -20,6 +20,7 @@
     display: flex;
     align-items: center;
     padding: 0.5rem;
+    border: 1px solid #969696;
     border-radius: 100%;
     background-color: var(--button-yellow);
 }
@@ -28,6 +29,7 @@
     display: flex;
     align-items: center;
     padding: 0.8rem;
+    border: 3px solid #969696;
     border-radius: 100%;
     background-color: var(--button-blue);
 }
@@ -36,6 +38,7 @@
     display: flex;
     align-items: center;
     padding: 0.5rem;
+    border: 1px solid #969696;
     border-radius: 100%;
     background-color: var(--button-green);
 }
