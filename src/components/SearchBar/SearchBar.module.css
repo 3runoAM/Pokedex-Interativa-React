@@ -1,0 +1,56 @@
+.searchBarContainer {
+    position: relative;
+}
+
+.searchBarContainer > input {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.8em;
+    height: 100%;
+}
+
+.searchBarContainer > input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #459354;
+}
+
+.searchBarContainer > button {
+    position: absolute;
+    right: 0;
+    border: none;
+    padding: 1.2rem;
+    font-size: 1.8em;
+    border-radius: 10px;
+    background-color: #459354;
+    cursor: pointer;
+}
+
+
+.searchBarContainer > button > svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: white;
+}
+
+
+.dropdown {
+    position: absolute;
+    z-index: 10;
+    top: 4rem;
+    left: 0.5rem;
+    right: 3.75rem;
+
+    list-style: none;
+    border-radius: 0 0 10px 10px ;
+    background-color: var(--card-white);
+    box-shadow: 0 4px 8px #00000033;
+
+    font-size: 1.8rem;
+}
+
+.dropdown li {
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: #2A2A2A 1px solid;
+}

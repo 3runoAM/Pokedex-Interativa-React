@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 export default function Register() {
     const navigate = useNavigate();
+
     const handleRegister = async (formData) => {
         const errors = validateFormData(formData);
 
@@ -26,7 +27,7 @@ export default function Register() {
         }
     }
 
-    // VALIDA O FORMULÁRIO INTEIRO USANDO validate
+    // VALIDA O FORMULÁRIO INTEIRO
     const validateFormData = (formData) => {
         const errors = {};
 

@@ -1,5 +1,5 @@
 .pokeCard {
-    width: 16.25rem;
+    width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(40, 87, 108, 0.5);
     background-color: var(--card-white);
@@ -30,6 +30,9 @@
     opacity: 50%;
 }
 
+.loading {
+    font-size: 1.75rem;
+}
 
 .typeCard {
     width: 4.5rem;

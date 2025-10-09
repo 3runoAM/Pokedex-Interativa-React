@@ -8,7 +8,9 @@
     background-color: rgba(54, 95, 172, 0.4);
 }
 
-.logOut {
+.goBack {
+    width: 50%;
+    align-self: center;
     font-size: 1.75rem;
-    background-color: #D12426;
+    background-color: var(--login-blue);
 }
