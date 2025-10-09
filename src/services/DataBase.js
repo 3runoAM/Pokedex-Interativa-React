@@ -140,7 +140,6 @@ const dataBase = {
 
         if (response.error) {
             console.error("Erro ao buscar Pokémon:", response.error);
-
         }
 
         return response.data;

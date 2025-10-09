@@ -3,6 +3,8 @@ import PokemonCard from "../PokemonCard/PokemonCard";
 
 export default function PokemonList({list, isLoadingMore}) {
 
+    if (list.length === 0 ) return <p className={`${style.loading}`}>Nenhum Pokemon por aqui :(</p>
+
     return (
         <div className={`flex-column mediumGap align-center`}>
 
