@@ -108,6 +108,41 @@ const dataBase = {
         }
 
         return response.data.map(pokemonType => pokemonType.Type);
+    },
+
+    getAllPokemonNames: async () => {
+        const response = await supabase.from("Pokemon")
+            .select("name")
+            .order("pokedex_id");
+
+        if (response.error) {
+            // console.error("Erro ao buscar nomes dos Pokémons:", response.error);
+            return [];
+        }
+
+        return response.data.map(pokemon => pokemon.name);
+    },
+
+    searchByNameOrPokedexId: async (nameOrId) => {
+
+        Number(nameOrId) ? console.log("Pesquisando por ID: ", nameOrId) : console.log("Pesquisando por nome: ", nameOrId);
+
+        const response = Number(nameOrId) ?
+            await supabase.from("Pokemon")
+            .select("*")
+            .or(`pokedex_id.eq.${nameOrId}`)
+            .order("pokedex_id") :
+            await supabase.from("Pokemon")
+            .select("*")
+            .or(`name.ilike.%${nameOrId}%`)
+            .order("pokedex_id");
+
+        if (response.error) {
+            console.error("Erro ao buscar Pokémon:", response.error);
+
+        }
+
+        return response.data;
     }
 };
 

@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 
 export default function Login() {
     const navigate = useNavigate();
+
     const handleLogin = async (formData) => {
         const errors = validateFormData(formData);
 

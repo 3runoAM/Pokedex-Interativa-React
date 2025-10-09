@@ -7,8 +7,8 @@ import Home from "./pages/Home/Home";
 import Authentication from "./services/Authentication";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import Layout from "./components/Layout/Layout";
-import Profile from "./components/Profile/Profile";
-import Teams from "./components/Teams/Teams";
+import Profile from "./pages/Profile/Profile";
+import Teams from "./pages/Teams/Teams";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,9 +26,10 @@ export default function App() {
         checkAuth();
     }, [userToken]);
 
-    if (loading) {
-        return <div>Carregando...</div>;
-    }
+
+    console.log("O usuário está autenticado?", isAuthenticated ? "Sim" : "Não");
+
+    if (loading) return <div>Carregando...</div>;
 
     return (
         <Routes>
@@ -41,6 +42,8 @@ export default function App() {
                 <Route path="/home" element={<Home/>}/>
 
                 <Route element={<PrivateRoute isAuthenticated={isAuthenticated}/>}>
+
+
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/teams" element={ <Teams/> } />
                 </Route>

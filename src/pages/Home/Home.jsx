@@ -1,59 +1,96 @@
-import styles from './Home.module.css';
-import Authentication from "../../services/Authentication";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
-import usePokeApi from "../../hooks/usePokeApi";
-import dataBase from "../../services/DataBase";
-import PokemonList from "../../components/PokemonList/PokemonList";
-import SearchBar from "../../components/SearchBar/SearchBar";
+    import styles from './Home.module.css';
+    import Authentication from "../../services/Authentication";
+    import {useNavigate} from "react-router-dom";
+    import {useEffect, useState} from "react";
+    import usePokeApi from "../../hooks/usePokeApi";
+    import dataBase from "../../services/DataBase";
+    import PokemonList from "../../components/PokemonList/PokemonList";
+    import SearchBar from "../../components/SearchBar/SearchBar";
 
-export default function Home() {
-    const navigate = useNavigate();
-    const {loading, error, listPokemon} = usePokeApi();
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pokemonList, setPokemonList] = useState([]);
-    const [loadingMore, setLoadingMore] = useState(false);
+    export default function Home() {
+        // const navigate = useNavigate();
+        const {loading, error, listPokemon} = usePokeApi();
 
-    const handleLogout = async () => {
-        await Authentication.logOut();
-        localStorage.clear();
-        navigate('/login');
-    };
+        const [currentPage, setCurrentPage] = useState(1);
+        const [pokemonList, setPokemonList] = useState([]);
+        const [loadingMore, setLoadingMore] = useState(false);
 
-    const handleLoadMore = async () => {
-        if (currentPage == 49) return;
-        setCurrentPage(prevPage => prevPage + 1);
-    };
+        const [pokemonNameList, setPokemonNameList] = useState([]);
 
-    useEffect(() => {
-        setLoadingMore(true)
-        const fetchAndUpdate = async () => {
-            await listPokemon(currentPage);
-            const result = await dataBase.getPokemon(currentPage);
-            for (let pokemon of result) {
+        const [isSearchMode, setIsSearchMode] = useState(false);
+        const [searchResults, setSearchResults] = useState([]);
+
+        const disablePredicate = loadingMore || currentPage === 49 || isSearchMode;
+
+
+        const handleLoadMore = async () => {
+            if (disablePredicate) return;
+
+            setCurrentPage(prevPage => prevPage + 1);
+        };
+
+        const getPokemonNames = async (searchTerm) => {
+            const nameList = await dataBase.getAllPokemonNames();
+
+            setPokemonNameList(nameList);
+        };
+
+        const onSearch = async (searchTerm) => {
+            if (!searchTerm || searchTerm.trim() === "") {
+                setIsSearchMode(false);
+                setSearchResults([]);
+                return;
+            }
+
+            const results = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
+            for (let pokemon of results) {
                 if (!pokemon.types || pokemon.types.length === 0) {
                     const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
                     pokemon.types = typesResponse;
                 }
             }
-            setPokemonList(prevList => [...prevList, ...result]);
-            setLoadingMore(false);
-        };
-        fetchAndUpdate();
-    }, [currentPage]);
 
-    return (
-        <section className={`flex-column largeGap`}>
+            setSearchResults(results || []);
+            setIsSearchMode(true);
+        }
 
-            <SearchBar />
+        useEffect(() => {
+            setLoadingMore(true)
+            const fetchAndUpdate = async () => {
+                await listPokemon(currentPage);
+                const result = await dataBase.getPokemon(currentPage);
+                for (let pokemon of result) {
+                    if (!pokemon.types || pokemon.types.length === 0) {
+                        const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
+                        pokemon.types = typesResponse;
+                    }
+                }
+                setPokemonList(prevList => [...prevList, ...result]);
+                setLoadingMore(false);
+            };
+            fetchAndUpdate();
+        }, [currentPage]);
 
-            <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
+        useEffect(() => {
+            getPokemonNames();
+        }, []);
 
-            <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
-                <button className={`${styles.loadMore} button`} disabled={loadingMore || (currentPage === 49)} onClick={handleLoadMore}>Carregar mais</button>
-                <button className={`${styles.logOut} button`} onClick={handleLogout}>SAIR</button>
-            </div>
-            <div className={"largePadding"}></div>
-        </section>
-    );
-}
+
+        return (
+            <section className={`flex-column largeGap`}>
+
+                <SearchBar onSearch={onSearch} PokemonNameList={pokemonNameList}/>
+
+                {isSearchMode && <button className={`${styles.goBack} button`} onClick={(e) => (setIsSearchMode(false))}>Voltar</button>}
+
+                <PokemonList isLoadingMore={loadingMore} list={ isSearchMode ? searchResults : pokemonList}/>
+
+                <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
+                    <button className={`${styles.loadMore} button`} disabled={disablePredicate}
+                            onClick={handleLoadMore}>Carregar mais
+                    </button>
+                </div>
+                <div className={"largePadding"}></div>
+            </section>
+        );
+    }
