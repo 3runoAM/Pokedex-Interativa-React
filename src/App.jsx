@@ -29,21 +29,18 @@ export default function App() {
 
     console.log("O usuário está autenticado?", isAuthenticated ? "Sim" : "Não");
 
-    if (loading) return <div>Carregando...</div>;
+    if (loading) return <div className={`loading`}>Carregando...</div>;
 
     return (
         <Routes>
-            <Route path="/" element={<Login/>}/>
             <Route path="/login" element={<Login/>}/>
             <Route path="/register" element={<Register/>}/>
 
             <Route path={"/"} element={<Layout/>}>
-
+                <Route path="/" element={<Home/>}/>
                 <Route path="/home" element={<Home/>}/>
 
                 <Route element={<PrivateRoute isAuthenticated={isAuthenticated}/>}>
-
-
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/teams" element={ <Teams/> } />
                 </Route>

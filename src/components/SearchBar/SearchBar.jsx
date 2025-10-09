@@ -1,9 +1,9 @@
 import style from './SearchBar.module.css';
 import {useState} from "react";
 
-export default function SearchBar({onSearch, PokemonNameList}) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [showList, setShowList] = useState(false);
+export default function SearchBar({onSearch, PokemonNameList, searchTerm, setSearchTerm, showList, setShowList}) {
+    // const [searchTerm, setSearchTerm] = useState("");
+    // const [showList, setShowList] = useState(false);
 
     const filteredList = PokemonNameList
         .filter((name) => name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -17,6 +17,7 @@ export default function SearchBar({onSearch, PokemonNameList}) {
 
     const handleSelect = (name) => {
         setSearchTerm(name);
+        onSearch(name);
         setShowList(false);
     };
 

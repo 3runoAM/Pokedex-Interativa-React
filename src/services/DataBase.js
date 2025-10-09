@@ -129,13 +129,14 @@ const dataBase = {
 
         const response = Number(nameOrId) ?
             await supabase.from("Pokemon")
-            .select("*")
-            .or(`pokedex_id.eq.${nameOrId}`)
-            .order("pokedex_id") :
+                .select("*")
+                .or(`pokedex_id.eq.${nameOrId}`)
+                .order("pokedex_id") :
             await supabase.from("Pokemon")
-            .select("*")
-            .or(`name.ilike.%${nameOrId}%`)
-            .order("pokedex_id");
+                .select("*")
+                .or(`name.ilike.%${nameOrId}%`)
+                .order("pokedex_id")
+                .limit(10);
 
         if (response.error) {
             console.error("Erro ao buscar Pokémon:", response.error);
