@@ -6,7 +6,7 @@ import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
-    const {listPokemon} = usePokeApi();
+    const {updateDataBase} = usePokeApi();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonList, setPokemonList] = useState([]);
@@ -35,6 +35,12 @@ export default function Home() {
         setCurrentPage(prevPage => prevPage + 1);
     };
 
+    const handleGoBack = () => {
+        setIsSearchMode(false);
+        setSearchResults([]);
+        setSearchTerm("");
+    }
+
     const handleSearch = async (searchTerm) => {
         setSearchResults([]);
 
@@ -44,9 +50,9 @@ export default function Home() {
         }
 
         try {
-            const results = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
-            const typedResults = await ensureTypes(results);
-            setSearchResults(results || []);
+            const searchResult = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
+            const typedResults = await ensureTypes(searchResult);
+            setSearchResults(typedResults || []);
             setIsSearchMode(true);
         } catch (err) {
             console.error(err);
@@ -54,19 +60,18 @@ export default function Home() {
         }
     }
 
-    const handleGoBack = () => {
-        setIsSearchMode(false);
-        setSearchResults([]);
-        setSearchTerm("");
-    }
+
 
     useEffect(() => {
         setLoadingMore(true)
 
         const fetchAndUpdate = async () => {
-            await listPokemon(currentPage);
+            console.log("Carregando página ", currentPage);
+            await updateDataBase(currentPage);
+
             const results = await dataBase.getPokemon(currentPage);
             const typedPokemon = await ensureTypes(results)
+
             setPokemonList(prevList => [...prevList, ...typedPokemon]);
             setLoadingMore(false);
         };
@@ -78,6 +83,15 @@ export default function Home() {
             setLoadingMore(false);
         }
     }, [currentPage]);
+
+    useEffect(() => {
+        try {
+            getPokemonNames();
+        } catch (err) {
+            console.error(err);
+        }
+
+    }, []);
 
 
     function ensureTypes(pokemonArray) {

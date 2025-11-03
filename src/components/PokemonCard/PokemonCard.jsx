@@ -5,7 +5,7 @@ export default function PokemonCard({pokemonInfo}) {
         <div className={`${style.pokeCard} flex-row flex-center smallPadding`}>
             <img className={`${style.pokeImage}`} src={pokemonInfo.sprite_url} alt={pokemonInfo.name}/>
 
-            <div className={`${style.pokeInfoContainer} flex-column`}>
+            <div className={`${style.pokeInfoContainer} flex-column smallPadding`}>
 
                 <div className={`flex-column`}>
                     <h3>{pokemonInfo.name.charAt(0).toUpperCase()}{pokemonInfo.name.slice(1)}</h3>
