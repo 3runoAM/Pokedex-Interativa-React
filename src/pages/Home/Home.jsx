@@ -60,8 +60,6 @@ export default function Home() {
         }
     }
 
-
-
     useEffect(() => {
         setLoadingMore(true)
 
@@ -69,27 +67,24 @@ export default function Home() {
             console.log("Carregando página ", currentPage);
             await updateDataBase(currentPage);
 
-            const results = await dataBase.getPokemon(currentPage);
-            const typedPokemon = await ensureTypes(results)
+            try {
+                const results = await dataBase.getPokemon(currentPage);
+                const typedPokemon = await ensureTypes(results)
 
-            setPokemonList(prevList => [...prevList, ...typedPokemon]);
-            setLoadingMore(false);
+                setPokemonList(prevList => [...prevList, ...typedPokemon]);
+                setLoadingMore(false);
+            } catch (err) {
+                console.error(err);
+                setLoadingMore(false);
+            }
         };
 
-        try {
-            fetchAndUpdate();
-        } catch (err) {
-            console.error(err);
-            setLoadingMore(false);
-        }
+        fetchAndUpdate();
+
     }, [currentPage]);
 
     useEffect(() => {
-        try {
-            getPokemonNames();
-        } catch (err) {
-            console.error(err);
-        }
+        getPokemonNames();
     }, []);
 
 
