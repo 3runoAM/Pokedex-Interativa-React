@@ -10,6 +10,7 @@ import MenuLayout from "./layouts/MenuLayout";
 import Profile from "./pages/Profile/Profile";
 import Teams from "./pages/Teams/Teams";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
+import PokemonDetails from "./pages/PokemonDetails/PokemonDetails";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +42,7 @@ export default function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/home" element={<Home/>}/>
                 <Route path="/unauthorized" element={<Unauthorized />}/>
+                <Route path="/pokemonDetails/:id" element={<PokemonDetails />} />
 
                 <Route element={<PrivateRoute isAuthenticated={isAuthenticated}/>}>
                     <Route path="/profile" element={ <Profile/> } />

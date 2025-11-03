@@ -74,7 +74,7 @@ const dataBase = {
             .eq("name", name);
 
         if (response.error) {
-            // console.error("Erro ao verificar existência do recurso:", response.error);
+            console.error("Erro ao verificar existência do recurso:", response.error);
             return false;
         }
 
@@ -108,6 +108,51 @@ const dataBase = {
         }
 
         return response.data.map(pokemonType => pokemonType.Type);
+    },
+
+    getWeaknessByTypeName: async (type_name) => {
+        const { data: typeData, error: typeError } = await supabase
+            .from("Type")
+            .select("id")
+            .eq("name", type_name)
+            .limit(1);
+
+        if (typeError) {
+            console.error("Erro ao buscar tipo:", typeError);
+            return [];
+        }
+        if (!typeData || typeData.length === 0) return [];
+
+        const typeId = typeData[0].id;
+
+        // busca fraquezas usando o id do tipo
+        const { data, error } = await supabase.from("Weakness")
+            .select("weakness_type_id ( name )")
+            .eq("type_id", typeId);
+
+        if (error) {
+            console.error("Erro ao buscar fraquezas:", error);
+            return [];
+        }
+
+        console.log("Retornando: ", data)
+        // retorna array de nomes das fraquezas
+        return data;
+    },
+
+    existsRelation: async (table, column1, value1, column2, value2) => {
+        const response = await supabase.from(table)
+            .select("*")
+            .eq(column1, value1)
+            .eq(column2, value2);
+
+        if (response.error) {
+            console.error("Erro ao verificar existência da relação:", response.error);
+            return false;
+        }
+
+        if (response.data.length === 0) return false;
+        return response.data.length === 1;
     },
 
     getAllPokemonNames: async () => {

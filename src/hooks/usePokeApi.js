@@ -11,7 +11,7 @@ const usePokeApi = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setError] = useState([]);
 
-    const updateDataBase = useCallback(async (currentPage) => {
+    const updatePokemonBasicInfo = useCallback(async (currentPage) => {
         setLoading(true);
         setError([]);
 
@@ -26,7 +26,7 @@ const usePokeApi = () => {
         }
         if (ids.length === 0) {
             setLoading(false);
-            return {loading, errors, updateDataBase};
+            return {loading, errors, updatePokemonBasicInfo};
         }
 
         // MAPEIA AS PROMISES DE BUSCA NA API E TRATA OS DADOS
@@ -120,11 +120,73 @@ const usePokeApi = () => {
         }
 
         setLoading(false);
-        return {loading, errors, updateDataBase};
+        return {loading, errors, updatePokemonBasicInfo};
     }, [errors, loading]);
 
+    const updateTypeWeaknessess = useCallback(async (types) => {
+        setLoading(true);
+        setError([]);
+
+        try {
+            for (const type of types) {
+                const typeName = type.name || type;
+                console.log("Atualizando fraquezas do tipo:", typeName);
+
+                const typeResponse = await fetch(`${URL_BASE_TYPE}/${typeName}`).then(res => res.json());
+                const doubleWeaknesses = typeResponse.damage_relations.double_damage_from.map(w => w.name);
+
+                console.log("Fraco contra:", doubleWeaknesses);
+
+                for (const weakness of doubleWeaknesses) {
+                    const exists = await dataBase.existsByName("Type", weakness);
+
+                    console.log("Verificando existência do tipo de fraqueza:", weakness, "->", exists ? "existe" : "não existe");
+
+                    if (!exists) {
+                        console.log(`Criando tipo inexistente: ${weakness}`);
+                        await dataBase.create("Type", { name: weakness});
+                    }
+
+                    // Busca os registros atuais
+                    const [registeredType] = await dataBase.getByName("Type", typeName);
+                    console.log("Tipo registrado: ", registeredType);
+
+                    const [registeredWeakness] = await dataBase.getByName("Type", weakness);
+                    console.log("Fraqueza registrada: ", registeredWeakness);
+
+                    if (!registeredType || !registeredWeakness) {
+                        console.warn("Não foi possível obter tipo ou fraqueza:", typeName, weakness);
+                        continue;
+                    }
+
+                    console.log(`Registrando fraqueza ${weakness} para o tipo ${typeName}`);
+
+                    const alreadyExists = await dataBase.existsRelation(
+                        "Weakness",
+                        "type_id", registeredType.id,
+                        "weakness_type_id", registeredWeakness.id
+                    );
+
+                    console.log("Essa fraqueza já existe?", alreadyExists);
+
+                    if (!alreadyExists) {
+                        console.log(`Criando relação de fraqueza entre ${typeName} e ${weakness}`);
+                        await dataBase.create("Weakness", { type_id: registeredType.id, weakness_type_id: registeredWeakness.id });
+                    }
+                }
+            }
+
+        } catch (err) {
+            console.error("Erro ao atualizar fraquezas:", err);
+            setError(prev => [...prev, err.message]);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+
     return {
-        loading, errors, updateDataBase
+        loading, errors, updatePokemonBasicInfo, updateTypeWeaknessess
     };
 }
 

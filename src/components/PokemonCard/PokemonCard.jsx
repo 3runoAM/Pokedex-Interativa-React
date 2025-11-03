@@ -1,8 +1,11 @@
 import style from './PokemonCard.module.css';
+import {Link} from "react-router-dom";
 
 export default function PokemonCard({pokemonInfo}) {
     return (
-        <div className={`${style.pokeCard} flex-row flex-center smallPadding`}>
+        <Link to={`/pokemonDetails/${pokemonInfo.id}`}
+              state={{ pokemon: pokemonInfo }}
+              className={`${style.pokeCard} flex-row flex-center smallPadding`}>
             <img className={`${style.pokeImage}`} src={pokemonInfo.sprite_url} alt={pokemonInfo.name}/>
 
             <div className={`${style.pokeInfoContainer} flex-column smallPadding`}>
@@ -18,6 +21,6 @@ export default function PokemonCard({pokemonInfo}) {
                     ))}
                 </ul>
             </div>
-        </div>
+        </Link>
     )
 }
