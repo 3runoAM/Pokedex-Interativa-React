@@ -1,0 +1,71 @@
+.pokemonDetailsSection{
+
+}
+
+.nameNumberContainer {
+}
+
+.nameNumberContainer > h2 {
+    font-weight: 400;
+    font-size: 3.5rem;
+}
+
+.nameNumberContainer > h3 {
+    font-size: 1.8rem;
+}
+
+.pokemonImage {
+    width: 12.9rem;
+    border-radius: 1rem;
+    background-color: var(--card-white);
+    box-shadow: 0 4px 8px #00000033;
+}
+
+.pokeDescription {
+    font-size: 2rem;
+}
+
+.statisticsContainer {
+    width: 100%;
+    font-size: 1.9rem;
+}
+
+.statisticsContainer h3 {
+    font-weight: 400;
+    font-size: 2.5rem;
+}
+
+.statisticsContainer > dl {
+    width: 100%;
+    background-color: var(--card-white);
+    box-shadow: 0 4px 8px #00000033;
+    border-radius: 1rem;
+}
+
+.statisticsContainer > dl > div {
+    width: 85%;
+    justify-content: space-between;
+}
+
+.typesContainer {
+    font-size: 1.9rem;
+}
+
+.typesContainer > h3 {
+    font-weight: 400;
+    font-size: 2.5rem;
+}
+
+.typesContainer ul {
+    width: 100%;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+}
+
+.typesContainer ul > li {
+    width: 6.5rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px #00000033;
+}

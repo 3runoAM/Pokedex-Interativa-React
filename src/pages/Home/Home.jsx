@@ -6,7 +6,7 @@ import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
-    const {updateDataBase} = usePokeApi();
+    const {updatePokemonBasicInfo} = usePokeApi();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonList, setPokemonList] = useState([]);
@@ -60,12 +60,22 @@ export default function Home() {
         }
     }
 
+    function ensureTypes(pokemonArray) {
+        return Promise.all(pokemonArray.map(async (pokemon) => {
+            if (!pokemon.types || pokemon.types.length === 0) {
+                const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
+                pokemon.types = typesResponse;
+            }
+            return pokemon;
+        }));
+    }
+
     useEffect(() => {
         setLoadingMore(true)
 
         const fetchAndUpdate = async () => {
             console.log("Carregando página ", currentPage);
-            await updateDataBase(currentPage);
+            await updatePokemonBasicInfo(currentPage);
 
             try {
                 const results = await dataBase.getPokemon(currentPage);
@@ -86,17 +96,6 @@ export default function Home() {
     useEffect(() => {
         getPokemonNames();
     }, []);
-
-
-    function ensureTypes(pokemonArray) {
-        return Promise.all(pokemonArray.map(async (pokemon) => {
-            if (!pokemon.types || pokemon.types.length === 0) {
-                const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
-                pokemon.types = typesResponse;
-            }
-            return pokemon;
-        }));
-    }
 
     return (
         <section className={`flex-column largeGap`}>
