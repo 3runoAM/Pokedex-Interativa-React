@@ -1,0 +1,23 @@
+.unauthorized {
+    height: 100%;
+}
+
+.unauthorized h2{
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.75rem;
+}
+
+.login {
+    background-color: var(--login-blue);
+}
+
+.register {
+    background-color: var(--register-yellow);
+}
+
+.login, .register {
+    text-align: center;
+    flex: 0 1 40%;
+    font-size: 1.5rem;
+}
