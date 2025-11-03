@@ -1,6 +1,4 @@
 import styles from './Home.module.css';
-import Authentication from "../../services/Authentication";
-import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
@@ -8,33 +6,40 @@ import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
-    const {loading, error, listPokemon} = usePokeApi();
+    const {updateDataBase} = usePokeApi();
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonList, setPokemonList] = useState([]);
     const [loadingMore, setLoadingMore] = useState(false);
-
     const [pokemonNameList, setPokemonNameList] = useState([]);
-
     const [searchTerm, setSearchTerm] = useState("");
+    const [isSearchMode, setIsSearchMode] = useState(false);
     const [showList, setShowList] = useState(false);
 
-    const [isSearchMode, setIsSearchMode] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
 
-    const disablePredicate = loadingMore || currentPage === 49 || isSearchMode;
+    const DISABLE_PREDICATE = loadingMore || (currentPage === 49) || isSearchMode;
 
-    const getPokemonNames = async (searchTerm) => {
-        const nameList = await dataBase.getAllPokemonNames();
-
-        setPokemonNameList(nameList);
+    const getPokemonNames = async () => {
+        try {
+            const nameList = await dataBase.getAllPokemonNames();
+            setPokemonNameList(nameList);
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     const handleLoadMore = async () => {
-        if (disablePredicate) return;
+        if (DISABLE_PREDICATE) return;
 
         setCurrentPage(prevPage => prevPage + 1);
     };
+
+    const handleGoBack = () => {
+        setIsSearchMode(false);
+        setSearchResults([]);
+        setSearchTerm("");
+    }
 
     const handleSearch = async (searchTerm) => {
         setSearchResults([]);
@@ -44,45 +49,54 @@ export default function Home() {
             return;
         }
 
-        const results = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
-        for (let pokemon of results) {
-            if (!pokemon.types || pokemon.types.length === 0) {
-                const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
-                pokemon.types = typesResponse;
-            }
+        try {
+            const searchResult = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
+            const typedResults = await ensureTypes(searchResult);
+            setSearchResults(typedResults || []);
+            setIsSearchMode(true);
+        } catch (err) {
+            console.error(err);
+            setIsSearchMode(false);
         }
-
-        setSearchResults(results || []);
-        setIsSearchMode(true);
-    }
-
-    const handleGoBack = () => {
-        setIsSearchMode(false);
-        setSearchResults([]);
-        setSearchTerm("");
     }
 
     useEffect(() => {
         setLoadingMore(true)
+
         const fetchAndUpdate = async () => {
-            await listPokemon(currentPage);
-            const result = await dataBase.getPokemon(currentPage);
-            for (let pokemon of result) {
-                if (!pokemon.types || pokemon.types.length === 0) {
-                    const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
-                    pokemon.types = typesResponse;
-                }
+            console.log("Carregando página ", currentPage);
+            await updateDataBase(currentPage);
+
+            try {
+                const results = await dataBase.getPokemon(currentPage);
+                const typedPokemon = await ensureTypes(results)
+
+                setPokemonList(prevList => [...prevList, ...typedPokemon]);
+                setLoadingMore(false);
+            } catch (err) {
+                console.error(err);
+                setLoadingMore(false);
             }
-            setPokemonList(prevList => [...prevList, ...result]);
-            setLoadingMore(false);
         };
+
         fetchAndUpdate();
+
     }, [currentPage]);
 
     useEffect(() => {
         getPokemonNames();
     }, []);
 
+
+    function ensureTypes(pokemonArray) {
+        return Promise.all(pokemonArray.map(async (pokemon) => {
+            if (!pokemon.types || pokemon.types.length === 0) {
+                const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
+                pokemon.types = typesResponse;
+            }
+            return pokemon;
+        }));
+    }
 
     return (
         <section className={`flex-column largeGap`}>
@@ -103,7 +117,7 @@ export default function Home() {
                     <>
                         <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
                         <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
-                            <button className={`${styles.loadMore} button`} disabled={disablePredicate}
+                            <button className={`${styles.loadMore} button`} disabled={DISABLE_PREDICATE}
                                     onClick={handleLoadMore}>Carregar mais
                             </button>
                         </div>

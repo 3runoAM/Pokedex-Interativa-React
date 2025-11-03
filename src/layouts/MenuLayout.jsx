@@ -1,7 +1,7 @@
-import Menu from "../Menu/Menu";
+import Menu from "../components/Menu/Menu";
 import { Outlet } from "react-router-dom";
 
-export default function Layout() {
+export default function MenuLayout() {
     return (
         <>
             <Outlet/>

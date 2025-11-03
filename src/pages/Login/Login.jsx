@@ -7,7 +7,7 @@ import RegisterLink from "../../components/RegisterLink/RegisterLink";
 import Footer from '../../components/Footer/Footer.jsx';
 
 
-export default function Login() {
+export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
 
     const handleLogin = async (formData) => {
@@ -24,6 +24,7 @@ export default function Login() {
             if (error) throw error;
 
             localStorage.setItem("user", JSON.stringify(data.user));
+            setIsAuthenticated(true);
             navigate("/home");
         } catch (err) {
             console.error(err); // Colocar na Snackbar
