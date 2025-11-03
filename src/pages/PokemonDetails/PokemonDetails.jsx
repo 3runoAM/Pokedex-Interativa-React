@@ -9,10 +9,10 @@ export default function PokemonDetails() {
     const location = useLocation();
     const cachedPokemon = location.state?.pokemon;
 
-    const {updateTypeWeaknessess} = usePokeApi();
+    const {updateTypeWeaknesses} = usePokeApi();
 
     const [pokemon, _] = useState(cachedPokemon ?? null);
-    const [pokemonWeaknessess, setPokemonWeaknesses] = useState(new Set());
+    const [pokemonWeaknesses, setPokemonWeaknesses] = useState(new Set());
 
     const [loading, setLoading] = useState(!cachedPokemon);
     const [loadingWeaknesses, setLoadingWeaknesses] = useState(false);
@@ -23,7 +23,7 @@ export default function PokemonDetails() {
 
         const fetchWeaknesses = async (types) => {
             try {
-                await updateTypeWeaknessess(types);
+                await updateTypeWeaknesses(types);
                 const weaknessesSet = new Set();
 
                 await Promise.all(types.map(async type => {
@@ -45,7 +45,7 @@ export default function PokemonDetails() {
         };
 
         fetchWeaknesses(pokemon.types);
-    }, [pokemon]);
+    }, [pokemon, updateTypeWeaknesses]);
 
     return (
         <section className={`${styles.pokemonDetailsSection} flex-column align-center mediumPadding largeGap`}>
@@ -108,13 +108,13 @@ export default function PokemonDetails() {
             </div>
 
             <div className={`${styles.typesContainer} flex-column align-center mediumGap`}>
-                <h3>Weaknessess</h3>
+                <h3>Weaknesses</h3>
 
                 {loadingWeaknesses && <p>Loading weaknesses...</p>}
 
                 <ul className={`flex-row justify-center mediumGap`}>
                     {
-                        Array.from(pokemonWeaknessess).map(weakness => (
+                        Array.from(pokemonWeaknesses).map(weakness => (
                             <li className={`${weakness} flex-row flex-center`}>
                                 {weakness.charAt(0).toUpperCase()}{weakness.slice(1)}
                             </li>)

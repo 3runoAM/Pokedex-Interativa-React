@@ -135,7 +135,7 @@ const dataBase = {
             return [];
         }
 
-        console.log("Retornando: ", data)
+        console.log("Retornando: ", data);
         // retorna array de nomes das fraquezas
         return data;
     },
