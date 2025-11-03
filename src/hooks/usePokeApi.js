@@ -98,6 +98,7 @@ const usePokeApi = () => {
             if (currentTypes.length > 0) {
                 for (const type of currentTypes) {
                     const exists = await dataBase.existsByName("Type", type.name);
+
                     if (!exists) {
                         const created = await dataBase.create("Type", {name: type.name})
                     }

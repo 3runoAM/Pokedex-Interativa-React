@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import Home from "./pages/Home/Home";
 import Authentication from "./services/Authentication";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
-import Layout from "./components/Layout/Layout";
+import MenuLayout from "./layouts/MenuLayout";
 import Profile from "./pages/Profile/Profile";
 import Teams from "./pages/Teams/Teams";
 
@@ -33,10 +33,10 @@ export default function App() {
 
     return (
         <Routes>
-            <Route path="/login" element={<Login/>}/>
+            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated}/>} />
             <Route path="/register" element={<Register/>}/>
 
-            <Route path={"/"} element={<Layout/>}>
+            <Route path={"/"} element={<MenuLayout/>}>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/home" element={<Home/>}/>
 
@@ -44,7 +44,6 @@ export default function App() {
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/teams" element={ <Teams/> } />
                 </Route>
-
             </Route>
         </Routes>
     );

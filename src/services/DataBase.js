@@ -6,7 +6,7 @@ const dataBase = {
             .insert(data);
 
         if (response.error) {
-            // console.error("Erro ao criar recurso:", response.error);
+            console.error("Erro ao criar recurso:", response.error);
             return null;
         }
 

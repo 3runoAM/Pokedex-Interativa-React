@@ -6,6 +6,7 @@
     width: 100%;
     border: none;
     border-radius: 10px;
+    box-shadow: 0 4px 8px #00000033;
     font-size: 1.8em;
     height: 100%;
 }
@@ -18,19 +19,17 @@
 .searchBarContainer > button {
     position: absolute;
     right: 0;
+    padding: 0.4rem;
     border: none;
-    padding: 1.2rem;
-    font-size: 1.8em;
     border-radius: 10px;
     background-color: #459354;
     cursor: pointer;
 }
 
 
-.searchBarContainer > button > svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: white;
+.searchIcon {
+    color: var(--card-white);
+    height: 3rem;
 }
 
 
@@ -42,7 +41,7 @@
     right: 3.75rem;
 
     list-style: none;
-    border-radius: 0 0 10px 10px ;
+    border-radius: 0 0 10px 10px;
     background-color: var(--card-white);
     box-shadow: 0 4px 8px #00000033;
 
@@ -52,5 +51,9 @@
 .dropdown li {
     padding: 8px;
     cursor: pointer;
-    border-bottom: #2A2A2A 1px solid;
+    border-bottom: #B8B8B87F 1px solid;
+}
+
+.dropdown li:last-child {
+    border-bottom: none;
 }
