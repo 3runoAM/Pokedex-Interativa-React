@@ -1,9 +1,8 @@
 import {useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
-import DataBase from "../../services/DataBase";
 import usePokeApi from "../../hooks/usePokeApi";
-import dataBase from "../../services/DataBase";
+import dataBase from "../../services/dataBase";
 
 export default function PokemonDetails() {
     const {id} = useParams();
@@ -24,7 +23,7 @@ export default function PokemonDetails() {
     async function fetchPokemonDetails(pokemonId) {
         setLoading(true);
         try {
-            const results = await DataBase.getById("Pokemon", pokemonId);
+            const results = await dataBase.getById("Pokemon", pokemonId);
             if (results.length > 0) {
                 const fetchedPokemon = results[0];
                 const typesResponse = await dataBase.getPokemonTypes(fetchedPokemon.id);
@@ -47,7 +46,7 @@ export default function PokemonDetails() {
                 const weaknessesSet = new Set();
 
                 await Promise.all(types.map(async type => {
-                    const results = await DataBase.getWeaknessByTypeName(type.name);
+                    const results = await dataBase.getWeaknessByTypeName(type.name);
                     results.forEach(item => {
                         const name = item?.weakness_type_id?.name || item?.name;
                         if (name) weaknessesSet.add(name);
