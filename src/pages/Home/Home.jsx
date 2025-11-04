@@ -1,5 +1,5 @@
 import styles from './Home.module.css';
-import {useEffect, useState, useMemo} from "react";
+import {useEffect, useState} from "react";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";

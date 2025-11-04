@@ -20,28 +20,32 @@ export default function PokemonDetails() {
 
     console.log("PokemonDetails mounted with id:", id, " cachedPokemon:", cachedPokemon);
 
-    async function fetchPokemonDetails(pokemonId) {
-        setLoading(true);
-        try {
-            const results = await dataBase.getById("Pokemon", pokemonId);
-            if (results.length > 0) {
-                const fetchedPokemon = results[0];
-                const typesResponse = await dataBase.getPokemonTypes(fetchedPokemon.id);
-                fetchedPokemon.types = typesResponse;
-                setLoading(false);
-                console.log("Pokémon buscado:", fetchedPokemon);
-                setPokemon(fetchedPokemon);
-            }
-        } catch (err) {
-            console.error("Erro ao buscar detalhes do Pokémon:", err);
-        }
-    }
 
     useEffect(() => {
-        setLoadingWeaknesses(true);
+        const fetchPokemonDetails = async (pokemonId) => {
+            try {
+                setLoading(true);
+                const results = await dataBase.getById("Pokemon", pokemonId);
+                if (results.length > 0) {
+                    const fetchedPokemon = results[0];
+
+                    const typesResponse = await dataBase.getPokemonTypes(fetchedPokemon.id);
+                    fetchedPokemon.types = typesResponse;
+
+                    setLoading(false);
+                    console.log("Pokémon encontrado:", fetchedPokemon);
+                    setPokemon(fetchedPokemon);
+                }
+            } catch (err) {
+                console.error("Erro ao buscar detalhes do Pokémon:", err);
+                setError("Erro ao buscar detalhes do Pokémon.");
+                setLoading(false);
+            }
+        }
 
         const fetchWeaknesses = async (types) => {
             try {
+                setLoadingWeaknesses(true);
                 await updateTypeWeaknesses(types);
                 const weaknessesSet = new Set();
 
@@ -73,7 +77,7 @@ export default function PokemonDetails() {
                     }
                 });
         }
-    }, [id, pokemon, updateTypeWeaknesses]);
+    }, [id, updateTypeWeaknesses]);
 
     if (loading) return (<p className={`labelSize`}>Loading Pokemon details...</p>);
 
