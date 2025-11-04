@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
 import DataBase from "../../services/DataBase";
 import usePokeApi from "../../hooks/usePokeApi";
+import dataBase from "../../services/DataBase";
 
 export default function PokemonDetails() {
     const {id} = useParams();
@@ -11,12 +12,31 @@ export default function PokemonDetails() {
 
     const {updateTypeWeaknesses} = usePokeApi();
 
-    const [pokemon, _] = useState(cachedPokemon ?? null);
+    const [pokemon, setPokemon] = useState(cachedPokemon ?? null);
     const [pokemonWeaknesses, setPokemonWeaknesses] = useState(new Set());
 
     const [loading, setLoading] = useState(!cachedPokemon);
     const [loadingWeaknesses, setLoadingWeaknesses] = useState(false);
     const [error, setError] = useState(null);
+
+    console.log("PokemonDetails mounted with id:", id, " cachedPokemon:", cachedPokemon);
+
+    async function fetchPokemonDetails(pokemonId) {
+        setLoading(true);
+        try {
+            const results = await DataBase.getById("Pokemon", pokemonId);
+            if (results.length > 0) {
+                const fetchedPokemon = results[0];
+                const typesResponse = await dataBase.getPokemonTypes(fetchedPokemon.id);
+                fetchedPokemon.types = typesResponse;
+                setLoading(false);
+                console.log("Pokémon buscado:", fetchedPokemon);
+                setPokemon(fetchedPokemon);
+            }
+        } catch (err) {
+            console.error("Erro ao buscar detalhes do Pokémon:", err);
+        }
+    }
 
     useEffect(() => {
         setLoadingWeaknesses(true);
@@ -44,8 +64,19 @@ export default function PokemonDetails() {
             }
         };
 
-        fetchWeaknesses(pokemon.types);
-    }, [pokemon, updateTypeWeaknesses]);
+        if (pokemon && pokemon.types) {
+            fetchWeaknesses(pokemon.types);
+        } else {
+            fetchPokemonDetails(id)
+                .then(() => {
+                    if (pokemon && pokemon.types) {
+                        fetchWeaknesses(pokemon.types);
+                    }
+                });
+        }
+    }, [id, pokemon, updateTypeWeaknesses]);
+
+    if (loading) return (<p className={`labelSize`}>Loading Pokemon details...</p>);
 
     return (
         <section className={`${styles.pokemonDetailsSection} flex-column align-center mediumPadding largeGap`}>

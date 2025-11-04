@@ -39,6 +39,19 @@ const dataBase = {
         return response.data;
     },
 
+    getById: async (table, id) => {
+        const response = await supabase.from(table)
+            .select("*")
+            .eq("id", id);
+
+        if (response.error) {
+            console.error("Erro ao buscar recurso por ID:", response.error);
+            return [];
+        }
+
+        return response.data;
+    },
+
     pokemonExistsByPokedexId: async (pokedex_id) => {
         const {data, err} = await supabase
             .from("Pokemon")
@@ -125,7 +138,6 @@ const dataBase = {
 
         const typeId = typeData[0].id;
 
-        // busca fraquezas usando o id do tipo
         const { data, error } = await supabase.from("Weakness")
             .select("weakness_type_id ( name )")
             .eq("type_id", typeId);
@@ -136,7 +148,6 @@ const dataBase = {
         }
 
         console.log("Retornando: ", data);
-        // retorna array de nomes das fraquezas
         return data;
     },
 
