@@ -1,8 +1,8 @@
 import {useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
-import DataBase from "../../services/DataBase";
 import usePokeApi from "../../hooks/usePokeApi";
+import dataBase from "../../services/dataBase";
 
 export default function PokemonDetails() {
     const {id} = useParams();
@@ -11,23 +11,46 @@ export default function PokemonDetails() {
 
     const {updateTypeWeaknesses} = usePokeApi();
 
-    const [pokemon, _] = useState(cachedPokemon ?? null);
+    const [pokemon, setPokemon] = useState(cachedPokemon ?? null);
     const [pokemonWeaknesses, setPokemonWeaknesses] = useState(new Set());
 
     const [loading, setLoading] = useState(!cachedPokemon);
     const [loadingWeaknesses, setLoadingWeaknesses] = useState(false);
     const [error, setError] = useState(null);
 
+    console.log("PokemonDetails mounted with id:", id, " cachedPokemon:", cachedPokemon);
+
+
     useEffect(() => {
-        setLoadingWeaknesses(true);
+        const fetchPokemonDetails = async (pokemonId) => {
+            try {
+                setLoading(true);
+                const results = await dataBase.getById("Pokemon", pokemonId);
+                if (results.length > 0) {
+                    const fetchedPokemon = results[0];
+
+                    const typesResponse = await dataBase.getPokemonTypes(fetchedPokemon.id);
+                    fetchedPokemon.types = typesResponse;
+
+                    setLoading(false);
+                    console.log("Pokémon encontrado:", fetchedPokemon);
+                    setPokemon(fetchedPokemon);
+                }
+            } catch (err) {
+                console.error("Erro ao buscar detalhes do Pokémon:", err);
+                setError("Erro ao buscar detalhes do Pokémon.");
+                setLoading(false);
+            }
+        }
 
         const fetchWeaknesses = async (types) => {
             try {
+                setLoadingWeaknesses(true);
                 await updateTypeWeaknesses(types);
                 const weaknessesSet = new Set();
 
                 await Promise.all(types.map(async type => {
-                    const results = await DataBase.getWeaknessByTypeName(type.name);
+                    const results = await dataBase.getWeaknessByTypeName(type.name);
                     results.forEach(item => {
                         const name = item?.weakness_type_id?.name || item?.name;
                         if (name) weaknessesSet.add(name);
@@ -44,8 +67,19 @@ export default function PokemonDetails() {
             }
         };
 
-        fetchWeaknesses(pokemon.types);
-    }, [pokemon, updateTypeWeaknesses]);
+        if (pokemon && pokemon.types) {
+            fetchWeaknesses(pokemon.types);
+        } else {
+            fetchPokemonDetails(id)
+                .then(() => {
+                    if (pokemon && pokemon.types) {
+                        fetchWeaknesses(pokemon.types);
+                    }
+                });
+        }
+    }, [id, updateTypeWeaknesses]);
+
+    if (loading) return (<p className={`labelSize`}>Loading Pokemon details...</p>);
 
     return (
         <section className={`${styles.pokemonDetailsSection} flex-column align-center mediumPadding largeGap`}>

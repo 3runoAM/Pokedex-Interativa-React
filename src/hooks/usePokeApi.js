@@ -123,7 +123,7 @@ const usePokeApi = () => {
         return {loading, errors, updatePokemonBasicInfo};
     }, [errors, loading]);
 
-    const updateTypeWeaknessess = useCallback(async (types) => {
+    const updateTypeWeaknesses = useCallback(async (types) => {
         setLoading(true);
         setError([]);
 
@@ -186,7 +186,7 @@ const usePokeApi = () => {
 
 
     return {
-        loading, errors, updatePokemonBasicInfo, updateTypeWeaknessess
+        loading, errors, updatePokemonBasicInfo, updateTypeWeaknesses
     };
 }
 

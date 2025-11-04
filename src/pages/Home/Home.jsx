@@ -9,7 +9,9 @@ export default function Home() {
     const {updatePokemonBasicInfo} = usePokeApi();
 
     const [currentPage, setCurrentPage] = useState(1);
+
     const [pokemonList, setPokemonList] = useState([]);
+
     const [loadingMore, setLoadingMore] = useState(false);
     const [pokemonNameList, setPokemonNameList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -74,10 +76,10 @@ export default function Home() {
         setLoadingMore(true)
 
         const fetchAndUpdate = async () => {
-            console.log("Carregando página ", currentPage);
-            await updatePokemonBasicInfo(currentPage);
-
             try {
+                console.log("Carregando página ", currentPage);
+                // await updatePokemonBasicInfo(currentPage);
+
                 const results = await dataBase.getPokemon(currentPage);
                 const typedPokemon = await ensureTypes(results)
 
