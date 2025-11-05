@@ -15,6 +15,11 @@ const Authentication = {
         });
     },
 
+    getUserInfo: async () => {
+        const { data } = await supabase.auth.getUser();
+        return data.user.user_metadata;
+    },
+
     isAuthenticated: async () => {
         const { data } = await supabase.auth.getUser();
         return data.user !== null;
