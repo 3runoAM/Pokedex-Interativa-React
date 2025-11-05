@@ -17,7 +17,7 @@ const Authentication = {
 
     getUserInfo: async () => {
         const { data } = await supabase.auth.getUser();
-        return data.user;
+        return data.user.user_metadata;
     },
 
     isAuthenticated: async () => {

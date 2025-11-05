@@ -1,4 +1,34 @@
+.profileSection {
+    width: 100%;
+
+}
+
+.iconContainer {
+    background-color: var(--button-green);
+    border-radius: 50%;
+}
+
+.userInfoContainer, .teamCountContainer {
+    background-color: var(--card-white);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px #00000033;
+}
+
+.userInfoContainer > h2, .teamCountContainer > *  {
+    font-size: 2.5rem;
+    font-weight: 400;
+}
+
+.teamCountContainer > p {
+    font-family: "Jersey 25", sans-serif;
+}
+
 .logOut {
+    align-self: center;
     font-size: 1.75rem;
     background-color: #D12426;
+}
+
+.profileIcon {
+    width: 2.5rem;
 }

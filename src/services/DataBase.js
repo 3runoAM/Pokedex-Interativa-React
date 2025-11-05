@@ -199,7 +199,24 @@ const dataBase = {
         }
 
         return response.data;
-    }
+    },
+
+    getTeamsByUserId: async (user_id) => {
+        const response = await supabase.from("Team")
+            .select("*")
+            .eq("user_id", user_id)
+            .order("created_at", { ascending: false });
+
+        if (response.error) {
+            console.error("Erro ao buscar times do usuário:", response.error);
+            return [];
+        }
+
+        console.log("Retornando: ", user_id, ". Com equipes: ", response.data);
+
+        return response.data;
+    },
+
 };
 
 export default dataBase;
