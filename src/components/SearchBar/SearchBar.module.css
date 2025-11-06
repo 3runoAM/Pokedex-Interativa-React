@@ -41,7 +41,7 @@
     list-style: none;
     border-radius: 0 0 10px 10px;
     background-color: var(--card-white);
-    box-shadow: 0 4px 8px var(--greyish-black);
+    box-shadow: 0 2px 6px var(--greyish-black);
 
     font-size: 1.8rem;
 }
