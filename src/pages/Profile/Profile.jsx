@@ -67,7 +67,7 @@ export default function Profile() {
                     </svg>
                 </div>
 
-                <h2>{user.email}</h2>
+                <h2>{user.email.split("@")[0]}</h2>
             </div>
 
             <div className={`${style.teamCountContainer} flex-column align-center mediumGap mediumPadding`}>
