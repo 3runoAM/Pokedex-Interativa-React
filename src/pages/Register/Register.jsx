@@ -5,15 +5,18 @@ import Logo from "../../components/Logo/Logo";
 import Footer from "../../components/Footer/Footer";
 import LoginLink from "../../components/LoginLink/LoginLink";
 import {useNavigate} from "react-router-dom";
+import {useToast} from "../../Provider/ToastProvider";
 
 export default function Register() {
     const navigate = useNavigate();
+    const {showToast} = useToast();
 
     const handleRegister = async (formData) => {
         const errors = validateFormData(formData);
 
         if (Object.keys(errors).length > 0) {
             console.error("Erros de validação:", errors);
+            showToast("Erro ao registrar: Verifique os dados informados");
             return;
         }
 
@@ -23,7 +26,8 @@ export default function Register() {
 
             navigate("/login");
         } catch (err) {
-            console.error(err); // Colocar na Snackbar
+            showToast("Erro ao registrar");
+            console.error("Erro ao registrar:", err);
         }
     }
 

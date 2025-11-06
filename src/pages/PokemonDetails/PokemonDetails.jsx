@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/dataBase";
+import {useToast} from "../../Provider/ToastProvider";
 
 export default function PokemonDetails() {
     const {id} = useParams();
@@ -10,6 +11,7 @@ export default function PokemonDetails() {
     const cachedPokemon = location.state?.pokemon;
 
     const {updateTypeWeaknesses} = usePokeApi();
+    const {showToast} = useToast();
 
     const [pokemon, setPokemon] = useState(cachedPokemon ?? null);
     const [pokemonWeaknesses, setPokemonWeaknesses] = useState(new Set());
@@ -37,6 +39,7 @@ export default function PokemonDetails() {
                     setPokemon(fetchedPokemon);
                 }
             } catch (err) {
+                showToast("Erro ao buscar detalhes do Pokémon: " + err.message, "error");
                 console.error("Erro ao buscar detalhes do Pokémon:", err);
                 setError("Erro ao buscar detalhes do Pokémon.");
                 setLoading(false);
@@ -61,6 +64,7 @@ export default function PokemonDetails() {
                 setPokemonWeaknesses(weaknessesSet);
                 setLoadingWeaknesses(false);
             } catch (err) {
+                showToast("Erro ao buscar fraquezas: " + err.message, "error");
                 console.error("Erro ao buscar fraquezas:", err);
                 setError("Erro ao buscar fraquezas.");
                 setLoadingWeaknesses(false);
