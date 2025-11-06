@@ -18,7 +18,7 @@
     width: 12.9rem;
     border-radius: 1rem;
     background-color: var(--card-white);
-    box-shadow: 0 4px 8px #00000033;
+    box-shadow: 0 4px 8px var(--greyish-black);
 }
 
 .pokeDescription {
@@ -38,7 +38,7 @@
 .statisticsContainer > dl {
     width: 100%;
     background-color: var(--card-white);
-    box-shadow: 0 4px 8px #00000033;
+    box-shadow: 0 4px 8px var(--greyish-black);
     border-radius: 1rem;
 }
 
@@ -67,5 +67,5 @@
     width: 6.5rem;
     height: 2.5rem;
     border-radius: 5px;
-    box-shadow: 0 4px 8px #00000033;
+    box-shadow: 0 4px 8px var(--greyish-black);
 }

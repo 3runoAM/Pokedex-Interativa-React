@@ -9,7 +9,7 @@
     --screen-black: #0E0E0E;
     --login-blue: #365FAC;
     --register-yellow: #BDA442;
-    --greyish-black: #2A2A2A;
+    --greyish-black: #2a2a2a;
 
     --button-blue: #2baaff;
     --button-yellow: #bda442;
@@ -111,7 +111,7 @@ body {
     letter-spacing: 0.05em;
     cursor: pointer;
     padding: 0.2em 0.5em;
-    box-shadow: 0 4px 8px #00000033;
+    box-shadow: 0 4px 8px var(--greyish-black);
 }
 
 .labelSize {
