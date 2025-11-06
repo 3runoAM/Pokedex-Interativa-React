@@ -1,5 +1,6 @@
 .profileSection {
     width: 100%;
+    align-items: center;
 }
 
 .iconContainer {
@@ -11,6 +12,14 @@
     background-color: var(--card-white);
     border-radius: 1rem;
     box-shadow: 0 2px 6px var(--greyish-black);
+}
+
+.userInfoContainer {
+    width: 90%;
+}
+
+.teamCountContainer {
+    width: 70%;
 }
 
 .userInfoContainer > h2, .teamCountContainer > *  {
