@@ -11,7 +11,7 @@
 .userInfoContainer, .teamCountContainer {
     background-color: var(--card-white);
     border-radius: 1rem;
-    box-shadow: 0 4px 8px #00000033;
+    box-shadow: 0 4px 8px var(--greyish-black);
 }
 
 .userInfoContainer > h2, .teamCountContainer > *  {

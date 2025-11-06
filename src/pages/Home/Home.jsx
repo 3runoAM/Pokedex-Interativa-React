@@ -4,9 +4,13 @@ import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Toast from "../../components/Toast/Toast";
+import {useToast} from "../../Provider/ToastProvider";
 
 export default function Home() {
     const {updatePokemonBasicInfo} = usePokeApi();
+    
+    const {showToast} = useToast();
 
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,6 +24,8 @@ export default function Home() {
 
     const [searchResults, setSearchResults] = useState([]);
 
+    const [error, setError] = useState("");
+
     const DISABLE_PREDICATE = loadingMore || (currentPage === 49) || isSearchMode;
 
     const getPokemonNames = async () => {
@@ -28,6 +34,7 @@ export default function Home() {
             setPokemonNameList(nameList);
         } catch (err) {
             console.error(err);
+            showToast("Erro ao carregar nomes dos Pokémons.");
         }
     };
 
@@ -56,8 +63,10 @@ export default function Home() {
             const typedResults = await ensureTypes(searchResult);
             setSearchResults(typedResults || []);
             setIsSearchMode(true);
+            throw "ERRO ERRO ERRO ERRO"; // Clear previous errors
         } catch (err) {
             console.error(err);
+            showToast("Erro ao buscar Pokémon.");
             setIsSearchMode(false);
         }
     }
@@ -87,6 +96,7 @@ export default function Home() {
                 setLoadingMore(false);
             } catch (err) {
                 console.error(err);
+                showToast("Erro ao carregar Pokémons.");
                 setLoadingMore(false);
             }
         };
@@ -102,6 +112,8 @@ export default function Home() {
     return (
         <section className={`flex-column largeGap`}>
 
+            <Toast message={error}/>
+            
             <SearchBar onSearch={handleSearch}
                        PokemonNameList={pokemonNameList}
                        searchTerm={searchTerm}
