@@ -5,16 +5,19 @@ import Logo from '../../components/Logo/Logo.jsx';
 import {LoginForm} from '../../components/LoginForm/LoginForm.jsx';
 import RegisterLink from "../../components/RegisterLink/RegisterLink";
 import Footer from '../../components/Footer/Footer.jsx';
+import {useToast} from "../../Provider/ToastProvider";
 
 
 export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
+    const {showToast} = useToast();
 
     const handleLogin = async (formData) => {
         const errors = validateFormData(formData);
 
         if (Object.keys(errors).length > 0) {
             console.error("Erros de validação:", errors);
+            showToast("Erro ao fazer login: Verifique os dados informados");
             return;
         }
 
@@ -25,11 +28,12 @@ export default function Login({ setIsAuthenticated }) {
             if (error) throw error;
 
             localStorage.setItem("user", JSON.stringify(data.user.user_metadata));
-
             setIsAuthenticated(true);
+
             navigate("/home");
         } catch (err) {
-            console.error(err); // Colocar na Snackbar
+            console.error(err);
+            showToast("Erro ao fazer login");
         }
     }
 

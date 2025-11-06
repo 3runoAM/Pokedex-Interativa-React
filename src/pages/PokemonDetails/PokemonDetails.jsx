@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/dataBase";
+import {useToast} from "../../Provider/ToastProvider";
 
 export default function PokemonDetails() {
     const {id} = useParams();
@@ -10,9 +11,10 @@ export default function PokemonDetails() {
     const cachedPokemon = location.state?.pokemon;
 
     const {updateTypeWeaknesses} = usePokeApi();
+    const {showToast} = useToast();
 
     const [pokemon, setPokemon] = useState(cachedPokemon ?? null);
-    const [pokemonWeaknesses, setPokemonWeaknesses] = useState(new Set());
+    const [pokemonWeaknesses, setPokemonWeaknesses] = useState(null);
 
     const [loading, setLoading] = useState(!cachedPokemon);
     const [loadingWeaknesses, setLoadingWeaknesses] = useState(false);
@@ -37,12 +39,18 @@ export default function PokemonDetails() {
                     setPokemon(fetchedPokemon);
                 }
             } catch (err) {
+                showToast("Erro ao buscar detalhes do Pokémon: " + err.message, "error");
                 console.error("Erro ao buscar detalhes do Pokémon:", err);
                 setError("Erro ao buscar detalhes do Pokémon.");
                 setLoading(false);
             }
         }
 
+        if (!pokemon) fetchPokemonDetails(id);
+    }, [id]);
+
+
+    useEffect(() => {
         const fetchWeaknesses = async (types) => {
             try {
                 setLoadingWeaknesses(true);
@@ -61,23 +69,15 @@ export default function PokemonDetails() {
                 setPokemonWeaknesses(weaknessesSet);
                 setLoadingWeaknesses(false);
             } catch (err) {
+                showToast("Erro ao buscar fraquezas");
                 console.error("Erro ao buscar fraquezas:", err);
                 setError("Erro ao buscar fraquezas.");
                 setLoadingWeaknesses(false);
             }
         };
 
-        if (pokemon && pokemon.types) {
-            fetchWeaknesses(pokemon.types);
-        } else {
-            fetchPokemonDetails(id)
-                .then(() => {
-                    if (pokemon && pokemon.types) {
-                        fetchWeaknesses(pokemon.types);
-                    }
-                });
-        }
-    }, [id, updateTypeWeaknesses]);
+        if (pokemon && pokemon.types) fetchWeaknesses(pokemon.types);
+    }, [id, pokemon, updateTypeWeaknesses]);
 
     if (loading) return (<p className={`labelSize`}>Loading Pokemon details...</p>);
 
@@ -148,10 +148,11 @@ export default function PokemonDetails() {
 
                 <ul className={`flex-row justify-center mediumGap`}>
                     {
-                        Array.from(pokemonWeaknesses).map(weakness => (
-                            <li className={`${weakness} flex-row flex-center`}>
-                                {weakness.charAt(0).toUpperCase()}{weakness.slice(1)}
-                            </li>)
+                        pokemonWeaknesses && Array.from(pokemonWeaknesses).map(weakness => (
+                                <li className={`${weakness} flex-row flex-center`}>
+                                    {weakness.charAt(0).toUpperCase()}{weakness.slice(1)}
+                                </li>
+                            )
                         )
                     }
                 </ul>

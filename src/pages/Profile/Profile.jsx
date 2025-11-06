@@ -3,21 +3,33 @@ import Authentication from "../../services/Authentication";
 import dataBase from "../../services/DataBase";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useToast} from "../../Provider/ToastProvider";
 
 export default function Profile() {
     const navigate = useNavigate();
+    const {showToast} = useToast();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
     const [teams, setTeams] = useState([]);
 
     const handleLogout = async () => {
-        await Authentication.logOut();
-        localStorage.clear();
-        navigate('/login');
+        try {
+            await Authentication.logOut();
+            localStorage.clear();
+            navigate('/login');
+        } catch (err) {
+            showToast("Erro ao fazer logout");
+            console.error("Erro ao fazer logout:", err);
+        }
     };
 
     const getUserInfo = async () => {
-        return await Authentication.getUserInfo();
+        try {
+            return await Authentication.getUserInfo();
+        } catch (error) {
+            console.error("Erro ao obter informações do usuário", error);
+            showToast("Erro ao obter informações do usuário");
+        }
     }
 
     useEffect(() => {
@@ -27,18 +39,21 @@ export default function Profile() {
         };
 
         const getUserTeams = async () => {
-            const teams = await dataBase.getTeamsByUserId(user.sub);
-            console.log(teams);
-            setTeams(teams);
-            return teams;
+            try {
+                const teams = await dataBase.getTeamsByUserId(user.sub);
+                console.log(teams);
+                setTeams(teams);
+                return teams;
+            } catch (error) {
+                console.error("Erro ao obter times do usuário", error);
+                showToast("Erro ao obter times do usuário");
+            }
         }
 
         if (user === null) fetchUserInfo().then(r => console.log(r));
 
         getUserTeams().then(teams => console.log(teams));
     }, [user]);
-
-    console.log(user);
 
     return (
         <section className={`${style.profileSection} flex-column largeGap mediumPadding space-between`}>
@@ -52,7 +67,7 @@ export default function Profile() {
                     </svg>
                 </div>
 
-                <h2>{user.email}</h2>
+                <h2>{user.email.split("@")[0]}</h2>
             </div>
 
             <div className={`${style.teamCountContainer} flex-column align-center mediumGap mediumPadding`}>

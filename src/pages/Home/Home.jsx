@@ -9,7 +9,6 @@ import {useToast} from "../../Provider/ToastProvider";
 
 export default function Home() {
     const {updatePokemonBasicInfo} = usePokeApi();
-    
     const {showToast} = useToast();
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +16,8 @@ export default function Home() {
     const [pokemonList, setPokemonList] = useState([]);
 
     const [loadingMore, setLoadingMore] = useState(false);
+    const [isSearching, setIsSearching] = useState(false);
+
     const [pokemonNameList, setPokemonNameList] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchMode, setIsSearchMode] = useState(false);
@@ -59,15 +60,18 @@ export default function Home() {
         }
 
         try {
+            setIsSearching(true);
             const searchResult = await dataBase.searchByNameOrPokedexId(searchTerm.trim().toLowerCase());
             const typedResults = await ensureTypes(searchResult);
+
             setSearchResults(typedResults || []);
             setIsSearchMode(true);
-            throw "ERRO ERRO ERRO ERRO"; // Clear previous errors
+            setIsSearching(false);
         } catch (err) {
             console.error(err);
             showToast("Erro ao buscar Pokémon.");
             setIsSearchMode(false);
+            setIsSearching(false);
         }
     }
 
@@ -125,7 +129,7 @@ export default function Home() {
                 isSearchMode ?
                     <>
                         <button className={`${styles.goBack} button`} onClick={handleGoBack}>Voltar</button>
-                        <PokemonList isLoadingMore={loadingMore} list={searchResults}/>
+                        <PokemonList isLoadingMore={isSearching} list={searchResults}/>
                     </> :
                     <>
                         <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
