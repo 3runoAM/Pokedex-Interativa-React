@@ -13,19 +13,16 @@ export default function Home() {
 
     const [currentPage, setCurrentPage] = useState(1);
 
+    const [showList, setShowList] = useState(false);
     const [pokemonList, setPokemonList] = useState([]);
+    const [pokemonNameList, setPokemonNameList] = useState([]);
 
     const [loadingMore, setLoadingMore] = useState(false);
-    const [isSearching, setIsSearching] = useState(false);
 
-    const [pokemonNameList, setPokemonNameList] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
     const [isSearchMode, setIsSearchMode] = useState(false);
-    const [showList, setShowList] = useState(false);
-
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
-
-    const [error, setError] = useState("");
 
     const DISABLE_PREDICATE = loadingMore || (currentPage === 49) || isSearchMode;
 
@@ -115,8 +112,6 @@ export default function Home() {
 
     return (
         <section className={`flex-column largeGap`}>
-
-            <Toast message={error}/>
             
             <SearchBar onSearch={handleSearch}
                        PokemonNameList={pokemonNameList}

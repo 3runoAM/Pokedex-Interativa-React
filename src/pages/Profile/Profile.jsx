@@ -10,7 +10,7 @@ export default function Profile() {
     const {showToast} = useToast();
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-    const [teams, setTeams] = useState([]);
+    const [teamsQuantity, setTeams] = useState(0);
 
     const handleLogout = async () => {
         try {
@@ -38,12 +38,12 @@ export default function Profile() {
             setUser(userInfo);
         };
 
-        const getUserTeams = async () => {
+        const fetchUserTeams = async () => {
             try {
-                const teams = await dataBase.getTeamsByUserId(user.sub);
-                console.log(teams);
-                setTeams(teams);
-                return teams;
+                const teamsQuantity = await dataBase.getTeamsQuantityByUserId(user.sub);
+                console.log(teamsQuantity);
+                setTeams(teamsQuantity);
+                return teamsQuantity;
             } catch (error) {
                 console.error("Erro ao obter times do usuário", error);
                 showToast("Erro ao obter times do usuário");
@@ -52,7 +52,7 @@ export default function Profile() {
 
         if (user === null) fetchUserInfo().then(r => console.log(r));
 
-        getUserTeams().then(teams => console.log(teams));
+        fetchUserTeams().then(teamsQuantity => console.log(teamsQuantity));
     }, [user]);
 
     return (
@@ -73,7 +73,7 @@ export default function Profile() {
             <div className={`${style.teamCountContainer} flex-column align-center mediumGap mediumPadding`}>
                 <h3>Nº de times</h3>
                 {
-                    <p>{String(teams.length).padStart(4, '0')}</p>
+                    <p>{String(teamsQuantity).padStart(4, '0')}</p>
                 }
             </div>
 
