@@ -1,3 +1,4 @@
+import style from "./Teams.module.css";
 import {useEffect, useState} from "react";
 import dataBase from "../../services/DataBase";
 import {useToast} from "../../Provider/ToastProvider";
@@ -23,7 +24,7 @@ export default function Teams() {
     const handleDelete = async (teamId) => {
         try {
             const isDeleted = await dataBase.deleteTeam(teamId);
-            if(isDeleted) showToast("Team deleted");
+            if (isDeleted) showToast("Team deleted");
             fetchUserTeams();
         } catch (err) {
             console.log("Erro ao deletar time: ", err);
@@ -33,7 +34,7 @@ export default function Teams() {
 
     const handleDeleteAll = async () => {
         try {
-            for(const team of teams) {
+            for (const team of teams) {
                 await dataBase.deleteTeam(team.id);
             }
             showToast("All teams deleted");
@@ -49,40 +50,48 @@ export default function Teams() {
     }, [user]);
 
     return (
-        <section className={`flex-column align-center smallPadding mediumGap`}>
+        <section className={`${style.teamSection} flex-column align-center mediumPadding mediumGap`}>
             <h2>Teams</h2>
 
-            <div className={`flex-row flex-center mediumGap`}>
-                <Link to={"/teams/new"}>Novo time</Link>
-                <button onClick={() => handleDeleteAll()}>Excluir todos</button>
+
+            <div className={`${style.buttonContainer} flex-row flex-center smallGap smallPadding`}>
+                <Link to={"/teams/new"} className={`flex-row flex-center smallPadding`}>
+                    New Team
+                </Link>
+                <button className={`flex-row flex-center smallPadding`} onClick={() => handleDeleteAll()}>
+                    Delete All
+                </button>
             </div>
 
-            <ul>
-                {
-                    teams?.map((team) => (
-                        <li>
-                            <div className={`flex-column`}>
+            <ul className={`${style.teamsContainer} flex-column mediumGap`}>
+                {teams?.map((team) => (
+                    <li className={`${style.teamCard} flex-row mediumPadding mediumGap space-between`}>
+
+                        <div className={`${style.teamInfoContainer} flex-column`}>
+                            <div className={` flex-column smallGap`}>
                                 <h3>{team.name}</h3>
-
-                                <div className={`flex-row mediumGap flex-center`}>
-                                    <button>Edit</button>
-                                    <button onClick={() => handleDelete(team.id)}>Delete</button>
-                                </div>
+                                <p>Pokemon {team.PokemonPartner.length}/6</p>
                             </div>
 
-                            <div className={`flex-row`} style={{flexWrap:"wrap"}} >
-                                {
-                                    team.PokemonPartner.map((partner) => (
-                                        <div >
-                                            <img style={{width:"1.5rem"}} src={partner.Pokemon.sprite_url} alt={partner.Pokemon.name}/>
-                                        </div>
-                                    ))
-                                }
+
+                            <div className={`flex-column smallGap`}>
+                                <button className={`${style.editButton} button`}>Edit</button>
+                                <button className={`${style.deleteButton} button`} onClick={() => handleDelete(team.id)}>Delete</button>
                             </div>
-                        </li>
-                    ))
-                }
+                        </div>
+
+                        <div className={`${style.partnersImageContainer} flex-row smallGap`}>
+                            {team.PokemonPartner.map((partner) => (
+                                <img className={`${style.pokemonSprite} smallPadding`}
+                                    src={partner.Pokemon.sprite_url}
+                                     alt={partner.Pokemon.name}/>
+                            ))}
+                        </div>
+                    </li>
+                ))}
             </ul>
+
+            <div className={`largePadding`}></div>
         </section>
     );
 }

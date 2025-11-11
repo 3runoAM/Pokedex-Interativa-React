@@ -1,0 +1,84 @@
+.teamSection{
+    width: 100%;
+}
+
+.teamSection h2 {
+    font-size: 3rem;
+    font-weight: 400;
+}
+
+.buttonContainer {
+    width: 100%;
+}
+
+.buttonContainer > * {
+    width: 100%;
+    font-size: 1.6rem;
+    text-decoration: none;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 6px var(--greyish-black);
+}
+
+.buttonContainer > *:first-child {
+    background-color: var(--button-green);
+}
+
+.buttonContainer > button:last-child {
+    background-color: var(--fire-red);
+}
+
+.teamsContainer {
+    width: 100%;
+}
+
+.teamCard {
+    height: 12rem;
+    border-radius: 1rem;
+    background-color: var(--card-white);
+    box-shadow: 0 2px 6px var(--greyish-black);
+}
+
+.teamCard > div:first-child {
+    width: 50%;
+    flex-wrap: wrap;
+}
+
+.teamCard > div:nth-child(2) {
+    width: 50%;
+    flex-wrap: wrap;
+}
+
+.pokemonSprite {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 1rem;
+    box-shadow: 0 1px 4px var(--greyish-black);
+}
+
+.teamInfoContainer {
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+}
+
+.teamInfoContainer > * {
+    height: 50%;
+}
+
+.editButton, .deleteButton {
+    font-size: 1.4rem;
+    height: 100%;
+}
+
+.editButton {
+    background-color: var(--button-yellow);
+}
+
+.deleteButton {
+    background-color: var(--fire-red);
+}
+
+.partnersImageContainer {
+    justify-content: space-evenly;
+}
