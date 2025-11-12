@@ -17,8 +17,8 @@ A **Pokédex Interativa** é uma aplicação que consome a [PokéAPI](https://po
 ## Tecnologias Utilizadas
 
 - **ReactJS** – Framework principal
-- **Firebase** – Autenticação
-- **Supabase** – Persistência de dados
+- **Firebase** – Hosting
+- **Supabase** – Autenticação e persistência de dados
 - **Figma** – Prototipagem
 
 ## Cronograma
