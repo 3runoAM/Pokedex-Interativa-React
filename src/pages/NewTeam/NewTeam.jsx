@@ -36,7 +36,7 @@ export default function NewTeam() {
 
         setFormData(prev => ({
             ...prev,
-            teamName: value.trim()
+            teamName: value
         }));
     }
 
@@ -66,7 +66,7 @@ export default function NewTeam() {
             }
 
             const newTeam = await dataBase.createTeam({
-                name: formData.teamName
+                name: formData.teamName.trim()
             });
 
             console.log("Time criado com sucesso! ", newTeam);

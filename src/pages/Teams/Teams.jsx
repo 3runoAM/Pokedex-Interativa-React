@@ -54,7 +54,7 @@ export default function Teams() {
             <h2>Teams</h2>
 
 
-            <div className={`${style.buttonContainer} flex-row flex-center smallGap smallPadding`}>
+            <div className={`${style.buttonContainer} flex-row justify-center smallGap smallPadding`}>
                 <Link to={"/teams/new"} className={`flex-row flex-center smallPadding`}>
                     New Team
                 </Link>
@@ -65,7 +65,7 @@ export default function Teams() {
 
             <ul className={`${style.teamsContainer} flex-column mediumGap`}>
                 {teams?.map((team) => (
-                    <li className={`${style.teamCard} flex-row mediumPadding mediumGap space-between`}>
+                    <li className={`${style.teamCard} flex-row mediumPadding smallGap`}>
 
                         <div className={`${style.teamInfoContainer} flex-column`}>
                             <div className={` flex-column smallGap`}>
@@ -91,7 +91,7 @@ export default function Teams() {
                 ))}
             </ul>
 
-            <div className={`largePadding`}></div>
+            <div className={`largePadding`}><br/><br/></div>
         </section>
     );
 }
