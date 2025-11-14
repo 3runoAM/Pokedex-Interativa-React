@@ -76,14 +76,15 @@ export default function Teams() {
 
                             <div className={`flex-column smallGap`}>
                                 <button className={`${style.editButton} button`}>Edit</button>
-                                <button className={`${style.deleteButton} button`} onClick={() => handleDelete(team.id)}>Delete</button>
+                                <button className={`${style.deleteButton} button`}
+                                        onClick={() => handleDelete(team.id)}>Delete
+                                </button>
                             </div>
                         </div>
 
                         <div className={`${style.partnersImageContainer} flex-row smallGap`}>
                             {team.PokemonPartner.map((partner) => (
-                                <img className={`${style.pokemonSprite} smallPadding`}
-                                    src={partner.Pokemon.sprite_url}
+                                <img className={`${style.pokemonSprite}`} src={partner.Pokemon.sprite_url}
                                      alt={partner.Pokemon.name}/>
                             ))}
                         </div>

@@ -62,7 +62,7 @@ export default function RegisterForm({register}) {
 
     return (
         <div className={`flex-column flex-center largeGap`}>
-            <form className={`flex-column flex-center largeGap`} onSubmit={handleSubmit}>
+            <form className={`${style.form} flex-column flex-center largeGap`} onSubmit={handleSubmit}>
                 <div className={`flex-column mediumGap flex-center`}>
                     <div className={`flex-column smallGap`}>
                         <label className={`labelSize`} htmlFor="email">Email</label>

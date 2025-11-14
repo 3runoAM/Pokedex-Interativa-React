@@ -1,13 +1,16 @@
+import style from "./NewTeam.module.css";
 import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
 import {useToast} from "../../Provider/ToastProvider";
 import {useNavigate} from "react-router-dom";
+import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 
 export default function NewTeam() {
     const [formData, setFormData] = useState({
         teamName: "",
         partnersIds: []
     });
+
     const navigate = useNavigate();
 
     const [teamIsFull, setTeamIsFull] = useState(false);
@@ -15,19 +18,25 @@ export default function NewTeam() {
     const {showToast} = useToast();
     const [pokemonList, setPokemonList] = useState([]);
 
-    const handleChangeOfPartnerId = (e) => {
+    const [search, setSearch] = useState("");
+
+    const filtered = pokemonList.filter(p => p.name.toLowerCase()
+        .includes(search.toLowerCase()))
+        .toSorted((a, b) => a.name.localeCompare(b.name))
+        .slice(0, 4);
+
+    const handleChangeOfPartnerId = (partnerId) => {
+        setSearch("");
         if (teamIsFull) {
             showToast("Time completo! Você não pode adicionar mais Pokémons");
             return;
         }
 
-        const {_, value} = e.target;
-
-        console.log("Adicionando parceiro: ", value);
+        console.log("Adicionando parceiro: ", partnerId);
 
         setFormData(prev => ({
             ...prev,
-            partnersIds: [...prev.partnersIds, value]
+            partnersIds: [...prev.partnersIds, partnerId]
         }));
     }
 
@@ -129,73 +138,78 @@ export default function NewTeam() {
     console.log("Renderizando NewTeam com estado: ", formData, "e lista de Pokémons: ", pokemonList);
 
     return (
-        <section style={{maxWidth: "90%"}} className={`flex-column largeGap mediumPadding align-center`}>
+        <section className={`${style.newTeamPage} flex-column largeGap smallPadding align-center`}>
             <h2>New team</h2>
 
-            <form className={`flex-column largeGap mediumPadding`}>
+            <form className={`${style.teamForm} flex-column largeGap`}>
 
-                <div className={`flex-column smallGap`}>
+                <div className={`flex-column`}>
                     <label htmlFor="name">Team name</label>
+
                     <input id="name"
+                           placeholder="Team Rocket"
+                           className={`${style.teamInput}`}
                            value={formData.teamName}
                            onChange={(e) => handleChangeOfTeamName(e)}
                            type="text"/>
                 </div>
 
-
                 <div className={`flex-column smallGap`}>
                     <h3>Select your partners</h3>
 
-                    <select id="partnersIds"
-                            onChange={(e) => handleChangeOfPartnerId(e)}>
+                    <div className={`flex-column mediumGap`}>
+                        <input placeholder="Search by name..."
+                               className={`${style.teamInput}`}
+                               value={search}
+                               onChange={(e) => setSearch(e.target.value)}
+                        />
+
                         {
-                            pokemonList.map((pokemon) => (
-                                <option value={pokemon.pokedex_id}>
-                                    {pokemon.name.charAt(0).toUpperCase()}{pokemon.name.slice(1)} #{String(pokemon.pokedex_id).padStart(4, "0")}
-                                </option>))
+                            (search.trim().length > 0) && (
+                                <div className={`flex-row justify-center flex-wrap smallGap`}>
+                                    {
+                                        filtered.map(p => (
+                                            <div className={`flex-column smallGap`}>
+                                                <SummaryPokemonCard pokemon={p}/>
+                                                <button className={`${style.button} button`}
+                                                        type="button"
+                                                        onClick={() => handleChangeOfPartnerId(p.pokedex_id)}>
+                                                    Adicionar
+                                                </button>
+                                            </div>
+                                        ))
+                                    }
+                                </div>)
                         }
-                    </select>
+                    </div>
                 </div>
-
-
             </form>
 
-            <div className={`flex-column smallGap`} style={{maxWidth: "90%"}}>
-                <h3>Your team: {formData.teamName}</h3>
+            {(formData.partnersIds.length > 0) && (
+                <div style={{maxWidth: "100%"}} className={`flex-column smallGap`}>
+                    <h3 style={{fontSize: "2rem"}}>Your team: {formData.teamName}</h3>
 
-                <div className={`flex-row smallGap mediumPadding`} style={{maxWidth: "90%", overflow: "auto"}}>
-                    {
-                        formData.partnersIds?.map((partnerId) => {
-                            const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
-                            console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon);
+                    <div className={`flex-row smallGap mediumPadding`} style={{maxWidth: "100%", overflow: "auto"}}>
+                        {
+                            formData.partnersIds.map((partnerId) => {
+                                const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
+                                console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon.name);
 
-                            return (
-                                <div className={`flex-column align-center smallPadding smallGap`}>
-                                    <MiniCard pokemon={pokemon}/>
-                                    <button onClick={() => handleRemove(partnerId)}>Remove</button>
-                                </div>
-                            );
-                        })}
-                </div>
+                                return (
+                                    <div style={{width: "100%"}} className={`flex-column align-center smallPadding smallGap`}>
+                                        <SummaryPokemonCard pokemon={pokemon}/>
+                                        <button className={`${style.removeButton} button`} type="button" onClick={(e) => handleRemove(partnerId)}>Remove</button>
+                                    </div>
+                                );
+                            })}
+                    </div>
 
-                <button onClick={(e) => handleSubmit(e)}>Create team</button>
-            </div>
+                    <button className={`${style.button} button`} onClick={(e) => handleSubmit(e)}>Create team</button>
+                </div>)
+            }
+
+            <div className={`largePadding`}><br/><br/></div>
         </section>
     );
 }
 
-export function MiniCard({pokemon}) {
-    if (!pokemon) return <p>Carregando...</p>;
-
-    return (
-        <div className="flex-column smallPadding">
-            <div className="flex-column flex-center smallGap smallPadding">
-                <img style={{width: "20px"}} src={pokemon.sprite_url} alt={pokemon.name}/>
-                <div className="flex-column flex-center smallGap">
-                    <h6>{pokemon.name.charAt(0).toUpperCase()}{pokemon.name.slice(1)}</h6>
-                    <p>#{String(pokemon.pokedex_id).padStart(4, "0")}</p>
-                </div>
-            </div>
-        </div>
-    )
-}
