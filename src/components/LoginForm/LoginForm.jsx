@@ -53,7 +53,7 @@ export function LoginForm({login}) {
     return (
         <form className={`${style.form} flex-column flex-center mediumGap`} onSubmit={handleSubmit}>
             <div className={`${style.formDiv} flex-column mediumGap flex-center`}>
-                <div className={`${style.inputContainer} flex-column smallGap`}>
+                <div className={`${style.inputContainer} flex-column`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="email">Email</label>
                     {errors.email && (
                         <span className="errorMessage">{errors.email}</span>
@@ -66,7 +66,7 @@ export function LoginForm({login}) {
                     required />
                 </div>
 
-                <div className={`${style.inputContainer} flex-column smallGap`}>
+                <div className={`${style.inputContainer} flex-column`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="password">Password</label>
                     {errors.password && (
                         <span className="errorMessage">{errors.password}</span>

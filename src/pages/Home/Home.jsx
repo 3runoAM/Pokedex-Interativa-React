@@ -4,7 +4,6 @@ import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import Toast from "../../components/Toast/Toast";
 import {useToast} from "../../Provider/ToastProvider";
 
 export default function Home() {

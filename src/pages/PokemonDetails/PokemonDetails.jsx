@@ -2,7 +2,7 @@ import {useLocation, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import styles from "./PokemonDetails.module.css";
 import usePokeApi from "../../hooks/usePokeApi";
-import dataBase from "../../services/dataBase";
+import dataBase from "../../services/DataBase";
 import {useToast} from "../../Provider/ToastProvider";
 
 export default function PokemonDetails() {
