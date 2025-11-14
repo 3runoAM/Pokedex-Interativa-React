@@ -6,7 +6,7 @@ export default function Toast({ message, visible, onClose }) {
     return (
         <div className={`${style.toast} flex-row flex-center mediumPadding smallGap`}>
             <p>{message}</p>
-            <button className={`flex-row flex-center`} onClick={onClose}>×</button>
+            <button name="Fechar" className={`flex-row flex-center`} onClick={onClose}>×</button>
         </div>
     );
 }

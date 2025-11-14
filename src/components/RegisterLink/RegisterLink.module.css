@@ -1,6 +1,6 @@
 .button {
     background-color: var(--register-yellow);
-    font-size: 1.8rem;
+    font-size: 1.4rem;
 }
 
 @media (min-width: 768px) {

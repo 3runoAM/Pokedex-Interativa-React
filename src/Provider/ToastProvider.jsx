@@ -7,7 +7,7 @@ export function ToastProvider({ children }) {
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
     const timerRef = useRef(null);
-    const DURATION = 3000;
+    const DURATION = 10000; // Toast duration in milliseconds
 
     const showToast = (msg) => {
         if (!msg) return;

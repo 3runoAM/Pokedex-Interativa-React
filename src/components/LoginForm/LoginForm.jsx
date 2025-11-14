@@ -1,7 +1,10 @@
 import {useState} from "react";
 import style from "./LoginForm.module.css"
+import {useToast} from "../../Provider/ToastProvider";
 
 export function LoginForm({login}) {
+    const { showToast } = useToast();
+
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -46,6 +49,7 @@ export function LoginForm({login}) {
         setErrors(errors);
 
         if (Object.keys(errors).length === 0) login(formData);
+        else showToast("Erro ao fazer login: Verifique os dados informados");
     };
 
     const isFormValid = Object.keys(errors).length === 0 && formData.email && formData.password;
@@ -53,7 +57,7 @@ export function LoginForm({login}) {
     return (
         <form className={`${style.form} flex-column flex-center mediumGap`} onSubmit={handleSubmit}>
             <div className={`${style.formDiv} flex-column mediumGap flex-center`}>
-                <div className={`${style.inputContainer} flex-column smallGap`}>
+                <div className={`${style.inputContainer} flex-column`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="email">Email</label>
                     {errors.email && (
                         <span className="errorMessage">{errors.email}</span>
@@ -66,7 +70,7 @@ export function LoginForm({login}) {
                     required />
                 </div>
 
-                <div className={`${style.inputContainer} flex-column smallGap`}>
+                <div className={`${style.inputContainer} flex-column`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="password">Password</label>
                     {errors.password && (
                         <span className="errorMessage">{errors.password}</span>
@@ -83,8 +87,8 @@ export function LoginForm({login}) {
             <a href="#" className={style.link}>Esqueci a senha</a>
 
             <button className={`${style.button} button`}
-                    disabled={!isFormValid}
-                    type="submit">Entrar
+                    type="submit">
+                Entrar
             </button>
         </form>
     )

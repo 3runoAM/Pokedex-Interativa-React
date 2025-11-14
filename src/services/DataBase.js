@@ -124,7 +124,7 @@ const dataBase = {
     },
 
     getWeaknessByTypeName: async (type_name) => {
-        const { data: typeData, error: typeError } = await supabase
+        const {data: typeData, error: typeError} = await supabase
             .from("Type")
             .select("id")
             .eq("name", type_name)
@@ -138,7 +138,7 @@ const dataBase = {
 
         const typeId = typeData[0].id;
 
-        const { data, error } = await supabase.from("Weakness")
+        const {data, error} = await supabase.from("Weakness")
             .select("weakness_type_id ( name )")
             .eq("type_id", typeId);
 
@@ -179,6 +179,19 @@ const dataBase = {
         return response.data.map(pokemon => pokemon.name);
     },
 
+    getAllPokemonNamesAndIds: async () => {
+        const response = await supabase.from("Pokemon")
+            .select("name, id, pokedex_id, sprite_url")
+            .order("pokedex_id");
+
+        if (response.error) {
+            console.error("Erro ao buscar nomes dos Pokémons:", response.error);
+            return [];
+        }
+
+        return response.data;
+    },
+
     searchByNameOrPokedexId: async (nameOrId) => {
 
         Number(nameOrId) ? console.log("Pesquisando por ID: ", nameOrId) : console.log("Pesquisando por nome: ", nameOrId);
@@ -201,11 +214,27 @@ const dataBase = {
         return response.data;
     },
 
-    getTeamsByUserId: async (user_id) => {
+    getTeamsQuantityByUserId: async (user_id) => {
         const response = await supabase.from("Team")
             .select("*")
             .eq("user_id", user_id)
-            .order("created_at", { ascending: false });
+            .order("created_at", {ascending: false});
+
+        if (response.error) {
+            console.error("Erro ao buscar times do usuário:", response.error);
+            return 0;
+        }
+
+        console.log("Retornando: ", user_id, ". Com equipes: ", response.data);
+
+        return response.data.length;
+    },
+
+    getTeamsByUserId: async (user_id) => {
+        const response = await supabase.from("Team")
+            .select("*, PokemonPartner(*, Pokemon(*))")
+            .eq("user_id", user_id)
+            .order("created_at", {ascending: false});
 
         if (response.error) {
             console.error("Erro ao buscar times do usuário:", response.error);
@@ -213,6 +242,46 @@ const dataBase = {
         }
 
         console.log("Retornando: ", user_id, ". Com equipes: ", response.data);
+
+        return response.data;
+    },
+
+    deleteTeam: async (team_id) => {
+        const response = await supabase.from("Team")
+            .delete()
+            .eq("id", team_id);
+
+        if (response.error) {
+            console.error("Erro ao deletar time:", response.error);
+            return false;
+        }
+
+        return true;
+    },
+
+    createTeam: async (teamData) => {
+        const response = await supabase.from("Team")
+            .insert(teamData)
+            .select();
+
+        if (response.error) {
+            console.error("Erro ao criar time:", response.error);
+            return null;
+        }
+
+        console.log("Retornando time criado: ", response);
+        return response.data;
+    },
+
+    addPokemonPartnersToTeam: async (pokemonPartners) => {
+        const response = await supabase.from("PokemonPartner")
+            .insert(pokemonPartners)
+            .select();
+
+        if (response.error) {
+            console.error("Erro ao adicionar parceiros de Pokémon ao time:", response.error);
+            return null;
+        }
 
         return response.data;
     },

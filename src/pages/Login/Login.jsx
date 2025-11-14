@@ -65,7 +65,7 @@ export default function Login({ setIsAuthenticated }) {
     };
 
     return (
-        <div className={`${style.loginContainer} flex-column mediumGap mediumPadding`}>
+        <div className={`${style.loginContainer} flex-column mediumGap`}>
             <Logo></Logo>
             <LoginForm login={handleLogin}></LoginForm>
             <RegisterLink/>
