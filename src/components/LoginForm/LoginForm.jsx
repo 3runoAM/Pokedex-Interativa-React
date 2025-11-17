@@ -1,15 +1,34 @@
 import {useState} from "react";
 import style from "./LoginForm.module.css"
 import {useToast} from "../../Provider/ToastProvider";
+import {useNavigate} from "react-router-dom";
+import {supabase} from "../../services/SupabaseClient";
 
 export function LoginForm({login}) {
-    const { showToast } = useToast();
+    const {showToast} = useToast();
 
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     });
     const [errors, setErrors] = useState({});
+
+    const handleForgetPassword = async (e) => {
+        e.preventDefault();
+        if (formData.email === "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            showToast("Please enter a valid email address");
+            return;
+        }
+
+        try {
+            let {data, error} = await supabase.auth.resetPasswordForEmail(formData.email, { redirectTo: "http://localhost:3000/newPassword" });
+
+            showToast(`An email has been sent to ${formData.email} for a password reset`);
+        } catch (err) {
+            console.log(err)
+            showToast("Something went wrong, please try again");
+        }
+    }
 
     // VALIDA UM CAMPO POR VEZ
     const validate = (fieldName, value) => {
@@ -52,8 +71,6 @@ export function LoginForm({login}) {
         else showToast("Erro ao fazer login: Verifique os dados informados");
     };
 
-    const isFormValid = Object.keys(errors).length === 0 && formData.email && formData.password;
-
     return (
         <form className={`${style.form} flex-column flex-center mediumGap`} onSubmit={handleSubmit}>
             <div className={`${style.formDiv} flex-column mediumGap flex-center`}>
@@ -64,10 +81,10 @@ export function LoginForm({login}) {
                     )}
                     <input className={style.input}
                            onChange={(e) => setFormData({...formData, "email": e.target.value})}
-                    type="email"
-                    id="email"
-                    name="email"
-                    required />
+                           type="email"
+                           id="email"
+                           name="email"
+                           required/>
                 </div>
 
                 <div className={`${style.inputContainer} flex-column`}>
@@ -77,14 +94,17 @@ export function LoginForm({login}) {
                     )}
                     <input className={style.input}
                            onChange={(e) => setFormData({...formData, "password": e.target.value})}
-                    type="password"
-                    id="password"
-                    name="password"
-                    required />
+                           type="password"
+                           id="password"
+                           name="password"
+                           required/>
                 </div>
             </div>
 
-            <a href="#" className={style.link}>Esqueci a senha</a>
+            <button className={style.link}
+                    onClick={(e) => handleForgetPassword(e)}>
+                Esqueci a senha
+            </button>
 
             <button className={`${style.button} button`}
                     type="submit">

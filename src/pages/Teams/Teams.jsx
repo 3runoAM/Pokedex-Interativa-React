@@ -46,11 +46,11 @@ export default function Teams() {
     }
 
     useEffect(() => {
-        fetchUserTeams().then(teams => console.log(teams));
+        fetchUserTeams();
     }, [user]);
 
     return (
-        <section className={`${style.teamSection} flex-column align-center mediumPadding mediumGap`}>
+        <section className={`${style.teamSection} flex-column align-center smallPadding mediumGap`}>
             <h2>Teams</h2>
 
 
