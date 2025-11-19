@@ -1,7 +1,6 @@
 import {useState} from "react";
 import style from "./LoginForm.module.css"
 import {useToast} from "../../Provider/ToastProvider";
-import {useNavigate} from "react-router-dom";
 import {supabase} from "../../services/SupabaseClient";
 
 export function LoginForm({login}) {
@@ -23,7 +22,7 @@ export function LoginForm({login}) {
         try {
             let {data, error} = await supabase.auth.resetPasswordForEmail(formData.email, { redirectTo: "http://localhost:3000/newPassword" });
 
-            showToast(`An email has been sent to ${formData.email} for a password reset`);
+            showToast(`An email has been sent to ${formData.email.split("@")[0]} for a password reset`);
         } catch (err) {
             console.log(err)
             showToast("Something went wrong, please try again");

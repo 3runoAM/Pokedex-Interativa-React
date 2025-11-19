@@ -11,7 +11,7 @@ import Profile from "./pages/Profile/Profile";
 import Teams from "./pages/Teams/Teams";
 import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import PokemonDetails from "./pages/PokemonDetails/PokemonDetails";
-import NewTeam from "./pages/NewTeam/NewTeam";
+import TeamEditor from "./pages/TeamEditor/TeamEditor";
 import NewPassword from "./pages/NewPassword/NewPassword";
 
 export default function App() {
@@ -50,7 +50,7 @@ export default function App() {
                 <Route element={<PrivateRoute isAuthenticated={isAuthenticated}/>}>
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/teams" element={ <Teams/> } />
-                    <Route path="/teams/new" element={ <NewTeam /> } />
+                    <Route path="/teams/team-editor/:id" element={ <TeamEditor /> } />
                 </Route>
             </Route>
         </Routes>

@@ -22,9 +22,9 @@
 }
 
 .button {
-    font-size: 1.2rem;
-    color: #000;
-    background-color: var(--bug-green);
+    font-size: 1.5rem;
+    background-color: var(--button-green);
+    align-self: center;
 }
 
 .removeButton {
