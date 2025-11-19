@@ -286,6 +286,51 @@ const dataBase = {
         return response.data;
     },
 
+    updateTeamName: async (id, teamName) => {
+        console.log("-----------------------------------");
+        console.log("Atualizando nome do time para:", teamName);
+        const response = await supabase.from("Team")
+            .update({name: teamName})
+            .eq("id", id)
+            .select();
+
+        if (response.error) {
+            console.error("Erro ao atualizar nome do time:", response.error);
+            return null;
+        }
+
+        console.log("Retornando: ", response);
+
+        return response.data;
+    },
+
+    updateTeamPartners: async (teamId, partnersIds) => {
+        console.log("-----------------------------------");
+        console.log("Atualizando parceiros do time para:", partnersIds);
+
+        const deleteResponse = await supabase.from("PokemonPartner")
+            .delete()
+            .eq("team_id", teamId);
+
+        if (deleteResponse.error) {
+            console.error("Erro ao deletar parceiros antigos do time:", deleteResponse.error);
+            return null;
+        }
+
+        const updatedPartners = await supabase.from("PokemonPartner")
+            .insert(partnersIds)
+            .eq("team_id", teamId)
+            .select();
+
+        if (updatedPartners.error) {
+            console.error("Erro ao atualizar parceiros do time:", updatedPartners.error);
+            return null;
+        }
+
+        console.log("Retornando: ", updatedPartners);
+
+        return updatedPartners.data;
+    },
 };
 
 export default dataBase;

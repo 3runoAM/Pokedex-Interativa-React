@@ -1,16 +1,21 @@
-import style from "./NewTeam.module.css";
+import style from "./TeamEditor.module.css";
 import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
 import {useToast} from "../../Provider/ToastProvider";
-import {useNavigate} from "react-router-dom";
+import {data, useLocation, useNavigate, useParams} from "react-router-dom";
 import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 
-export default function NewTeam() {
+export default function TeamEditor() {
     const [formData, setFormData] = useState({
         teamName: "",
         partnersIds: []
     });
 
+    const {id} = useParams();
+    const location = useLocation();
+
+    const cachedTeam = location.state?.team;
+    const CREATION_TEAM_ID = "60753bbe-2c1f-4e40-963a-21ea6c14c777";
     const navigate = useNavigate();
 
     const [teamIsFull, setTeamIsFull] = useState(false);
@@ -67,39 +72,64 @@ export default function NewTeam() {
             if (formData.teamName === "") {
                 showToast("O nome do time não pode estar vazio.");
                 return;
-            } else if (formData.partnersIds.length === 0) {
+            } else if (formData.partnersIds?.length === 0) {
                 showToast("Você deve adicionar pelo menos um Pokemon ao time");
                 return;
             }
 
-            const newTeam = await dataBase.createTeam({
-                name: formData.teamName.trim()
-            });
+            if (id !== CREATION_TEAM_ID) {
+                debugger
+                console.log("Atualizando time")
+                const updatedName = await dataBase.updateTeamName(id, formData.teamName);
+                console.log("Atualizado: ", updatedName);
 
-            console.log("Time criado com sucesso! ", newTeam);
+                console.log("Atualizando parceiros: ", formData.partnersIds);
 
-            const pokemonPartners = formData.partnersIds.map((partnerId) => {
-                const partner = pokemonList.find(pokemon => pokemon.pokedex_id == partnerId);
+                const updatedPartners = formData.partnersIds.map((partnerId) => {
+                    const partner = pokemonList.find(pokemon => pokemon.pokedex_id == partnerId);
+                    console.log("Pokemon encontrado: ", partner)
 
-                console.log("Pokemon encontrado: ", partner)
+                    return {
+                        team_id: id,
+                        pokemon_id: partner.id
+                    };
+                });
 
-                return {
-                    team_id: newTeam[0].id,
-                    pokemon_id: partner.id
-                };
-            });
+                const response = await dataBase.updateTeamPartners(id, updatedPartners);
+                console.log("Atualizado: ", updatedPartners);
 
-            console.log("Adicionando parceiros de Pokémon ao time:", pokemonPartners);
+                if (response) showToast("Team updated successfully")
+            } else {
+                const newTeam = await dataBase.createTeam({
+                    name: formData.teamName.trim()
+                });
 
-            await dataBase.addPokemonPartnersToTeam(pokemonPartners);
-            console.log("Parceiros adicionados ao time com sucesso!");
+                console.log("Time criado com sucesso! ", newTeam);
 
+                const pokemonPartners = formData.partnersIds.map((partnerId) => {
+                    const partner = pokemonList.find(pokemon => pokemon.pokedex_id == partnerId);
+
+                    console.log("Pokemon encontrado: ", partner)
+
+                    return {
+                        team_id: newTeam[0].id,
+                        pokemon_id: partner.id
+                    };
+                });
+
+                console.log("Adicionando parceiros de Pokémon ao time:", pokemonPartners);
+
+                const response = await dataBase.addPokemonPartnersToTeam(pokemonPartners);
+                console.log("Parceiros adicionados ao time com sucesso!");
+
+                if (response) showToast("Team created successfully")
+            }
 
             console.log("Redirecionando para a página de times...");
             navigate("/teams");
         } catch (error) {
             console.error("Erro ao criar time:", error);
-            showToast("Erro ao criar time.");
+            showToast("Erro ao criar ou atualizar time.");
         }
     }
 
@@ -119,7 +149,7 @@ export default function NewTeam() {
     useEffect(() => {
         console.log("Carregando lista de Pokémons...");
         getPokemonList();
-    }, []);
+    }, [id, cachedTeam]);
 
     useEffect(() => {
         console.log("Verificando se o time está cheio...");
@@ -132,8 +162,19 @@ export default function NewTeam() {
         }
     }, [formData.partnersIds]);
 
+    useEffect(() => {
+        console.log("Pokemon cached: ", cachedTeam)
+        if (cachedTeam) {
+            getPokemonList();
+            setFormData({
+                teamName: cachedTeam.name,
+                partnersIds: cachedTeam.PokemonPartner.map((p) => p.Pokemon?.pokedex_id ?? p.pokemon_id)
+            })
+        }
 
-    console.log("Renderizando NewTeam com estado: ", formData, "e lista de Pokémons: ", pokemonList);
+    }, [id, cachedTeam])
+
+    console.log("Renderizando TeamEditor com estado: ", formData, "e lista de Pokémons: ", pokemonList);
 
     return (
         <section className={`${style.newTeamPage} flex-column largeGap smallPadding align-center`}>
@@ -191,7 +232,7 @@ export default function NewTeam() {
                         {
                             formData.partnersIds.map((partnerId) => {
                                 const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
-                                console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon.name);
+                                console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon?.name);
 
                                 return (
                                     <div style={{width: "100%"}}
@@ -205,7 +246,11 @@ export default function NewTeam() {
                             })}
                     </div>
 
-                    <button className={`${style.button} button`} onClick={(e) => handleSubmit(e)}>Create team</button>
+                    <button className={`${style.button} button`} onClick={(e) => handleSubmit(e)}>
+                        {
+                            id === CREATION_TEAM_ID ? "Create team" : "Save team"
+                        }
+                    </button>
                 </div>)
             }
 

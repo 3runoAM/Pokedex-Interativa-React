@@ -8,6 +8,7 @@ export default function Teams() {
     const [user, _] = useState(JSON.parse(localStorage.getItem("user")));
     const [teams, setTeams] = useState([]);
     const {showToast} = useToast();
+    const CREATION_TEAM_ID = "60753bbe-2c1f-4e40-963a-21ea6c14c777";
 
     const fetchUserTeams = async () => {
         try {
@@ -55,7 +56,7 @@ export default function Teams() {
 
 
             <div className={`${style.buttonContainer} flex-row justify-center smallGap smallPadding`}>
-                <Link to={"/teams/new"} className={`flex-row flex-center smallPadding`}>
+                <Link to={`/teams/team-editor/${CREATION_TEAM_ID}`} className={`flex-row flex-center smallPadding`}>
                     New Team
                 </Link>
                 <button className={`flex-row flex-center smallPadding`} onClick={() => handleDeleteAll()}>
@@ -75,7 +76,9 @@ export default function Teams() {
 
 
                             <div className={`flex-column smallGap`}>
-                                <button className={`${style.editButton} button`}>Edit</button>
+                                <Link to={`/teams/team-editor/${team.id}`}
+                                      state={{team: team}}
+                                      className={`${style.editButton} button`}>Edit</Link>
                                 <button className={`${style.deleteButton} button`}
                                         onClick={() => handleDelete(team.id)}>Delete
                                 </button>

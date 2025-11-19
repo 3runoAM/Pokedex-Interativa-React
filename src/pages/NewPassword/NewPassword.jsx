@@ -29,19 +29,17 @@ export default function NewPassword() {
         }
 
         try {
-            const {data, error} = await supabase.auth.updateUser({
+            const {_, error} = await supabase.auth.updateUser({
                 password: password,
             });
 
-            if(data) {
-                console.log('Password updated successfully');
-                showToast('Password updated successfully');
-                await supabase.auth.signOut();
-                navigate('/login');
-            } else {
-                throw error;
-            }
+            if (error) throw error;
 
+            console.log('Password updated successfully');
+            showToast('Password updated successfully');
+
+            await supabase.auth.signOut();
+            navigate('/login');
         } catch (err) {
             console.error('Error updating password:', err.message);
             showToast('Error updating password');
@@ -51,7 +49,7 @@ export default function NewPassword() {
     if (authorized === null) return <div>Loading...</div>;
 
     return (
-        <section className={`${style.newPasswordContainer} flex-column flex-center smallPadding`} >
+        <section className={`${style.newPasswordContainer} flex-column flex-center smallPadding`}>
             <form className={`${style.newPasswordContainer} flex-column flex-center smallPadding`}>
 
                 <div className={`flex-column smallGap`}>
