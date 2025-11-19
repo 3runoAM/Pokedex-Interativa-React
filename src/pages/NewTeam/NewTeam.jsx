@@ -20,10 +20,19 @@ export default function NewTeam() {
 
     const [search, setSearch] = useState("");
 
-    const filtered = pokemonList.filter(p => p.name.toLowerCase()
+    const filteredPokemonList = pokemonList.filter(p => p.name.toLowerCase()
         .includes(search.toLowerCase()))
         .toSorted((a, b) => a.name.localeCompare(b.name))
         .slice(0, 4);
+
+    const handleChangeOfTeamName = (e) => {
+        const value = e.target.value;
+
+        setFormData(prev => ({
+            ...prev,
+            teamName: value
+        }));
+    }
 
     const handleChangeOfPartnerId = (partnerId) => {
         setSearch("");
@@ -40,25 +49,14 @@ export default function NewTeam() {
         }));
     }
 
-    const handleChangeOfTeamName = (e) => {
-        const {_, value} = e.target;
-
-        setFormData(prev => ({
-            ...prev,
-            teamName: value
-        }));
-    }
-
     const handleRemove = (partnerId) => {
         console.log("Removendo parceiro: ", partnerId);
 
         console.log("Estado antes: ", formData);
-
         setFormData(prev => ({
             ...prev,
             partnersIds: prev.partnersIds.filter(id => id !== partnerId)
         }));
-
         console.log("Estado depois: ", formData);
     }
 
@@ -146,8 +144,8 @@ export default function NewTeam() {
                 <div className={`flex-column`}>
                     <label htmlFor="name">Team name</label>
 
-                    <input id="name"
-                           placeholder="Team Rocket"
+                    <input id="name" max={25} min={1}
+                           required placeholder="Team Rocket"
                            className={`${style.teamInput}`}
                            value={formData.teamName}
                            onChange={(e) => handleChangeOfTeamName(e)}
@@ -168,7 +166,7 @@ export default function NewTeam() {
                             (search.trim().length > 0) && (
                                 <div className={`flex-row justify-center flex-wrap smallGap`}>
                                     {
-                                        filtered.map(p => (
+                                        filteredPokemonList.map(p => (
                                             <div className={`flex-column smallGap`}>
                                                 <SummaryPokemonCard pokemon={p}/>
                                                 <button className={`${style.button} button`}
@@ -196,9 +194,12 @@ export default function NewTeam() {
                                 console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon.name);
 
                                 return (
-                                    <div style={{width: "100%"}} className={`flex-column align-center smallPadding smallGap`}>
+                                    <div style={{width: "100%"}}
+                                         className={`flex-column align-center smallPadding smallGap`}>
                                         <SummaryPokemonCard pokemon={pokemon}/>
-                                        <button className={`${style.removeButton} button`} type="button" onClick={(e) => handleRemove(partnerId)}>Remove</button>
+                                        <button className={`${style.removeButton} button`} type="button"
+                                                onClick={(e) => handleRemove(partnerId)}>Remove
+                                        </button>
                                     </div>
                                 );
                             })}

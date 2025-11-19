@@ -7,13 +7,15 @@ export function ToastProvider({ children }) {
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
     const timerRef = useRef(null);
-    const DURATION = 10000; // Toast duration in milliseconds
+    const DURATION = 3000;
 
     const showToast = (msg) => {
         if (!msg) return;
+        if (timerRef.current) clearTimeout(timerRef.current);
+
         setMessage(msg);
         setVisible(true);
-        if (timerRef.current) clearTimeout(timerRef.current);
+
         timerRef.current = setTimeout(() => {
             setVisible(false);
             timerRef.current = null;
@@ -22,6 +24,7 @@ export function ToastProvider({ children }) {
 
     const hideToast = () => {
         setVisible(false);
+
         if (timerRef.current) {
             clearTimeout(timerRef.current);
             timerRef.current = null;
