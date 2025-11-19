@@ -78,7 +78,6 @@ export default function TeamEditor() {
             }
 
             if (id !== CREATION_TEAM_ID) {
-                debugger
                 console.log("Atualizando time")
                 const updatedName = await dataBase.updateTeamName(id, formData.teamName);
                 console.log("Atualizado: ", updatedName);
@@ -164,14 +163,34 @@ export default function TeamEditor() {
 
     useEffect(() => {
         console.log("Pokemon cached: ", cachedTeam)
+        if (id === CREATION_TEAM_ID) return;
+
         if (cachedTeam) {
-            getPokemonList();
             setFormData({
                 teamName: cachedTeam.name,
-                partnersIds: cachedTeam.PokemonPartner.map((p) => p.Pokemon?.pokedex_id ?? p.pokemon_id)
-            })
+                partnersIds: cachedTeam.PokemonPartner.map((p) => p.Pokemon?.pokedex_id)
+            });
+            return;
         }
 
+        const fetchTeamData = async () => {
+            try {
+                console.log("Buscando dados do time para edição: ", id);
+                const team = await dataBase.getTeamById(id);
+                console.log("Time retornado: ", team);
+
+                setFormData({
+                    teamName: team.name,
+                    partnersIds: team.PokemonPartner.map((p) => p.Pokemon?.pokedex_id)
+                })
+
+            } catch (err) {
+                console.error("Erro ao buscar dados do time: ", err);
+                showToast("Erro ao carregar dados do time para edição.");
+            }
+        }
+
+        fetchTeamData();
     }, [id, cachedTeam])
 
     console.log("Renderizando TeamEditor com estado: ", formData, "e lista de Pokémons: ", pokemonList);

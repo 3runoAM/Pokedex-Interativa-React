@@ -331,6 +331,19 @@ const dataBase = {
 
         return updatedPartners.data;
     },
+
+    getTeamById: async (team_id) => {
+        const response = await supabase.from("Team")
+            .select("*, PokemonPartner(*, Pokemon(*))")
+            .eq("id", team_id);
+
+        if (response.error) {
+            console.error("Erro ao buscar time por ID:", response.error);
+            return null;
+        }
+
+        return response.data[0];
+    }
 };
 
 export default dataBase;

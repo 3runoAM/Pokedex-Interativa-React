@@ -66,14 +66,13 @@ export default function Teams() {
 
             <ul className={`${style.teamsContainer} flex-column mediumGap`}>
                 {teams?.map((team) => (
-                    <li className={`${style.teamCard} flex-row mediumPadding smallGap`}>
+                    <li key={team.id} className={`${style.teamCard} flex-row mediumPadding smallGap`}>
 
                         <div className={`${style.teamInfoContainer} flex-column`}>
                             <div className={` flex-column smallGap`}>
                                 <h3>{team.name}</h3>
                                 <p>Pokemon {team.PokemonPartner.length}/6</p>
                             </div>
-
 
                             <div className={`flex-column smallGap`}>
                                 <Link to={`/teams/team-editor/${team.id}`}
@@ -87,7 +86,7 @@ export default function Teams() {
 
                         <div className={`${style.partnersImageContainer} flex-row smallGap`}>
                             {team.PokemonPartner.map((partner) => (
-                                <img className={`${style.pokemonSprite}`} src={partner.Pokemon.sprite_url}
+                                <img key={partner.Pokemon.id} className={`${style.pokemonSprite}`} src={partner.Pokemon.sprite_url}
                                      alt={partner.Pokemon.name}/>
                             ))}
                         </div>
