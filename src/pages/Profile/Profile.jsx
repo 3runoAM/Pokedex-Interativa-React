@@ -3,7 +3,7 @@ import Authentication from "../../services/Authentication";
 import dataBase from "../../services/DataBase";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 
 export default function Profile() {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import {useState} from "react";
 import style from "./LoginForm.module.css"
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 import {supabase} from "../../services/SupabaseClient";
 
 export function LoginForm({login}) {

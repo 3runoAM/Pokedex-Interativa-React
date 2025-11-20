@@ -1,7 +1,7 @@
 import style from "./TeamEditor.module.css";
 import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 import {data, useLocation, useNavigate, useParams} from "react-router-dom";
 import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 

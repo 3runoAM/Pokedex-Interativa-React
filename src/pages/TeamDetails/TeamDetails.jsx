@@ -2,7 +2,7 @@ import style from './TeamDetails.module.css';
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import dataBase from "../../services/DataBase";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 import PokemonCard from "../../components/PokemonCard/PokemonCard";
 import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 import styles from "../PokemonDetails/PokemonDetails.module.css";

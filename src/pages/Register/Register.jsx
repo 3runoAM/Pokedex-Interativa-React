@@ -5,7 +5,7 @@ import Logo from "../../components/Logo/Logo";
 import Footer from "../../components/Footer/Footer";
 import LoginLink from "../../components/LoginLink/LoginLink";
 import {useNavigate} from "react-router-dom";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 
 export default function Register() {
     const navigate = useNavigate();
