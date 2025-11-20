@@ -4,7 +4,7 @@ import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 
 export default function Home() {
     const {updatePokemonBasicInfo} = usePokeApi();

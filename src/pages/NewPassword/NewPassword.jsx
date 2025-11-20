@@ -1,7 +1,7 @@
 import style from './NewPassword.module.css';
 import {useEffect, useState} from "react";
 import {supabase} from "../../services/SupabaseClient";
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 import {useNavigate} from "react-router-dom";
 
 export default function NewPassword() {

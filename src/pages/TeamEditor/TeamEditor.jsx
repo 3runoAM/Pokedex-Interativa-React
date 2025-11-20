@@ -1,9 +1,10 @@
 import style from "./TeamEditor.module.css";
 import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
-import {useToast} from "../../Provider/ToastProvider";
-import {data, useLocation, useNavigate, useParams} from "react-router-dom";
+import {useToast} from "../../provider/ToastProvider";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
+import {useConfirmation} from "../../provider/ConfirmationProvider";
 
 export default function TeamEditor() {
     const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function TeamEditor() {
     const [teamIsFull, setTeamIsFull] = useState(false);
 
     const {showToast} = useToast();
+    const {getConfirmation} = useConfirmation();
     const [pokemonList, setPokemonList] = useState([]);
 
     const [search, setSearch] = useState("");
@@ -78,6 +80,10 @@ export default function TeamEditor() {
             }
 
             if (id !== CREATION_TEAM_ID) {
+                const isConfirmed = await getConfirmation("Are you sure you want to update this team?");
+
+                if (!isConfirmed) return;
+
                 console.log("Atualizando time")
                 const updatedName = await dataBase.updateTeamName(id, formData.teamName);
                 console.log("Atualizado: ", updatedName);

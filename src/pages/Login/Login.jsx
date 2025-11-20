@@ -5,7 +5,7 @@ import Logo from '../../components/Logo/Logo.jsx';
 import {LoginForm} from '../../components/LoginForm/LoginForm.jsx';
 import RegisterLink from "../../components/RegisterLink/RegisterLink";
 import Footer from '../../components/Footer/Footer.jsx';
-import {useToast} from "../../Provider/ToastProvider";
+import {useToast} from "../../provider/ToastProvider";
 
 
 export default function Login({ setIsAuthenticated }) {

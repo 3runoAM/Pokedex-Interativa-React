@@ -1,5 +1,6 @@
-.toast {
+.dialog {
     position: fixed;
+    top: 40%;
     z-index: 1000;
     font-size: 1.8rem;
     background-color: var(--card-white);
@@ -10,11 +11,14 @@
     text-align: justify;
 }
 
-.toast button {
-    font-size: 2em;
-    font-weight: bold;
-    color: var(--fire-red);
-    background: none;
-    border: none;
-    cursor: pointer;
+.confirmButton, .cancelButton {
+    font-size: 1.2rem;
+}
+
+.confirmButton {
+    background-color: var(--button-green);
+}
+
+.cancelButton {
+    background-color: var(--fire-red);
 }

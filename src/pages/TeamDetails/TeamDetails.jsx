@@ -2,10 +2,10 @@ import style from './TeamDetails.module.css';
 import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import dataBase from "../../services/DataBase";
-import {useToast} from "../../Provider/ToastProvider";
-import PokemonCard from "../../components/PokemonCard/PokemonCard";
+import {useToast} from "../../provider/ToastProvider";
 import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 import styles from "../PokemonDetails/PokemonDetails.module.css";
+import {useConfirmation} from "../../provider/ConfirmationProvider";
 
 export default function TeamDetails() {
     const [team, setTeam] = useState({
@@ -26,9 +26,13 @@ export default function TeamDetails() {
 
     const navigate = useNavigate();
     const {showToast} = useToast();
+    const {getConfirmation} = useConfirmation();
 
     const handleDelete = async (teamId) => {
         try {
+            const isConfirmed = await getConfirmation("Are you sure you want to delete this team? This action cannot be undone.");
+            if (!isConfirmed) return;
+            
             const isDeleted = await dataBase.deleteTeam(teamId);
             if (isDeleted) showToast("Team deleted");
             navigate("/teams");
