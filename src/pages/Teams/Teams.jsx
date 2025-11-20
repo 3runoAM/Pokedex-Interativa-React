@@ -9,7 +9,7 @@ export default function Teams() {
     const [user, _] = useState(JSON.parse(localStorage.getItem("user")));
     const [teams, setTeams] = useState([]);
     const {showToast} = useToast();
-    const { showDialog } = useConfirmation();
+    const { getConfirmation } = useConfirmation();
     const CREATION_TEAM_ID = "60753bbe-2c1f-4e40-963a-21ea6c14c777";
 
     const fetchUserTeams = async () => {
@@ -25,7 +25,7 @@ export default function Teams() {
     }
 
     const handleDelete = async (teamId) => {
-        const isConfirmed = await showDialog("Are you sure you want to delete this team? This action cannot be undone.")
+        const isConfirmed = await getConfirmation("Are you sure you want to delete this team? This action cannot be undone.")
 
         if (!isConfirmed) return;
 
@@ -40,7 +40,7 @@ export default function Teams() {
     }
 
     const handleDeleteAll = async () => {
-        const isConfirmed = await showDialog("Are you sure you want to delete all teams? This action cannot be undone.")
+        const isConfirmed = await getConfirmation("Are you sure you want to delete all teams? This action cannot be undone.")
 
         if (!isConfirmed) return;
 

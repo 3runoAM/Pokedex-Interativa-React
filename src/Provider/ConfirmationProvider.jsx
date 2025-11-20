@@ -1,5 +1,6 @@
-import {createContext, useContext, useRef, useState} from "react";
+import {createContext, useContext, useEffect, useRef, useState} from "react";
 import ConfirmationDialog from "../components/ConfirmationDialog/ConfirmationDialog";
+import {useLocation} from "react-router-dom";
 
 const ConfirmationContext = createContext();
 
@@ -7,8 +8,9 @@ export function ConfirmationProvider({children}) {
     const [message, setMessage] = useState('');
     const [visible, setVisible] = useState(false);
     const resolveRef = useRef(null);
+    const location = useLocation();
 
-    const showDialog = (msg) => {
+    const getConfirmation = (msg) => {
         return new Promise((resolve) => {
             setMessage(msg);
             setVisible(true);
@@ -32,8 +34,18 @@ export function ConfirmationProvider({children}) {
         }
     };
 
+    useEffect(() => {
+        return () => {
+            setVisible(false)
+            if (resolveRef.current) {
+                resolveRef.current(false);
+                resolveRef.current = null;
+            }
+        }
+    }, [location])
+
     return (
-        <ConfirmationContext.Provider value={{showDialog}}>
+        <ConfirmationContext.Provider value={{getConfirmation}}>
             {
                 visible && (
                     <ConfirmationDialog message={message}
