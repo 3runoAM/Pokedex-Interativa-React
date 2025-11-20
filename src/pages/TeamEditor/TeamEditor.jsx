@@ -181,7 +181,7 @@ export default function TeamEditor() {
 
                 setFormData({
                     teamName: team.name,
-                    partnersIds: team.PokemonPartner.map((p) => p.Pokemon?.pokedex_id)
+                    partnersIds: (team.PokemonPartner.map((p) => p.Pokemon?.pokedex_id))
                 })
 
             } catch (err) {

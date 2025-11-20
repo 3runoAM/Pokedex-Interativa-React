@@ -56,7 +56,7 @@ export default function Teams() {
 
 
             <div className={`${style.buttonContainer} flex-row justify-center smallGap smallPadding`}>
-                <Link to={`/teams/team-editor/${CREATION_TEAM_ID}`} className={`flex-row flex-center smallPadding`}>
+                <Link to={`/teams/teamEditor/${CREATION_TEAM_ID}`} className={`flex-row flex-center smallPadding`}>
                     New Team
                 </Link>
                 <button className={`flex-row flex-center smallPadding`} onClick={() => handleDeleteAll()}>
@@ -69,13 +69,15 @@ export default function Teams() {
                     <li key={team.id} className={`${style.teamCard} flex-row mediumPadding smallGap`}>
 
                         <div className={`${style.teamInfoContainer} flex-column`}>
-                            <div className={` flex-column smallGap`}>
+
+                            <Link className={` flex-column smallGap`}
+                                  to={`/teams/teamDetails/${team.id}`} state={{team: team}}>
                                 <h3>{team.name}</h3>
                                 <p>Pokemon {team.PokemonPartner.length}/6</p>
-                            </div>
+                            </Link>
 
                             <div className={`flex-column smallGap`}>
-                                <Link to={`/teams/team-editor/${team.id}`}
+                                <Link to={`/teams/teamEditor/${team.id}`}
                                       state={{team: team}}
                                       className={`${style.editButton} button`}>Edit</Link>
                                 <button className={`${style.deleteButton} button`}
@@ -85,10 +87,12 @@ export default function Teams() {
                         </div>
 
                         <div className={`${style.partnersImageContainer} flex-row smallGap`}>
-                            {team.PokemonPartner.map((partner) => (
-                                <img key={partner.Pokemon.id} className={`${style.pokemonSprite}`} src={partner.Pokemon.sprite_url}
-                                     alt={partner.Pokemon.name}/>
-                            ))}
+                            {
+                                team.PokemonPartner.map((partner) => (
+                                    <img key={partner.Pokemon.id} className={`${style.pokemonSprite}`}
+                                         src={partner.Pokemon.sprite_url}
+                                         alt={partner.Pokemon.name}/>
+                                ))}
                         </div>
                     </li>
                 ))}
