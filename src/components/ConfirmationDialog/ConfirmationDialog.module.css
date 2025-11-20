@@ -1,0 +1,23 @@
+.dialog {
+    position: fixed;
+    top: 40%;
+    font-size: 1.8rem;
+    background-color: var(--card-white);
+    border: 4px solid var(--greyish-black);
+    border-radius: 1rem;
+    opacity: 90%;
+    max-width: 85%;
+    text-align: justify;
+}
+
+.confirmButton, .cancelButton {
+    font-size: 1.2rem;
+}
+
+.confirmButton {
+    background-color: var(--button-green);
+}
+
+.cancelButton {
+    background-color: var(--fire-red);
+}
