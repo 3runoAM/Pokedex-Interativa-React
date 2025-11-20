@@ -20,7 +20,6 @@ export default function PokemonDetails() {
     const [loadingWeaknesses, setLoadingWeaknesses] = useState(false);
     const [error, setError] = useState(null);
 
-    // console.log("PokemonDetails mounted with id:", id, " cachedPokemon:", cachedPokemon);
 
     useEffect(() => {
         const fetchPokemonDetails = async (pokemonId) => {

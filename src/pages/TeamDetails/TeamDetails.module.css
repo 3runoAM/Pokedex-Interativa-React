@@ -1,0 +1,44 @@
+.teamDetailsSection {
+    width: 100%;
+}
+
+.teamHeader {
+    width: 100%;
+}
+
+.buttonContainer {
+    width: 100%;
+}
+
+.editButton, .deleteButton {
+    font-size: 1.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.editButton {
+    background-color: var(--button-yellow);
+}
+
+.deleteButton {
+    background-color: var(--fire-red);
+}
+
+.cardsContainer {
+    list-style: none;
+}
+
+.teamName {
+    width: 90%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-weight: 400;
+    font-size: 2.5rem;
+}
+
+.statisticsContainer {
+    width: 100%;
+    font-size: 1.9rem;
+}

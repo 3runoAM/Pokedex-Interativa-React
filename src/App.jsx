@@ -13,6 +13,7 @@ import Unauthorized from "./pages/Unauthorized/Unauthorized";
 import PokemonDetails from "./pages/PokemonDetails/PokemonDetails";
 import TeamEditor from "./pages/TeamEditor/TeamEditor";
 import NewPassword from "./pages/NewPassword/NewPassword";
+import TeamDetails from "./pages/TeamDetails/TeamDetails";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,12 +46,13 @@ export default function App() {
                 <Route path="/home" element={<Home/>}/>
                 <Route path="/unauthorized" element={<Unauthorized />}/>
                 <Route path="/pokemonDetails/:id" element={<PokemonDetails />} />
-                <Route path="/newPassword" element={<NewPassword />} />
 
                 <Route element={<PrivateRoute isAuthenticated={isAuthenticated}/>}>
                     <Route path="/profile" element={ <Profile/> } />
                     <Route path="/teams" element={ <Teams/> } />
-                    <Route path="/teams/team-editor/:id" element={ <TeamEditor /> } />
+                    <Route path="/teams/teamEditor/:id" element={ <TeamEditor /> } />
+                    <Route path="/newPassword" element={<NewPassword />} />
+                    <Route path="/teams/teamDetails/:id" element={ <TeamDetails /> } />
                 </Route>
             </Route>
         </Routes>
