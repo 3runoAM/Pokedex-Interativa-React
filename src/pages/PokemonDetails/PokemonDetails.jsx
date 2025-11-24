@@ -25,7 +25,9 @@ export default function PokemonDetails() {
         const fetchPokemonDetails = async (pokemonId) => {
             try {
                 setLoading(true);
+
                 const results = await dataBase.getById("Pokemon", pokemonId);
+
                 if (results.length > 0) {
                     const fetchedPokemon = results[0];
 
@@ -33,12 +35,12 @@ export default function PokemonDetails() {
                     fetchedPokemon.types = typesResponse;
 
                     setLoading(false);
-                    console.log("Pokémon encontrado:", fetchedPokemon);
                     setPokemon(fetchedPokemon);
                 }
             } catch (err) {
                 showToast("Erro ao buscar detalhes do Pokémon: " + err.message, "error");
                 console.error("Erro ao buscar detalhes do Pokémon:", err);
+
                 setError("Erro ao buscar detalhes do Pokémon.");
                 setLoading(false);
             }
@@ -62,12 +64,12 @@ export default function PokemonDetails() {
                     });
                 }));
 
-                console.log("Setando fraquezas: ", weaknessesSet.values());
                 setPokemonWeaknesses(weaknessesSet);
                 setLoadingWeaknesses(false);
             } catch (err) {
                 showToast("Erro ao buscar fraquezas");
                 console.error("Erro ao buscar fraquezas:", err);
+
                 setError("Erro ao buscar fraquezas.");
                 setLoadingWeaknesses(false);
             }

@@ -31,9 +31,6 @@ export default function App() {
         checkAuth();
     }, [userToken]);
 
-
-    console.log("O usuário está autenticado?", isAuthenticated ? "Sim" : "Não");
-
     if (loading) return <div className={`loading`}>Carregando...</div>;
 
     return (

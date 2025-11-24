@@ -31,3 +31,16 @@
     font-size: 1.2rem;
     background-color: var(--fire-red);
 }
+
+.partnerContainer {
+    max-width: 100%;
+}
+
+.teamName {
+    font-size: 2rem;
+}
+
+.partners {
+    max-width: 100%;
+    overflow: auto;
+}

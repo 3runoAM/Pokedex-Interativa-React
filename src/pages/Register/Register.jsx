@@ -15,9 +15,10 @@ export default function Register() {
         try {
             const {data, error} = await Authentication.register(formData.email, formData.password);
 
-            if (error) throw error;
+            if (error) throw new Error("There was an error during registration: " + error.message);
 
             showToast("Registration successful! Please check your email to verify your account.");
+
             navigate("/login");
         } catch (err) {
             showToast(`It was not possible to register: ${err.message}`);

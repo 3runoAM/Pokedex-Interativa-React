@@ -18,7 +18,7 @@ export default function Login({setIsAuthenticated}) {
 
             const {data, error} = await Authentication.login(formData.email, formData.password);
 
-            if (error) throw error;
+            if (error) throw new Error("There was an error during login: " + error.message);
 
             showToast("Login successful!");
             localStorage.setItem("user", JSON.stringify(data.user.user_metadata));
@@ -26,7 +26,7 @@ export default function Login({setIsAuthenticated}) {
 
             navigate("/home");
         } catch (err) {
-            console.log(err);
+            console.error(err);
             showToast(`It was not possible to login: ${err.message}`);
         }
     }

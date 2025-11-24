@@ -1,0 +1,15 @@
+.summaryContainer{
+    max-width: 8rem
+}
+
+.summaryImage{
+    width: 8rem;
+}
+
+.pokemonName{
+    font-size: 2rem;
+}
+
+.pokemonNumber{
+    font-size: 1.4rem;
+}

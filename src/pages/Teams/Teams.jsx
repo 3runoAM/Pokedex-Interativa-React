@@ -15,8 +15,9 @@ export default function Teams() {
     const fetchUserTeams = async () => {
         try {
             const teams = await dataBase.getTeamsByUserId(user.sub);
-            console.log(teams);
+
             setTeams(teams);
+
             return teams;
         } catch (error) {
             console.error("Erro ao obter times do usuário", error);
@@ -26,35 +27,32 @@ export default function Teams() {
 
     const handleDelete = async (teamId) => {
         const isConfirmed = await getConfirmation("Are you sure you want to delete this team? This action cannot be undone.")
-
         if (!isConfirmed) return;
 
         try {
             const isDeleted = await dataBase.deleteTeam(teamId);
             if (isDeleted) showToast("Team deleted");
+
             fetchUserTeams();
         } catch (err) {
-            console.log("Erro ao deletar time: ", err);
+            console.error("Erro ao deletar time: ", err);
             showToast("Erro ao deletar time");
         }
     }
 
     const handleDeleteAll = async () => {
         const isConfirmed = await getConfirmation("Are you sure you want to delete all teams? This action cannot be undone.")
-
         if (!isConfirmed) return;
 
         try {
-            for (const team of teams) {
-                await dataBase.deleteTeam(team.id);
-            }
-            showToast("All teams deleted");
+            const isDeleted = await dataBase.deleteAll("Team");
+            if (isDeleted) showToast("All teams deleted");
+
             fetchUserTeams();
         } catch (err) {
-            console.log("Erro ao deletar todos os times: ", err);
+            console.error("Erro ao deletar todos os times: ", err.message);
             showToast("Erro ao deletar todos os times");
         }
-
     }
 
     useEffect(() => {

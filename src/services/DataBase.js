@@ -100,9 +100,8 @@ const dataBase = {
             .select("*")
             .eq("name", name);
 
-
         if (response.error) {
-            // console.error("Erro ao buscar recurso:", response.error);
+            console.error("Erro ao buscar recurso:", response.error);
             return false;
         }
 
@@ -134,6 +133,7 @@ const dataBase = {
             console.error("Erro ao buscar tipo:", typeError);
             return [];
         }
+
         if (!typeData || typeData.length === 0) return [];
 
         const typeId = typeData[0].id;
@@ -147,7 +147,6 @@ const dataBase = {
             return [];
         }
 
-        console.log("Retornando: ", data);
         return data;
     },
 
@@ -172,7 +171,7 @@ const dataBase = {
             .order("pokedex_id");
 
         if (response.error) {
-            // console.error("Erro ao buscar nomes dos Pokémons:", response.error);
+            console.error("Erro ao buscar nomes dos Pokémons:", response.error);
             return [];
         }
 
@@ -193,9 +192,6 @@ const dataBase = {
     },
 
     searchByNameOrPokedexId: async (nameOrId) => {
-
-        Number(nameOrId) ? console.log("Pesquisando por ID: ", nameOrId) : console.log("Pesquisando por nome: ", nameOrId);
-
         const response = Number(nameOrId) ?
             await supabase.from("Pokemon")
                 .select("*")
@@ -225,8 +221,6 @@ const dataBase = {
             return 0;
         }
 
-        console.log("Retornando: ", user_id, ". Com equipes: ", response.data);
-
         return response.data.length;
     },
 
@@ -240,8 +234,6 @@ const dataBase = {
             console.error("Erro ao buscar times do usuário:", response.error);
             return [];
         }
-
-        console.log("Retornando: ", user_id, ". Com equipes: ", response.data);
 
         return response.data;
     },
@@ -259,6 +251,18 @@ const dataBase = {
         return true;
     },
 
+    deleteAll: async (table) => {
+        const response = await supabase.from(table)
+            .delete();
+
+        if (response.error) {
+            console.error(`Erro ao deletar todos os registros da tabela ${table}:`, response.error);
+            return false;
+        }
+
+        return true;
+    },
+
     createTeam: async (teamData) => {
         const response = await supabase.from("Team")
             .insert(teamData)
@@ -269,7 +273,6 @@ const dataBase = {
             return null;
         }
 
-        console.log("Retornando time criado: ", response);
         return response.data;
     },
 
@@ -287,8 +290,6 @@ const dataBase = {
     },
 
     updateTeamName: async (id, teamName) => {
-        console.log("-----------------------------------");
-        console.log("Atualizando nome do time para:", teamName);
         const response = await supabase.from("Team")
             .update({name: teamName})
             .eq("id", id)
@@ -299,15 +300,10 @@ const dataBase = {
             return null;
         }
 
-        console.log("Retornando: ", response);
-
         return response.data;
     },
 
     updateTeamPartners: async (teamId, partnersIds) => {
-        console.log("-----------------------------------");
-        console.log("Atualizando parceiros do time para:", partnersIds);
-
         const deleteResponse = await supabase.from("PokemonPartner")
             .delete()
             .eq("team_id", teamId);
@@ -326,8 +322,6 @@ const dataBase = {
             console.error("Erro ao atualizar parceiros do time:", updatedPartners.error);
             return null;
         }
-
-        console.log("Retornando: ", updatedPartners);
 
         return updatedPartners.data;
     },

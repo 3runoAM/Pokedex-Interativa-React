@@ -15,7 +15,9 @@ export default function Profile() {
     const handleLogout = async () => {
         try {
             await Authentication.logOut();
+
             localStorage.clear();
+
             navigate('/login');
         } catch (err) {
             showToast("Erro ao fazer logout");
@@ -36,16 +38,15 @@ export default function Profile() {
         const fetchUserInfo = async () => {
             const userInfo = await getUserInfo();
 
-            console.log("Informações coletadas: ", userInfo);
-
             setUser(userInfo);
         };
 
         const fetchUserTeams = async () => {
             try {
                 const teamsQuantity = await dataBase.getTeamsQuantityByUserId(user.sub);
-                console.log(teamsQuantity);
+
                 setTeams(teamsQuantity);
+
                 return teamsQuantity;
             } catch (error) {
                 console.error("Erro ao obter times do usuário", error);
@@ -53,9 +54,9 @@ export default function Profile() {
             }
         }
 
-        if (user === null) fetchUserInfo().then(r => console.log(r));
+        if (user === null) fetchUserInfo();
 
-        fetchUserTeams().then(teamsQuantity => console.log(teamsQuantity));
+        fetchUserTeams();
     }, [user]);
 
     return (

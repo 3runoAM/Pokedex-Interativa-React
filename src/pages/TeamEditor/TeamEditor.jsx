@@ -3,7 +3,7 @@ import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
 import {useToast} from "../../provider/ToastProvider";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
+import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard.module.css";
 import {useConfirmation} from "../../provider/ConfirmationProvider";
 
 export default function TeamEditor() {
@@ -11,21 +11,19 @@ export default function TeamEditor() {
         teamName: "",
         partnersIds: []
     });
+    const [teamIsFull, setTeamIsFull] = useState(false);
+    const [pokemonList, setPokemonList] = useState([]);
+    const [search, setSearch] = useState("");
 
     const {id} = useParams();
+    const {showToast} = useToast();
+    const {getConfirmation} = useConfirmation();
+
     const location = useLocation();
+    const navigate = useNavigate();
 
     const cachedTeam = location.state?.team;
     const CREATION_TEAM_ID = "60753bbe-2c1f-4e40-963a-21ea6c14c777";
-    const navigate = useNavigate();
-
-    const [teamIsFull, setTeamIsFull] = useState(false);
-
-    const {showToast} = useToast();
-    const {getConfirmation} = useConfirmation();
-    const [pokemonList, setPokemonList] = useState([]);
-
-    const [search, setSearch] = useState("");
 
     const filteredPokemonList = pokemonList.filter(p => p.name.toLowerCase()
         .includes(search.toLowerCase()))
@@ -44,11 +42,9 @@ export default function TeamEditor() {
     const handleChangeOfPartnerId = (partnerId) => {
         setSearch("");
         if (teamIsFull) {
-            showToast("Time completo! Você não pode adicionar mais Pokémons");
+            showToast("Time completo!");
             return;
         }
-
-        console.log("Adicionando parceiro: ", partnerId);
 
         setFormData(prev => ({
             ...prev,
@@ -57,14 +53,10 @@ export default function TeamEditor() {
     }
 
     const handleRemove = (partnerId) => {
-        console.log("Removendo parceiro: ", partnerId);
-
-        console.log("Estado antes: ", formData);
         setFormData(prev => ({
             ...prev,
             partnersIds: prev.partnersIds.filter(id => id !== partnerId)
         }));
-        console.log("Estado depois: ", formData);
     }
 
     const handleSubmit = async (e) => {
@@ -81,18 +73,12 @@ export default function TeamEditor() {
 
             if (id !== CREATION_TEAM_ID) {
                 const isConfirmed = await getConfirmation("Are you sure you want to update this team?");
-
                 if (!isConfirmed) return;
 
-                console.log("Atualizando time")
-                const updatedName = await dataBase.updateTeamName(id, formData.teamName);
-                console.log("Atualizado: ", updatedName);
-
-                console.log("Atualizando parceiros: ", formData.partnersIds);
+                await dataBase.updateTeamName(id, formData.teamName);
 
                 const updatedPartners = formData.partnersIds.map((partnerId) => {
                     const partner = pokemonList.find(pokemon => pokemon.pokedex_id == partnerId);
-                    console.log("Pokemon encontrado: ", partner)
 
                     return {
                         team_id: id,
@@ -101,7 +87,6 @@ export default function TeamEditor() {
                 });
 
                 const response = await dataBase.updateTeamPartners(id, updatedPartners);
-                console.log("Atualizado: ", updatedPartners);
 
                 if (response) showToast("Team updated successfully")
             } else {
@@ -109,12 +94,8 @@ export default function TeamEditor() {
                     name: formData.teamName.trim()
                 });
 
-                console.log("Time criado com sucesso! ", newTeam);
-
                 const pokemonPartners = formData.partnersIds.map((partnerId) => {
                     const partner = pokemonList.find(pokemon => pokemon.pokedex_id == partnerId);
-
-                    console.log("Pokemon encontrado: ", partner)
 
                     return {
                         team_id: newTeam[0].id,
@@ -122,15 +103,11 @@ export default function TeamEditor() {
                     };
                 });
 
-                console.log("Adicionando parceiros de Pokémon ao time:", pokemonPartners);
-
                 const response = await dataBase.addPokemonPartnersToTeam(pokemonPartners);
-                console.log("Parceiros adicionados ao time com sucesso!");
 
                 if (response) showToast("Team created successfully")
             }
 
-            console.log("Redirecionando para a página de times...");
             navigate("/teams");
         } catch (error) {
             console.error("Erro ao criar time:", error);
@@ -140,10 +117,8 @@ export default function TeamEditor() {
 
     const getPokemonList = async () => {
         try {
-            console.log("Buscando pokemon list");
             const pokemonList = await dataBase.getAllPokemonNamesAndIds();
 
-            console.log("Lista retornada: ", pokemonList);
             setPokemonList(pokemonList);
         } catch (err) {
             console.error(err);
@@ -152,23 +127,19 @@ export default function TeamEditor() {
     };
 
     useEffect(() => {
-        console.log("Carregando lista de Pokémons...");
         getPokemonList();
     }, [id, cachedTeam]);
 
     useEffect(() => {
-        console.log("Verificando se o time está cheio...");
         if (formData.partnersIds.length >= 6) {
             setTeamIsFull(true);
-            showToast("Time completo! Você não pode adicionar mais Pokémons.");
+            showToast("Time completo!");
         } else {
-            console.log("Time ainda não está cheio.");
             setTeamIsFull(false);
         }
     }, [formData.partnersIds]);
 
     useEffect(() => {
-        console.log("Pokemon cached: ", cachedTeam)
         if (id === CREATION_TEAM_ID) return;
 
         if (cachedTeam) {
@@ -181,9 +152,7 @@ export default function TeamEditor() {
 
         const fetchTeamData = async () => {
             try {
-                console.log("Buscando dados do time para edição: ", id);
                 const team = await dataBase.getTeamById(id);
-                console.log("Time retornado: ", team);
 
                 setFormData({
                     teamName: team.name,
@@ -198,8 +167,6 @@ export default function TeamEditor() {
 
         fetchTeamData();
     }, [id, cachedTeam])
-
-    console.log("Renderizando TeamEditor com estado: ", formData, "e lista de Pokémons: ", pokemonList);
 
     return (
         <section className={`${style.newTeamPage} flex-column largeGap smallPadding align-center`}>
@@ -250,17 +217,16 @@ export default function TeamEditor() {
             </form>
 
             {(formData.partnersIds.length > 0) && (
-                <div style={{maxWidth: "100%"}} className={`flex-column smallGap`}>
-                    <h3 style={{fontSize: "2rem"}}>Your team: {formData.teamName}</h3>
+                <div style={style.partnerContainer} className={`flex-column smallGap`}>
+                    <h3 style={style.teamName}>Your team: {formData.teamName}</h3>
 
-                    <div className={`flex-row smallGap mediumPadding`} style={{maxWidth: "100%", overflow: "auto"}}>
+                    <div className={`flex-row smallGap mediumPadding`} style={style.partners}>
                         {
                             formData.partnersIds.map((partnerId) => {
                                 const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
-                                console.log("Renderizando parceiro: ", partnerId, " com dados: ", pokemon?.name);
 
                                 return (
-                                    <div style={{width: "100%"}}
+                                    <div style={style.partners}
                                          className={`flex-column align-center smallPadding smallGap`}>
                                         <SummaryPokemonCard pokemon={pokemon}/>
                                         <button className={`${style.removeButton} button`} type="button"
@@ -283,4 +249,3 @@ export default function TeamEditor() {
         </section>
     );
 }
-
