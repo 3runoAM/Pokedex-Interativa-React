@@ -1,5 +1,6 @@
 import style from "../RegisterForm/registerForm.module.css";
 import {useState} from "react";
+import {useToast} from "../../provider/ToastProvider";
 
 export default function RegisterForm({register}) {
     const [formData, setFormData] = useState({
@@ -8,28 +9,27 @@ export default function RegisterForm({register}) {
         confirmPassword: ''
     });
     const [errors, setErrors] = useState({});
+    const {showToast} = useToast();
 
-    // VALIDA UM CAMPO POR VEZ
-    const validate = (fieldName, value) => {
+    const validateField = (fieldName, value) => {
         const errors = {};
 
         switch (fieldName) {
             case "email":
-                if (!value) {
-                    errors.email = "Email é obrigatório";
-                }
-                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    errors.email = "Email inválido";
-                }
+                if (!value) errors.email = "Email is mandatory"
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errors.email = "Invalid email";
                 break;
+
             case "password":
-                if (!value) errors.password = "Senha é obrigatória";
-                else if (value.length < 6) errors.password = "Senha deve ter pelo menos 6 caracteres";
+                if (!value) errors.password = "Password is mandatory";
+                else if (value.length < 6) errors.password = "Password must be at least 6 characters long";
                 break;
+
             case "confirmPassword":
-                if (!value) errors.confirmPassword = "Confirmação de senha é obrigatória";
-                else if (value !== formData.password) errors.confirmPassword = "As senhas não coincidem";
+                if (!value) errors.confirmPassword = "Please confirm your password";
+                else if (value !== formData.password) errors.confirmPassword = "Passwords do not match";
                 break;
+
             default:
                 break;
         }
@@ -37,25 +37,32 @@ export default function RegisterForm({register}) {
         return errors;
     };
 
-    // VALIDA O FORMULÁRIO INTEIRO USANDO validate
     const validateForm = () => {
         const errors = {};
 
         Object.keys(formData).forEach(fieldName => {
-            const fieldErrors = validate(fieldName, formData[fieldName]);
+            const fieldErrors = validateField(fieldName, formData[fieldName]);
             Object.assign(errors, fieldErrors);
         });
 
         return errors;
     };
 
-    // NO SUBMIT VALIDA O FORMULÁRIO INTEIRO E LIMPA OS ERROS
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const errors = validateForm();
         setErrors(errors);
 
-        if (Object.keys(errors).length === 0) register(formData);
+        if (Object.keys(errors).length === 0) {
+            register(formData)
+        }
+        else {
+            showToast(`Please fix the errors in the form before submitting: ${Object.values(errors).join(", ")}`)
+            setTimeout(() => {
+                setErrors({});
+            }, 5000);
+        }
     };
 
     const isFormValid = Object.keys(errors).length === 0 && formData.email && formData.password && formData.confirmPassword;
