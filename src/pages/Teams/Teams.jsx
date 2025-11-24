@@ -45,7 +45,9 @@ export default function Teams() {
         if (!isConfirmed) return;
 
         try {
-            const isDeleted = await dataBase.deleteAll("Team");
+            debugger
+            const userId = user.sub;
+            const isDeleted = await dataBase.deleteAll(userId, "Team");
             if (isDeleted) showToast("All teams deleted");
 
             fetchUserTeams();

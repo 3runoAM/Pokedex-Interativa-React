@@ -26,7 +26,7 @@ export function LoginForm({login}) {
             showToast(`An email has been sent to ${formData.email.split("@")[0]} for a password reset`);
         } catch (err) {
             console.error("Error sending password reset email:", err);
-            showToast("Something went wrong, please try again" + err.message);
+            showToast("Something went wrong, please try again. " + err.message);
         }
     }
 

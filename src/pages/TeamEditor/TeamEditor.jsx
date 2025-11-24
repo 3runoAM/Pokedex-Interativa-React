@@ -3,7 +3,7 @@ import dataBase from "../../services/DataBase";
 import {useEffect, useState} from "react";
 import {useToast} from "../../provider/ToastProvider";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
-import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard.module.css";
+import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 import {useConfirmation} from "../../provider/ConfirmationProvider";
 
 export default function TeamEditor() {
@@ -217,18 +217,19 @@ export default function TeamEditor() {
             </form>
 
             {(formData.partnersIds.length > 0) && (
-                <div style={style.partnerContainer} className={`flex-column smallGap`}>
-                    <h3 style={style.teamName}>Your team: {formData.teamName}</h3>
+                <div className={`${style.partnerContainer} flex-column smallGap`}>
+                    <h3 className={style.teamName}>Your team: {formData.teamName}</h3>
 
-                    <div className={`flex-row smallGap mediumPadding`} style={style.partners}>
+                    <div className={`${style.partners} flex-row smallGap mediumPadding`}>
                         {
                             formData.partnersIds.map((partnerId) => {
                                 const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
 
                                 return (
-                                    <div style={style.partners}
-                                         className={`flex-column align-center smallPadding smallGap`}>
+                                    <div className={`${style.partners} flex-column align-center smallPadding smallGap`}>
                                         <SummaryPokemonCard pokemon={pokemon}/>
+
+
                                         <button className={`${style.removeButton} button`} type="button"
                                                 onClick={(e) => handleRemove(partnerId)}>Remove
                                         </button>

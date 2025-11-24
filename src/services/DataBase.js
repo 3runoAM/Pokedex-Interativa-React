@@ -251,9 +251,10 @@ const dataBase = {
         return true;
     },
 
-    deleteAll: async (table) => {
+    deleteAll: async (userId, table) => {
         const response = await supabase.from(table)
-            .delete();
+            .delete()
+            .eq("user_id", userId);
 
         if (response.error) {
             console.error(`Erro ao deletar todos os registros da tabela ${table}:`, response.error);
