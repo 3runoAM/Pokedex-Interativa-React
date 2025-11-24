@@ -12,55 +12,17 @@ export default function Register() {
     const {showToast} = useToast();
 
     const handleRegister = async (formData) => {
-        const errors = validateFormData(formData);
-
-        if (Object.keys(errors).length > 0) {
-            console.error("Erros de validação:", errors);
-            showToast("Erro ao registrar: Verifique os dados informados");
-            return;
-        }
-
         try {
             const {data, error} = await Authentication.register(formData.email, formData.password);
+
             if (error) throw error;
 
+            showToast("Registration successful! Please check your email to verify your account.");
             navigate("/login");
         } catch (err) {
-            showToast("Erro ao registrar");
-            console.error("Erro ao registrar:", err);
+            showToast(`It was not possible to register: ${err.message}`);
         }
     }
-
-    // VALIDA O FORMULÁRIO INTEIRO
-    const validateFormData = (formData) => {
-        const errors = {};
-
-        Object.keys(formData).forEach(fieldName => {
-            const fieldValue = formData[fieldName];
-
-            switch (fieldName) {
-                case "email":
-                    if (!fieldValue) {
-                        errors.email = "Email é obrigatório";
-                    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fieldValue)) {
-                        errors.email = "Email inválido";
-                    }
-                    break;
-                case "password":
-                    if (!fieldValue) errors.password = "Senha é obrigatória";
-                    else if (fieldValue.length < 6) errors.password = "Senha deve ter pelo menos 6 caracteres";
-                    break;
-                case "confirmPassword":
-                    if (!fieldValue) errors.confirmPassword = "Confirmação de senha é obrigatória";
-                    else if (fieldValue !== formData.password) errors.confirmPassword = "As senhas não coincidem";
-                    break;
-                default:
-                    break;
-            }
-        });
-
-        return errors;
-    };
 
     return (
         <div className={`${styles.registerContainer} flex-column`}>
