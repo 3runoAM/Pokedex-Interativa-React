@@ -7,16 +7,14 @@ import {useNavigate} from "react-router-dom";
 export default function NewPassword() {
     const [authorized, setAuthorized] = useState(null);
     const [password, setPassword] = useState("");
+
     const navigate = useNavigate();
     const {showToast} = useToast();
 
     useEffect(() => {
         supabase.auth.onAuthStateChange((event, session) => {
-            if (event === "PASSWORD_RECOVERY") {
-                setAuthorized(true);
-            } else {
-                setAuthorized(false);
-            }
+            if (event === "PASSWORD_RECOVERY") setAuthorized(true);
+            else setAuthorized(false);
         })
     }, []);
 
@@ -29,16 +27,13 @@ export default function NewPassword() {
         }
 
         try {
-            const {_, error} = await supabase.auth.updateUser({
-                password: password,
-            });
+            const {_, error} = await supabase.auth.updateUser({password: password});
+            if (error) throw new Error("There was an error updating the password: " + error.message);
 
-            if (error) throw error;
-
-            console.log('Password updated successfully');
             showToast('Password updated successfully');
 
             await supabase.auth.signOut();
+
             navigate('/login');
         } catch (err) {
             console.error('Error updating password:', err.message);

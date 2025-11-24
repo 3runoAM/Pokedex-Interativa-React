@@ -15,10 +15,9 @@ const usePokeApi = () => {
         setLoading(true);
         setError([]);
 
-        const startIndex = (currentPage - 1) * 20 + 1;
-        const endIndex = currentPage * 20;
+        const startIndex = (currentPage - 1) * 10 + 1;
+        const endIndex = currentPage * 10;
 
-        // SEPARA QUAIS IDS PRECISAM SER BUSCADOS NA API
         const ids = [];
         for (let i = startIndex; i < endIndex; i++) {
             if (await dataBase.pokemonExistsByPokedexId(i)) continue;
@@ -29,7 +28,6 @@ const usePokeApi = () => {
             return {loading, errors, updatePokemonBasicInfo};
         }
 
-        // MAPEIA AS PROMISES DE BUSCA NA API E TRATA OS DADOS
         try {
             const promises = ids.map(async (i) => {
                 try {
@@ -60,23 +58,6 @@ const usePokeApi = () => {
 
             const results = await Promise.all(promises);
             const pokemonInfo = results.filter(pokemon => pokemon && pokemon.description && pokemon.types);
-
-            /*
-            EXEMPLO DE OBJETO
-            {
-                "name": "spearow",
-                "description": "It flaps its small wings busily to\nfly. Using its beak, it searches\nin grass for prey.",
-                "sprite_url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/21.png",
-                "hp": 40,
-                "attack": 60,
-                "defense": 30,
-                "special_attack": 31,
-                "special_defense": 31,
-                "speed": 70,
-                "pokedex_id": 21,
-                "types": [{"name": "normal"},
-                          {"name": "flying"}]
-            */
 
             for (const pokemon of pokemonInfo) {
                 const currentPokemon = {
@@ -130,36 +111,23 @@ const usePokeApi = () => {
         try {
             for (const type of types) {
                 const typeName = type.name || type;
-                console.log("Atualizando fraquezas do tipo:", typeName);
 
                 const typeResponse = await fetch(`${URL_BASE_TYPE}/${typeName}`).then(res => res.json());
                 const doubleWeaknesses = typeResponse.damage_relations.double_damage_from.map(w => w.name);
 
-                console.log("Fraco contra:", doubleWeaknesses);
 
                 for (const weakness of doubleWeaknesses) {
                     const exists = await dataBase.existsByName("Type", weakness);
 
-                    console.log("Verificando existência do tipo de fraqueza:", weakness, "->", exists ? "existe" : "não existe");
+                    if (!exists) await dataBase.create("Type", { name: weakness});
 
-                    if (!exists) {
-                        console.log(`Criando tipo inexistente: ${weakness}`);
-                        await dataBase.create("Type", { name: weakness});
-                    }
-
-                    // Busca os registros atuais
                     const [registeredType] = await dataBase.getByName("Type", typeName);
-                    console.log("Tipo registrado: ", registeredType);
-
                     const [registeredWeakness] = await dataBase.getByName("Type", weakness);
-                    console.log("Fraqueza registrada: ", registeredWeakness);
 
                     if (!registeredType || !registeredWeakness) {
                         console.warn("Não foi possível obter tipo ou fraqueza:", typeName, weakness);
                         continue;
                     }
-
-                    console.log(`Registrando fraqueza ${weakness} para o tipo ${typeName}`);
 
                     const alreadyExists = await dataBase.existsRelation(
                         "Weakness",
@@ -167,10 +135,7 @@ const usePokeApi = () => {
                         "weakness_type_id", registeredWeakness.id
                     );
 
-                    console.log("Essa fraqueza já existe?", alreadyExists);
-
                     if (!alreadyExists) {
-                        console.log(`Criando relação de fraqueza entre ${typeName} e ${weakness}`);
                         await dataBase.create("Weakness", { type_id: registeredType.id, weakness_type_id: registeredWeakness.id });
                     }
                 }

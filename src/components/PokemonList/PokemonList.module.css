@@ -2,3 +2,8 @@
     font-size: 1.75rem;
     align-self: center;
 }
+
+.list {
+    list-style: none;
+    width: 100%;
+}

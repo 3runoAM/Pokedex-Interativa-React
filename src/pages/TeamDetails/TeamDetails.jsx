@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import dataBase from "../../services/DataBase";
 import {useToast} from "../../provider/ToastProvider";
-import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
+import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard.module.css";
 import styles from "../PokemonDetails/PokemonDetails.module.css";
 import {useConfirmation} from "../../provider/ConfirmationProvider";
 
@@ -34,11 +34,13 @@ export default function TeamDetails() {
             if (!isConfirmed) return;
             
             const isDeleted = await dataBase.deleteTeam(teamId);
-            if (isDeleted) showToast("Team deleted");
+            if (isDeleted) showToast("Team deleted successfully");
+
             navigate("/teams");
         } catch (err) {
-            console.log("Erro ao deletar time: ", err);
+            console.error("Erro ao deletar time: ", err);
             showToast("Erro ao deletar time");
+
             navigate("/teams");
         }
     }
@@ -81,7 +83,6 @@ export default function TeamDetails() {
             try {
                 const team = await dataBase.getTeamById(id);
                 if (team) {
-                    console.log("Setando time para: ", team);
                     location.state.team = team;
 
                     const partners = cachedTeam.PokemonPartner?.map(partner => partner.Pokemon);
@@ -94,7 +95,6 @@ export default function TeamDetails() {
                 }
 
                 showToast("Time não encontrado");
-                console.error("Time não encontrado");
 
                 navigate("/teams");
             } catch (err) {
@@ -105,8 +105,6 @@ export default function TeamDetails() {
 
         teamFetch();
     }, [])
-
-    console.log("Montando pagina com time: ", team);
 
     return (
         <section className={`${style.teamDetailsSection} flex-column align-center smallPadding mediumGap`}>

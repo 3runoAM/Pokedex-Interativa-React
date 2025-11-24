@@ -43,7 +43,9 @@ export default function Home() {
 
     const handleGoBack = () => {
         setIsSearchMode(false);
+
         setSearchResults([]);
+
         setSearchTerm("");
     }
 
@@ -66,6 +68,7 @@ export default function Home() {
         } catch (err) {
             console.error(err);
             showToast("Erro ao buscar Pokémon.");
+
             setIsSearchMode(false);
             setIsSearching(false);
         }
@@ -77,6 +80,7 @@ export default function Home() {
                 const typesResponse = await dataBase.getPokemonTypes(pokemon.id);
                 pokemon.types = typesResponse;
             }
+
             return pokemon;
         }));
     }
@@ -86,8 +90,7 @@ export default function Home() {
 
         const fetchAndUpdate = async () => {
             try {
-                console.log("Carregando página ", currentPage);
-                // await updatePokemonBasicInfo(currentPage);
+                await updatePokemonBasicInfo(currentPage);
 
                 const results = await dataBase.getPokemon(currentPage);
                 const typedPokemon = await ensureTypes(results)
@@ -97,6 +100,7 @@ export default function Home() {
             } catch (err) {
                 console.error(err);
                 showToast("Erro ao carregar Pokémons.");
+
                 setLoadingMore(false);
             }
         };

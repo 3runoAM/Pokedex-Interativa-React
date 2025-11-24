@@ -25,8 +25,8 @@ export function LoginForm({login}) {
 
             showToast(`An email has been sent to ${formData.email.split("@")[0]} for a password reset`);
         } catch (err) {
-            console.log(err)
-            showToast("Something went wrong, please try again");
+            console.error("Error sending password reset email:", err);
+            showToast("Something went wrong, please try again. " + err.message);
         }
     }
 
@@ -35,9 +35,7 @@ export function LoginForm({login}) {
         switch (fieldName) {
             case "email":
                 if (!value) errors.email = "Email is mandatory";
-                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    errors.email = "Email is invalid";
-                }
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errors.email = "Email is invalid";
                 break;
             case "password":
                 if (!value) errors.password = "Password is mandatory";
@@ -65,13 +63,15 @@ export function LoginForm({login}) {
         const errors = validateForm();
         setErrors(errors);
 
-        if (Object.keys(errors).length === 0) login(formData);
+        if (Object.keys(errors).length === 0) {
+            login(formData);
+        }
         else {
             showToast(`Please fix the errors in the form before submitting: ${Object.values(errors).join(", ")}`)
             setTimeout(() => {
                 setErrors({});
-            }, 5000);
-        };
+            }, 3000);
+        }
     };
 
     return (
@@ -79,9 +79,11 @@ export function LoginForm({login}) {
             <div className={`${style.formDiv} flex-column mediumGap flex-center`}>
                 <div className={`${style.inputContainer} flex-column`}>
                     <label className={`${style.labelSize} labelSize`} htmlFor="email">Email</label>
+
                     {errors.email && (
                         <span className="errorMessage">{errors.email}</span>
                     )}
+
                     <input className={style.input}
                            onChange={(e) => setFormData({...formData, "email": e.target.value})}
                            type="email"
