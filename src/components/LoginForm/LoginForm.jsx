@@ -106,7 +106,7 @@ export function LoginForm({login}) {
                 </div>
             </div>
 
-            <button className={style.link} onClick={(e) => handleForgetPassword(e)}>
+            <button type="button" className={style.link} onClick={(e) => handleForgetPassword(e)}>
                 Esqueci a senha
             </button>
 
