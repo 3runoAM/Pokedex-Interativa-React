@@ -1,3 +1,7 @@
+.menuLink {
+    display: none;
+}
+
 .menuLogo {
     display: none;
 }
@@ -62,15 +66,17 @@
     .menu {
         width: 91%;
     }
-}
 
-@media (min-width: 640px) {
-    .menu {
-        width: 92%;
+    .menuLink {
+        display: none;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
+    .menuLink {
+        display: block;
+    }
+
     .menuLogo {
         display: block;
         width: 13rem;
@@ -78,13 +84,14 @@
 
     .menu {
         top: 17px;
+        width: 92%;
         box-shadow: 0 2px 6px #28576c80;
         border-radius: 0 0 10px 10px;
         gap: 10%;
     }
 
     .menuIcon {
-       display: none;
+        display: none;
     }
 
     .menu ul {
@@ -118,6 +125,22 @@
     }
 }
 
-/*@media (min-width: 1024px) {}*/
+@media (min-width: 768px) {
+    .menu {
+        width: 93%;
+    }
+}
 
-/*@media (min-width: 1280px) {}*/
+@media (min-width: 1024px) {
+    .menu {
+        top: 14px;
+        width: 93.4%;
+    }
+}
+
+@media (min-width: 1280px) {
+    .menu {
+        top: 16px;
+        width: 93.8%;
+    }
+}

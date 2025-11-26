@@ -6,29 +6,29 @@ const usePokeApi = () => {
     const URL_BASE_SPECIES = "https://pokeapi.co/api/v2/pokemon-species";
     const URL_BASE_ARTWORK = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/"
     const URL_BASE_TYPE = "https://pokeapi.co/api/v2/type";
-    const URL_BASE_MOVES = "https://pokeapi.co/api/v2/move";
 
     const [loading, setLoading] = useState(false);
     const [errors, setError] = useState([]);
 
     const updatePokemonBasicInfo = useCallback(async (currentPage) => {
-        setLoading(true);
-        setError([]);
-
-        const startIndex = (currentPage - 1) * 10 + 1;
-        const endIndex = currentPage * 10;
-
-        const ids = [];
-        for (let i = startIndex; i < endIndex; i++) {
-            if (await dataBase.pokemonExistsByPokedexId(i)) continue;
-            ids.push(i);
-        }
-        if (ids.length === 0) {
-            setLoading(false);
-            return {loading, errors, updatePokemonBasicInfo};
-        }
-
         try {
+            setLoading(true);
+            setError([]);
+
+            const startIndex = (currentPage - 1) * 10 + 1;
+            const endIndex = currentPage * 10;
+
+            const ids = [];
+            for (let i = startIndex; i <= endIndex; i++) {
+                const exists = await dataBase.pokemonExistsByPokedexId(i)
+                if (exists) continue;
+                ids.push(i);
+            }
+            if (ids.length === 0) {
+                setLoading(false);
+                return {loading, errors, updatePokemonBasicInfo};
+            }
+
             const promises = ids.map(async (i) => {
                 try {
                     const pokeResult = await fetch(`${URL_BASE_POKEMON}/${i}`).then(res => res.json());

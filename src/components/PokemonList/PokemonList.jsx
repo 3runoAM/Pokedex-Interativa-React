@@ -9,17 +9,12 @@ export default function PokemonList({list, isLoadingMore}) {
     }
 
     return (
-        <ul className={`flex-column mediumGap align-center`}>
-
-
+        <ul className={`${style.list} flex-row flex-wrap smallGap align-center`}>
             {list.map(pokemon => (
-                <li className={style.list}>
+                <li className={`${style.pokeCard}`}>
                     <PokemonCard pokemonInfo={pokemon}/>
                 </li>
-
             ))}
-
-            {isLoadingMore && <p className={style.loading}>Carregando...</p>}
         </ul>
     );
 }
