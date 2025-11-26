@@ -132,9 +132,15 @@ export default function Home() {
                     <>
                         <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
                         <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
-                            <button className={`${styles.loadMore} button`} disabled={DISABLE_PREDICATE}
-                                    onClick={handleLoadMore}>Carregar mais
+
+                            <button className={`${styles.loadMore} button`}
+                                    disabled={DISABLE_PREDICATE}
+                                    onClick={handleLoadMore}>
+
+                                Carregar mais
+
                             </button>
+
                         </div>
                     </>
             }
