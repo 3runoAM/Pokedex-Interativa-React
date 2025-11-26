@@ -124,7 +124,7 @@ export default function Home() {
     console.log("MONTANDO ESTA CACETA COM A LISTA: ", pokemonList);
 
     return (
-        <section className={`${styles.home} flex-column largeGap`}>
+        <section className={`${styles.home} flex-column align-center largeGap`}>
             
             <SearchBar onSearch={handleSearch}
                        PokemonNameList={pokemonNameList}

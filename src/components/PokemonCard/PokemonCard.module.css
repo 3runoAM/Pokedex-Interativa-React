@@ -1,5 +1,6 @@
 .pokeCard {
     text-decoration: none;
+    justify-content: space-evenly;
 }
 
 .pokeImage {
