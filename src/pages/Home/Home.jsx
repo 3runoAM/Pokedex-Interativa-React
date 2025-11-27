@@ -96,6 +96,8 @@ export default function Home() {
                 const results = await dataBase.getPokemon(currentPage);
                 const typedPokemon = await ensureTypes(results)
 
+                console.log(typedPokemon);
+
                 setPokemonList(prevList => {
                     const newPokemons = typedPokemon.filter(newPokemon =>
                         !prevList.some(existingPokemon =>
@@ -120,8 +122,6 @@ export default function Home() {
     useEffect(() => {
         getPokemonNames();
     }, []);
-
-    console.log("MONTANDO ESTA CACETA COM A LISTA: ", pokemonList);
 
     return (
         <section className={`${styles.home} flex-column align-center largeGap`}>

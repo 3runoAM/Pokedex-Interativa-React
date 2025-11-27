@@ -16,10 +16,13 @@ const usePokeApi = () => {
             setError([]);
 
             const startIndex = (currentPage - 1) * 10 + 1;
-            const endIndex = currentPage * 10;
+            const endIndex = currentPage * 10 - 1;
 
+            console.log("Atualizando Pokémons da página:", currentPage, "/nPegando do ID:", startIndex, "até", endIndex);
             const ids = [];
-            for (let i = startIndex; i <= endIndex; i++) {
+            for (let i = startIndex; i < endIndex; i++) {
+                console.log("Buscando Pokémon com ID:", i);
+
                 const exists = await dataBase.pokemonExistsByPokedexId(i)
                 if (exists) continue;
                 ids.push(i);
@@ -29,6 +32,8 @@ const usePokeApi = () => {
                 return {loading, errors, updatePokemonBasicInfo};
             }
 
+            console.log("Pokémons a serem buscados na API:", ids);
+
             const promises = ids.map(async (i) => {
                 try {
                     const pokeResult = await fetch(`${URL_BASE_POKEMON}/${i}`).then(res => res.json());
@@ -36,8 +41,9 @@ const usePokeApi = () => {
 
                     return {
                         name: pokeResult.name,
-                        description: speciesResult.flavor_text_entries.find(entry => entry.language.name === "en")
-                            .flavor_text.replace(/\f/g, " "),
+                        description: speciesResult.flavor_text_entries
+                                .find(entry => entry.language.name === "en")
+                                .flavor_text.replace(/\f/g, " "),
                         sprite_url: `${URL_BASE_ARTWORK}${pokeResult.id}.png`,
                         hp: pokeResult.stats[0].base_stat,
                         attack: pokeResult.stats[1].base_stat,
@@ -89,8 +95,7 @@ const usePokeApi = () => {
                         const registeredType = await dataBase.getByName("Type", type.name);
 
                         const pm = await dataBase.create("PokemonType", {
-                            pokemon_id: registeredPokemon[0].id,
-                            type_id: registeredType[0].id
+                            pokemon_id: registeredPokemon[0].id, type_id: registeredType[0].id
                         });
                     }
                 }
@@ -119,7 +124,7 @@ const usePokeApi = () => {
                 for (const weakness of doubleWeaknesses) {
                     const exists = await dataBase.existsByName("Type", weakness);
 
-                    if (!exists) await dataBase.create("Type", { name: weakness});
+                    if (!exists) await dataBase.create("Type", {name: weakness});
 
                     const [registeredType] = await dataBase.getByName("Type", typeName);
                     const [registeredWeakness] = await dataBase.getByName("Type", weakness);
@@ -129,14 +134,12 @@ const usePokeApi = () => {
                         continue;
                     }
 
-                    const alreadyExists = await dataBase.existsRelation(
-                        "Weakness",
-                        "type_id", registeredType.id,
-                        "weakness_type_id", registeredWeakness.id
-                    );
+                    const alreadyExists = await dataBase.existsRelation("Weakness", "type_id", registeredType.id, "weakness_type_id", registeredWeakness.id);
 
                     if (!alreadyExists) {
-                        await dataBase.create("Weakness", { type_id: registeredType.id, weakness_type_id: registeredWeakness.id });
+                        await dataBase.create("Weakness", {
+                            type_id: registeredType.id, weakness_type_id: registeredWeakness.id
+                        });
                     }
                 }
             }
