@@ -10,7 +10,7 @@ export default function Menu() {
 
             <ul className={`flex-row flex-center`}>
 
-                <li>
+                <li className={style.teamsMenuItem}>
                     <Link to={"/teams"}>
                         <div className={`flex-row flex-center`}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="#e3e3e3" className={`${style.menuIcon}`} viewBox="0 -960 960 960">
@@ -22,7 +22,7 @@ export default function Menu() {
                     </Link>
                 </li>
 
-                <li>
+                <li className={style.homeMenuItem}>
                     <Link to={"/home"}>
                         <div className={`flex-row flex-center`}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="#F2F2F2FF" className={`${style.menuIcon} bi bi-house-door-fill`} viewBox="0 0 16 16">
@@ -37,7 +37,7 @@ export default function Menu() {
                 </li>
 
 
-                <li>
+                <li className={style.profileMenuItem}>
                     <Link to={"/profile"}>
                         <div className={`flex-row flex-center`}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="#e3e3e3" className={`${style.menuIcon}`} viewBox="0 -960 960 960">
@@ -48,10 +48,7 @@ export default function Menu() {
                         <p className={style.label}>Profile</p>
                     </Link>
 
-
                 </li>
-
-
             </ul>
         </nav>
     );
