@@ -145,5 +145,6 @@
     .menu {
         top: 16px;
         width: 93.8%;
+        max-width: 93%;
     }
 }

@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import dataBase from "../../services/DataBase";
 import {useToast} from "../../provider/ToastProvider";
-import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard.module.css";
+import SummaryPokemonCard from "../../components/SummaryPokemonCard/SummaryPokemonCard";
 import styles from "../PokemonDetails/PokemonDetails.module.css";
 import {useConfirmation} from "../../provider/ConfirmationProvider";
 
@@ -20,6 +20,7 @@ export default function TeamDetails() {
         }
     });
 
+    
     const {id} = useParams();
     const location = useLocation();
     const cachedTeam = location.state?.team;
@@ -30,6 +31,7 @@ export default function TeamDetails() {
 
     const handleDelete = async (teamId) => {
         try {
+            
             const isConfirmed = await getConfirmation("Are you sure you want to delete this team? This action cannot be undone.");
             if (!isConfirmed) return;
             
@@ -47,6 +49,7 @@ export default function TeamDetails() {
 
     useEffect(() => {
         const calculateStatistics = (pokemonPartners) => {
+            
             const totalPokemons = pokemonPartners.length;
             const totalHp = pokemonPartners.reduce((sum, p) => sum + p.hp, 0);
             const averageHp = totalPokemons ? Math.round(totalHp / totalPokemons) : 0;
@@ -70,6 +73,7 @@ export default function TeamDetails() {
         };
 
         if (cachedTeam) {
+            
             const partners = cachedTeam.PokemonPartner?.map(partner => partner.Pokemon);
             setTeam({
                 name: cachedTeam.name,
@@ -81,6 +85,7 @@ export default function TeamDetails() {
 
         const teamFetch = async () => {
             try {
+                
                 const team = await dataBase.getTeamById(id);
                 if (team) {
                     location.state.team = team;
@@ -163,8 +168,6 @@ export default function TeamDetails() {
                         onClick={() => handleDelete(team.id)}>Delete
                 </button>
             </div>
-
-            <div className={`largePadding`}><br/><br/></div>
         </section>
     )
 }
