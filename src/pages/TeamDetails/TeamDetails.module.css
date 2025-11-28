@@ -1,5 +1,6 @@
 .teamDetailsSection {
     width: 100%;
+    padding-bottom: 7rem;
 }
 
 .teamHeader {
@@ -42,3 +43,22 @@
     width: 100%;
     font-size: 1.9rem;
 }
+
+/*@media (prefers-color-scheme: dark) {}*/
+
+/*@media (min-width: 420px) {}*/
+
+@media (min-width: 640px) {
+    .teamDetailsSection {
+        padding-bottom: 1rem;
+        padding-top: 8rem;
+    }
+}
+
+/*@media (min-width: 768px) {}*/
+
+/*@media (min-width: 1024px) {}*/
+
+/*@media (min-width: 1280px) {}*/
+
+

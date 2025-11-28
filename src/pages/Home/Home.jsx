@@ -5,6 +5,7 @@ import dataBase from "../../services/DataBase";
 import PokemonList from "../../components/PokemonList/PokemonList";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import {useToast} from "../../provider/ToastProvider";
+import style from "../../components/PokemonList/PokemonList.module.css";
 
 export default function Home() {
     const {updatePokemonBasicInfo} = usePokeApi();
@@ -90,12 +91,22 @@ export default function Home() {
 
         const fetchAndUpdate = async () => {
             try {
-                await updatePokemonBasicInfo(currentPage);
+                // await updatePokemonBasicInfo(currentPage);
 
                 const results = await dataBase.getPokemon(currentPage);
                 const typedPokemon = await ensureTypes(results)
 
-                setPokemonList(prevList => [...prevList, ...typedPokemon]);
+                console.log(typedPokemon);
+
+                setPokemonList(prevList => {
+                    const newPokemons = typedPokemon.filter(newPokemon =>
+                        !prevList.some(existingPokemon =>
+                            existingPokemon.pokedex_id === newPokemon.pokedex_id
+                        )
+                    );
+                    return [...prevList, ...newPokemons];
+                });
+
                 setLoadingMore(false);
             } catch (err) {
                 console.error(err);
@@ -106,7 +117,6 @@ export default function Home() {
         };
 
         fetchAndUpdate();
-
     }, [currentPage]);
 
     useEffect(() => {
@@ -114,7 +124,7 @@ export default function Home() {
     }, []);
 
     return (
-        <section className={`flex-column largeGap`}>
+        <section className={`${styles.home} flex-column align-center largeGap`}>
             
             <SearchBar onSearch={handleSearch}
                        PokemonNameList={pokemonNameList}
@@ -131,6 +141,9 @@ export default function Home() {
                     </> :
                     <>
                         <PokemonList isLoadingMore={loadingMore} list={pokemonList}/>
+
+                        {loadingMore && <p className={style.loading}>Carregando...</p>}
+
                         <div className={`${styles.buttonsContainer} flex-column flex-center mediumGap`}>
 
                             <button className={`${styles.loadMore} button`}
@@ -144,9 +157,6 @@ export default function Home() {
                         </div>
                     </>
             }
-
-
-            <div className={"largePadding"}></div>
         </section>
     );
 }

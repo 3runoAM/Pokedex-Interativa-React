@@ -8,8 +8,10 @@ import {useConfirmation} from "../../provider/ConfirmationProvider";
 export default function Teams() {
     const [user, _] = useState(JSON.parse(localStorage.getItem("user")));
     const [teams, setTeams] = useState([]);
+
     const {showToast} = useToast();
     const { getConfirmation } = useConfirmation();
+
     const CREATION_TEAM_ID = "60753bbe-2c1f-4e40-963a-21ea6c14c777";
 
     const fetchUserTeams = async () => {
@@ -20,8 +22,8 @@ export default function Teams() {
 
             return teams;
         } catch (error) {
-            console.error("Erro ao obter times do usuário", error);
-            showToast("Erro ao obter times do usuário");
+            console.error("There was an error fetching user teams", error.message);
+            showToast("There was an error fetching the teams");
         }
     }
 
@@ -35,13 +37,13 @@ export default function Teams() {
 
             fetchUserTeams();
         } catch (err) {
-            console.error("Erro ao deletar time: ", err);
-            showToast("Erro ao deletar time");
+            console.error("There was an error deleting the team", err.message);
+            showToast("There was an error deleting the team");
         }
     }
 
     const handleDeleteAll = async () => {
-        const isConfirmed = await getConfirmation("Are you sure you want to delete all teams? This action cannot be undone.")
+        const isConfirmed = await getConfirmation("Are you sure you want to delete all teams? This action cannot be undone")
         if (!isConfirmed) return;
 
         try {
@@ -52,8 +54,8 @@ export default function Teams() {
 
             fetchUserTeams();
         } catch (err) {
-            console.error("Erro ao deletar todos os times: ", err.message);
-            showToast("Erro ao deletar todos os times");
+            console.error("There was an error deleting all teams", err.message);
+            showToast("There was an error deleting all teams");
         }
     }
 
@@ -66,7 +68,7 @@ export default function Teams() {
             <h2>Teams</h2>
 
             <div className={`${style.buttonContainer} flex-row justify-center smallGap smallPadding`}>
-                <Link to={`/teams/teamEditor/${CREATION_TEAM_ID}`} className={`flex-row flex-center smallPadding`}>
+                <Link  className={`flex-row flex-center smallPadding`} to={`/teams/teamEditor/${CREATION_TEAM_ID}`}>
                     New Team
                 </Link>
                 <button className={`flex-row flex-center smallPadding`} onClick={() => handleDeleteAll()}>
@@ -74,22 +76,25 @@ export default function Teams() {
                 </button>
             </div>
 
-            <ul className={`${style.teamsContainer} flex-column mediumGap`}>
+            <ul className={`${style.teamsContainer} flex-row flex-wrap justify-center smallGap`}>
                 {teams?.map((team) => (
                     <li key={team.id} className={`${style.teamCard} flex-row mediumPadding smallGap`}>
 
                         <div className={`${style.teamInfoContainer} flex-column`}>
 
-                            <Link className={` flex-column smallGap`}
-                                  to={`/teams/teamDetails/${team.id}`} state={{team: team}}>
-                                <h3>{team.name}</h3>
+                            <Link className={`flex-column smallGap`}
+                                  to={`/teams/teamDetails/${team.id}`}
+                                  state={{team: team}}>
+                                <h3 className={`${style.teamLink}`}>{team.name}</h3>
                                 <p>Pokemon {team.PokemonPartner.length}/6</p>
                             </Link>
 
                             <div className={`flex-column smallGap`}>
                                 <Link to={`/teams/teamEditor/${team.id}`}
                                       state={{team: team}}
-                                      className={`${style.editButton} button`}>Edit</Link>
+                                      className={`${style.editButton} button`}>
+                                    Edit
+                                </Link>
                                 <button className={`${style.deleteButton} button`}
                                         onClick={() => handleDelete(team.id)}>Delete
                                 </button>
@@ -107,8 +112,6 @@ export default function Teams() {
                     </li>
                 ))}
             </ul>
-
-            <div className={`largePadding`}><br/><br/></div>
         </section>
     )
 }

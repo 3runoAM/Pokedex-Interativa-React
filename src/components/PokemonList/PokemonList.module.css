@@ -6,4 +6,15 @@
 .list {
     list-style: none;
     width: 100%;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.pokeCard {
+    width: 18rem;
+    min-height: 10rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(40, 87, 108, 0.5);
+    background-color: var(--card-white);
+
 }

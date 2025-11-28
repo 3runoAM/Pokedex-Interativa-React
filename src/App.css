@@ -225,7 +225,3 @@ body {
 .dark {
     background-color: var(--dark-grey);
 }
-
-@media (prefers-color-scheme: dark) {
-
-}

@@ -1,5 +1,5 @@
 import {useLocation, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useLayoutEffect} from "react";
 import styles from "./PokemonDetails.module.css";
 import usePokeApi from "../../hooks/usePokeApi";
 import dataBase from "../../services/DataBase";
@@ -78,6 +78,12 @@ export default function PokemonDetails() {
         if (pokemon && pokemon.types) fetchWeaknesses(pokemon.types);
     }, [id, pokemon, updateTypeWeaknesses]);
 
+    useLayoutEffect(() => {
+        const section = document.querySelector(`.${styles.pokemonDetailsSection}`);
+
+        if (section) section.scrollIntoView();
+    }, [location.pathname]);
+
     if (loading) return (<p className={`labelSize`}>Loading Pokemon details...</p>);
 
     return (
@@ -93,7 +99,7 @@ export default function PokemonDetails() {
                  alt={pokemon.name}
             />
 
-            <p className={`${styles.pokeDescription} smallPadding`}>{pokemon.description}</p>
+            <p className={`${styles.pokeDescription}`}>{pokemon.description}</p>
 
             <div className={`${styles.statisticsContainer} flex-column align-center mediumGap`}>
                 <h3>Statistics</h3>
@@ -156,8 +162,6 @@ export default function PokemonDetails() {
                     }
                 </ul>
             </div>
-
-            <div className="largePadding "></div>
         </section>
     );
 }

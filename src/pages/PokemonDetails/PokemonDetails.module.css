@@ -1,3 +1,7 @@
+.pokemonDetailsSection {
+    padding-bottom: 7rem;
+}
+
 .nameNumberContainer > h2 {
     font-weight: 400;
     font-size: 3.5rem;
@@ -62,3 +66,22 @@
     border-radius: 5px;
     box-shadow: 0 2px 6px var(--greyish-black);
 }
+
+
+/*@media (prefers-color-scheme: dark) {}*/
+
+/*@media (min-width: 420px) {}*/
+
+@media (min-width: 640px) {
+    .pokemonDetailsSection {
+        padding-bottom: 1rem;
+        padding-top: 7rem;
+    }
+}
+
+/*@media (min-width: 768px) {}*/
+
+/*@media (min-width: 1024px) {}*/
+
+/*@media (min-width: 1280px) {}*/
+

@@ -3,23 +3,18 @@ import PokemonCard from "../PokemonCard/PokemonCard";
 
 export default function PokemonList({list, isLoadingMore}) {
     if (list.length === 0 && !isLoadingMore) {
-        return <p className={`${style.loading}`}>Nenhum pokemon encontrado nessa rota :(</p>
+        return <p className={`${style.loading}`}>We couldn't find any Pokémon on this route. :(</p>
     } else if (list.length === 0 && isLoadingMore) {
-        return <p className={style.loading}>Procurando na grama alta...</p>
+        return <p className={style.loading}>Searching for Pokémon in the tall grass...</p>
     }
 
     return (
-        <ul className={`flex-column mediumGap align-center`}>
-
-
+        <ul className={`${style.list} flex-row flex-wrap smallGap align-center`}>
             {list.map(pokemon => (
-                <li className={style.list}>
+                <li className={`${style.pokeCard}`}>
                     <PokemonCard pokemonInfo={pokemon}/>
                 </li>
-
             ))}
-
-            {isLoadingMore && <p className={style.loading}>Carregando...</p>}
         </ul>
     );
 }

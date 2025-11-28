@@ -1,6 +1,6 @@
 .teamSection {
     width: 100%;
-    max-height: 100%;
+    padding-bottom: 8rem;
 }
 
 .teamSection h2 {
@@ -36,6 +36,7 @@
 
 .teamCard {
     text-decoration: none;
+    width: 18rem;
     height: 12rem;
     border-radius: 1rem;
     background-color: var(--card-white);
@@ -79,11 +80,13 @@
     border-radius: 0.5rem;
 }
 
-.teamInfoContainer > div:first-child > h3 {
+
+.teamLink {
     font-size: 1.8rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    text-decoration: underline;
 }
 
 .editButton, .deleteButton {
@@ -102,4 +105,30 @@
 .partnersImageContainer {
     max-width: 100%;
     justify-content: space-evenly;
+}
+
+
+/*@media (prefers-color-scheme: dark) {}*/
+
+@media (min-width: 420px) {
+    .buttonContainer {
+        width: 70%;
+    }
+}
+
+@media (min-width: 640px) {
+    .teamSection {
+        padding-bottom: 1.5rem;
+        padding-top: 7rem;
+    }
+}
+
+/*@media (min-width: 768px) {}*/
+
+/*@media (min-width: 1024px) {}*/
+
+@media (min-width: 1280px) {
+    .buttonContainer {
+        width: 50%;
+    }
 }

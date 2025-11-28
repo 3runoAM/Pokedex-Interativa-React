@@ -20,8 +20,8 @@ export default function Profile() {
 
             navigate('/login');
         } catch (err) {
-            showToast("Erro ao fazer logout");
-            console.error("Erro ao fazer logout:", err);
+            showToast("There was an error logging out");
+            console.error("There was an error logging out", err);
         }
     };
 
@@ -29,8 +29,8 @@ export default function Profile() {
         try {
             return await Authentication.getUserInfo();
         } catch (error) {
-            console.error("Erro ao obter informações do usuário", error);
-            showToast("Erro ao obter informações do usuário");
+            console.error("There was an error fetching user info", error);
+            showToast("There was an error getting user info");
         }
     }
 
@@ -49,8 +49,8 @@ export default function Profile() {
 
                 return teamsQuantity;
             } catch (error) {
-                console.error("Erro ao obter times do usuário", error);
-                showToast("Erro ao obter times do usuário");
+                console.error("There was an error fetching user's teams", error);
+                showToast("There was an error getting user's teams");
             }
         }
 

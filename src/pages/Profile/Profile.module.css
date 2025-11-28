@@ -1,6 +1,7 @@
 .profileSection {
     width: 100%;
     align-items: center;
+    padding-bottom: 7rem;
 }
 
 .iconContainer {
@@ -40,3 +41,36 @@
 .profileIcon {
     width: 2.5rem;
 }
+
+/*@media (prefers-color-scheme: dark) {}*/
+
+/*@media (min-width: 420px) {}*/
+
+@media (min-width: 640px) {
+    .profileSection {
+        padding-bottom: 1rem;
+        padding-top: 7rem;
+    }
+
+    .userInfoContainer {
+        width: 50%;
+    }
+
+    .teamCountContainer {
+        width: 30%;
+    }
+}
+
+/*@media (min-width: 768px) {}*/
+
+@media (min-width: 1024px) {
+    .userInfoContainer {
+        width: 30%;
+    }
+
+    .teamCountContainer {
+        width: 20%;
+    }
+}
+
+/*@media (min-width: 1280px) {}*/
