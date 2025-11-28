@@ -72,20 +72,8 @@ export default function TeamDetails() {
             };
         };
 
-        if (cachedTeam) {
-            
-            const partners = cachedTeam.PokemonPartner?.map(partner => partner.Pokemon);
-            setTeam({
-                name: cachedTeam.name,
-                pokemonPartners: partners,
-                teamStatistics: calculateStatistics(partners),
-            });
-            return;
-        }
-
         const teamFetch = async () => {
             try {
-                
                 const team = await dataBase.getTeamById(id);
                 if (team) {
                     location.state.team = team;
@@ -106,6 +94,17 @@ export default function TeamDetails() {
                 showToast("Erro ao obter time pelo ID");
                 console.error("Erro ao obter time pelo ID: ", err);
             }
+        }
+
+        if (cachedTeam) {
+            
+            const partners = cachedTeam.PokemonPartner?.map(partner => partner.Pokemon);
+            setTeam({
+                name: cachedTeam.name,
+                pokemonPartners: partners,
+                teamStatistics: calculateStatistics(partners),
+            });
+            return;
         }
 
         teamFetch();
@@ -161,11 +160,15 @@ export default function TeamDetails() {
             <div className={`smallPadding`}></div>
 
             <div className={`${style.buttonContainer} flex-row smallGap smallPadding`}>
-                <Link to={`/teams/teamEditor/${team.id}`}
-                      state={{team: location.state?.team}}
-                      className={`${style.editButton} button`}>Edit</Link>
+                <Link to={`/teams/teamEditor/${location.state.team.id || team.id}`}
+                      state={{team: location.state.team || team}}
+                      className={`${style.editButton} button`}>
+                    Edit
+                </Link>
+
                 <button className={`${style.deleteButton} button`}
-                        onClick={() => handleDelete(team.id)}>Delete
+                        onClick={() => handleDelete(team.id)}>
+                    Delete
                 </button>
             </div>
         </section>

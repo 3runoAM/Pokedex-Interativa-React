@@ -36,6 +36,7 @@
 
 .teamCard {
     text-decoration: none;
+    width: 18rem;
     height: 12rem;
     border-radius: 1rem;
     background-color: var(--card-white);
@@ -109,7 +110,11 @@
 
 /*@media (prefers-color-scheme: dark) {}*/
 
-/*@media (min-width: 420px) {}*/
+@media (min-width: 420px) {
+    .buttonContainer {
+        width: 70%;
+    }
+}
 
 @media (min-width: 640px) {
     .teamSection {
@@ -122,4 +127,8 @@
 
 /*@media (min-width: 1024px) {}*/
 
-/*@media (min-width: 1280px) {}*/
+@media (min-width: 1280px) {
+    .buttonContainer {
+        width: 50%;
+    }
+}

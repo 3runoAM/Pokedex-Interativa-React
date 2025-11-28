@@ -1,12 +1,13 @@
 .newTeamPage {
     max-width: 100%;
+    padding-bottom: 7rem;
 }
 
 .newTeamPage > h2 {
     font-size: 3rem;
 }
 
-.teamForm > div > label, .teamForm > div > h3 {
+.teamName, .selectTeam {
     font-size: 2.8rem;
     font-weight: 500;
 }
@@ -34,13 +35,36 @@
 
 .partnerContainer {
     max-width: 100%;
+    background-color: var(--card-white);
+    border-radius: 1rem;
 }
 
-.teamName {
+.yourTeam {
     font-size: 2rem;
 }
 
-.partners {
-    max-width: 100%;
+.partnersContainer {
+    width: 100%;
     overflow: auto;
 }
+
+.partners {
+    width: 100%;
+}
+
+/*@media (prefers-color-scheme: dark) {}*/
+
+/*@media (min-width: 420px) {}*/
+
+@media (min-width: 640px) {
+    .newTeamPage {
+        padding-bottom: 1rem;
+        padding-top: 7rem;
+    }
+}
+
+/*@media (min-width: 768px) {}*/
+
+/*@media (min-width: 1024px) {}*/
+
+/*@media (min-width: 1280px) {}*/

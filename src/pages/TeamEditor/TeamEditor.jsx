@@ -48,7 +48,7 @@ export default function TeamEditor() {
 
         setFormData(prev => ({
             ...prev,
-            partnersIds: [...prev.partnersIds, partnerId]
+            partnersIds: [partnerId, ...prev.partnersIds]
         }));
     }
 
@@ -175,7 +175,7 @@ export default function TeamEditor() {
             <form className={`${style.teamForm} flex-column largeGap`}>
 
                 <div className={`flex-column`}>
-                    <label htmlFor="name">Team name</label>
+                    <label className={`${style.teamName}`} htmlFor="name">Team name</label>
 
                     <input id="name" max={25} min={1}
                            required placeholder="Team Rocket"
@@ -186,7 +186,7 @@ export default function TeamEditor() {
                 </div>
 
                 <div className={`flex-column smallGap`}>
-                    <h3>Select your partners</h3>
+                    <h3 className={`${style.selectTeam}`}>Select your partners</h3>
 
                     <div className={`flex-column mediumGap`}>
                         <input placeholder="Search by name..."
@@ -217,10 +217,10 @@ export default function TeamEditor() {
             </form>
 
             {(formData.partnersIds.length > 0) && (
-                <div className={`${style.partnerContainer} flex-column smallGap`}>
-                    <h3 className={style.teamName}>Your team: {formData.teamName}</h3>
+                <div className={`${style.partnerContainer} flex-column mediumGap mediumPadding`}>
+                    <h3 className={style.yourTeam}>Your team: {formData.teamName}</h3>
 
-                    <div className={`${style.partners} flex-row smallGap mediumPadding`}>
+                    <div className={`${style.partnersContainer} flex-row align-center smallGap`}>
                         {
                             formData.partnersIds.map((partnerId) => {
                                 const pokemon = pokemonList.filter(p => p.pokedex_id === Number(partnerId))[0];
@@ -231,7 +231,8 @@ export default function TeamEditor() {
 
 
                                         <button className={`${style.removeButton} button`} type="button"
-                                                onClick={(e) => handleRemove(partnerId)}>Remove
+                                                onClick={(e) => handleRemove(partnerId)}>
+                                            Remove
                                         </button>
                                     </div>
                                 );
@@ -245,8 +246,6 @@ export default function TeamEditor() {
                     </button>
                 </div>)
             }
-
-            <div className={`largePadding`}><br/><br/></div>
         </section>
     );
 }

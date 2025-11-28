@@ -12,12 +12,12 @@
 
 @media (min-width: 768px) {
     .logoImage {
-        max-width: 25em;
+        max-width: 22em;
     }
 }
 
 @media (min-width: 1024px) {
     .logoImage {
-        max-width: 28em;
+        max-width: 20rem
     }
 }

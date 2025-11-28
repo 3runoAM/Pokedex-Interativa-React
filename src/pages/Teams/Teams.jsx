@@ -68,7 +68,7 @@ export default function Teams() {
             <h2>Teams</h2>
 
             <div className={`${style.buttonContainer} flex-row justify-center smallGap smallPadding`}>
-                <Link to={`/teams/teamEditor/${CREATION_TEAM_ID}`} className={`flex-row flex-center smallPadding`}>
+                <Link  className={`flex-row flex-center smallPadding`} to={`/teams/teamEditor/${CREATION_TEAM_ID}`}>
                     New Team
                 </Link>
                 <button className={`flex-row flex-center smallPadding`} onClick={() => handleDeleteAll()}>
@@ -76,7 +76,7 @@ export default function Teams() {
                 </button>
             </div>
 
-            <ul className={`${style.teamsContainer} flex-column mediumGap`}>
+            <ul className={`${style.teamsContainer} flex-row flex-wrap justify-center smallGap`}>
                 {teams?.map((team) => (
                     <li key={team.id} className={`${style.teamCard} flex-row mediumPadding smallGap`}>
 
