@@ -18,11 +18,8 @@ const usePokeApi = () => {
             const startIndex = (currentPage - 1) * 10 + 1;
             const endIndex = currentPage * 10 - 1;
 
-            console.log("Atualizando Pokémons da página:", currentPage, "/nPegando do ID:", startIndex, "até", endIndex);
             const ids = [];
             for (let i = startIndex; i < endIndex; i++) {
-                console.log("Buscando Pokémon com ID:", i);
-
                 const exists = await dataBase.pokemonExistsByPokedexId(i)
                 if (exists) continue;
                 ids.push(i);
@@ -31,8 +28,6 @@ const usePokeApi = () => {
                 setLoading(false);
                 return {loading, errors, updatePokemonBasicInfo};
             }
-
-            console.log("Pokémons a serem buscados na API:", ids);
 
             const promises = ids.map(async (i) => {
                 try {

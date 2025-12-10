@@ -89,7 +89,7 @@ export default function Profile() {
             </div>
 
 
-            <button className={`${style.logOut} button`} onClick={handleLogout}>SAIR</button>
+            <button className={`${style.logOut} button`} onClick={handleLogout}>Log Out</button>
         </section>
     );
 }

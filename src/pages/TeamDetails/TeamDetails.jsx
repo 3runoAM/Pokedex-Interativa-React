@@ -20,7 +20,6 @@ export default function TeamDetails() {
         }
     });
 
-    
     const {id} = useParams();
     const location = useLocation();
     const cachedTeam = location.state?.team;
@@ -49,7 +48,6 @@ export default function TeamDetails() {
 
     useEffect(() => {
         const calculateStatistics = (pokemonPartners) => {
-            
             const totalPokemons = pokemonPartners.length;
             const totalHp = pokemonPartners.reduce((sum, p) => sum + p.hp, 0);
             const averageHp = totalPokemons ? Math.round(totalHp / totalPokemons) : 0;

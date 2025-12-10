@@ -5,8 +5,8 @@ export default function LoginLink(){
 
     return (
         <div className="flex-column flex-center">
-            <p className={`${style.labelSize} labelSize`}>Já possui uma conta?</p>
-            <Link className={`${style.button} button`} to="/login">Entrar</Link>
+            <p className={`${style.labelSize} labelSize`}>Already have an account?</p>
+            <Link className={`${style.button} button`} to="/login">Login</Link>
         </div>
     )
 }

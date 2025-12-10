@@ -104,7 +104,6 @@ export default function TeamEditor() {
                 });
 
                 const response = await dataBase.addPokemonPartnersToTeam(pokemonPartners);
-
                 if (response) showToast("Team created successfully")
             }
 

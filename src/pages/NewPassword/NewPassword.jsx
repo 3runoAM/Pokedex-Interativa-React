@@ -54,7 +54,7 @@ export default function NewPassword() {
                            type="password" name="newPassword" required/>
                 </div>
 
-                <button className={`button`} onClick={(e) => handleSubmit(e)}>Save</button>
+                <button className={`${style.button} button`} onClick={(e) => handleSubmit(e)}>Save</button>
             </form>
         </section>
     );

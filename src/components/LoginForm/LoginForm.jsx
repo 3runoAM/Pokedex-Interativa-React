@@ -21,7 +21,8 @@ export function LoginForm({login}) {
         }
 
         try {
-            const {data, error} = await supabase.auth.resetPasswordForEmail(formData.email, { redirectTo: "http://localhost:3000/newPassword" });
+            const {data, error} = await supabase.auth.resetPasswordForEmail(formData.email,
+                { redirectTo: "https://pokedex-7de54.firebaseapp.com/newPassword" });
 
             showToast(`An email has been sent to ${formData.email.split("@")[0]} for a password reset`);
         } catch (err) {
@@ -107,11 +108,11 @@ export function LoginForm({login}) {
             </div>
 
             <button type="button" className={style.link} onClick={(e) => handleForgetPassword(e)}>
-                Esqueci a senha
+                Forgot Password
             </button>
 
             <button className={`${style.button} button`} type="submit">
-                Entrar
+                Sign in
             </button>
         </form>
     )
